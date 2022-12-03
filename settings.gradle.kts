@@ -14,6 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "BuddyCon"
 include(":app")
-include(":presentation")
 include(":data")
 include(":domain")
+include(":presentation")
