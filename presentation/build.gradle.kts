@@ -1,18 +1,15 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    namespace = "com.yapp.buddy.presentation"
-    compileSdk = 32
+    namespace = Configs.PRESENTATION_NAME
+    compileSdk = Configs.COMPILE_SDK
 
     defaultConfig {
-        applicationId = "com.yapp.buddy.presentation"
-        minSdk = 23
-        targetSdk = 32
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = Configs.MIN_SDK
+        targetSdk = Configs.TARGET_SDK
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -36,9 +33,6 @@ android {
 }
 
 dependencies {
-
-    implementation("com.android.support:appcompat-v7:28.0.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("com.android.support.test:runner:1.0.2")
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:3.0.2")
+    implementation(project(":domain"))
+    implementation("androidx.appcompat:appcompat:1.5.1")
 }

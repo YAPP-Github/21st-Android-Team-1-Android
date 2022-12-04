@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = Configs.APPLICATION_NAME
+    namespace = Configs.DATA_NAME
     compileSdk = Configs.COMPILE_SDK
 
     defaultConfig {

@@ -1,4 +1,4 @@
-package com.yapp.buddy.data
+package com.yapp.buddycon.data
 
 import org.junit.Test
 
