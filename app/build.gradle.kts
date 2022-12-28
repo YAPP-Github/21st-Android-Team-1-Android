@@ -39,6 +39,9 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":presentation"))
 
+    testImplementation(ModuleDependency.Default.JUNIT)
+    androidTestImplementation(ModuleDependency.Default.TEST_RUNNER)
+    androidTestImplementation(ModuleDependency.Default.ESPRESSO_CORE)
     implementation(ModuleDependency.Hilt.HILT)
     kapt(ModuleDependency.Hilt.HILT_COMPILER)
     implementation(ModuleDependency.Default.CORE)

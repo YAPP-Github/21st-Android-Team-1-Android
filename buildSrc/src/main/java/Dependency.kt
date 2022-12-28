@@ -18,7 +18,7 @@ object Versions {
     const val RETROFIT = "2.9.0"
     const val TIMBER = "5.0.1"
     const val ML_KIT = "17.0.2"
-    const val GLIDE = "4.13.2"
+    const val GLIDE = "4.14.2"
     const val METERIAL = "1.7.0"
     const val GSON = "2.9.0"
     const val INJECT = "1"
@@ -72,7 +72,7 @@ object ModuleDependency {
     }
 
     object Glide {
-        const val GLIDE = "com.github.bumptech.glide:glide:$${Versions.GLIDE}"
+        const val GLIDE = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
         const val GLIDE_COMPILER = "com.github.bumptech.glide:compiler:${Versions.GLIDE}"
     }
 

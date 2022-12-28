@@ -37,7 +37,9 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-
+    testImplementation(ModuleDependency.Default.JUNIT)
+    androidTestImplementation(ModuleDependency.Default.TEST_RUNNER)
+    androidTestImplementation(ModuleDependency.Default.ESPRESSO_CORE)
     implementation(ModuleDependency.Timber.TIMBER)
     implementation(ModuleDependency.Retrofit2.RETROFIT)
     implementation(ModuleDependency.Okhttp3.LOGGING_INTERCEPTOR)

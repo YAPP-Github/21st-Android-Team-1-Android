@@ -37,6 +37,9 @@ android {
 dependencies {
     implementation(project(":domain"))
 
+    testImplementation(ModuleDependency.Default.JUNIT)
+    androidTestImplementation(ModuleDependency.Default.TEST_RUNNER)
+    androidTestImplementation(ModuleDependency.Default.ESPRESSO_CORE)
     implementation(ModuleDependency.Default.CORE)
     implementation(ModuleDependency.Default.APP_COMPAT)
     implementation(ModuleDependency.Default.MATERIAL)
