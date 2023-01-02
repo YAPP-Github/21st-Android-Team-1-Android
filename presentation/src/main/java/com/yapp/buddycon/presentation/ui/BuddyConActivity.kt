@@ -16,9 +16,21 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initToolbar()
+        initNavigation()
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_buddycon, menu)
+        return true
+    }
+
+    private fun initToolbar(){
         setSupportActionBar(binding.toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    private fun initNavigation(){
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(setOf(
@@ -28,10 +40,5 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
         ))
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.bottomNavigationView.setupWithNavController(navController)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_buddycon, menu)
-        return true
     }
 }
