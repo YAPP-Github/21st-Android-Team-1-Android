@@ -40,6 +40,9 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation(ModuleDependency.Default.JUNIT)
     androidTestImplementation(ModuleDependency.Default.TEST_RUNNER)
     androidTestImplementation(ModuleDependency.Default.ESPRESSO_CORE)

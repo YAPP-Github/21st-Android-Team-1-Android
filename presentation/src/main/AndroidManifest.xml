@@ -3,17 +3,23 @@
 
     <application android:theme="@style/Theme.BuddyCon">
         <activity
-            android:theme="@style/Theme.BuddyCon"
-            android:name=".ui.BuddyConActivity"
+            android:name=".KakaoLoginActivity"
             android:exported="false">
-
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
+        <activity
+            android:name=".ui.BuddyConActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BuddyCon"></activity>
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
