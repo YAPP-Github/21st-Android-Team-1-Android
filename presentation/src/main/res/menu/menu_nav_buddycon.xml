@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/secondFragment"
+        android:icon="@drawable/ic_giftcon"
+        android:title="@string/menu_giftcon"
+        android:enabled="true"/>
+
+    <item
+        android:id="@+id/firstFragment"
+        android:icon="@drawable/ic_customcon"
+        android:title="@string/menu_customcon"
+        android:enabled="true"/>
+
+    <item
+        android:id="@+id/thirdFragment"
+        android:icon="@drawable/ic_my"
+        android:title="@string/menu_my"
+        android:enabled="true"/>
+</menu>
