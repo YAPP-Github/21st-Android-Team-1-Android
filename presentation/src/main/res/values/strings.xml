@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">presentation</string>
     <string name="menu_notification">menu_notification</string>
     <string name="menu_my">마이페이지</string>
     <string name="menu_customcon">제작티콘</string>

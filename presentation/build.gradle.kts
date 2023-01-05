@@ -65,4 +65,5 @@ dependencies {
     implementation(ModuleDependency.Coroutine.COROUTINE_ANDROID)
     implementation(ModuleDependency.Hilt.HILT)
     kapt(ModuleDependency.Hilt.HILT_COMPILER)
+    implementation(ModuleDependency.KaKao.LOGIN)
 }
