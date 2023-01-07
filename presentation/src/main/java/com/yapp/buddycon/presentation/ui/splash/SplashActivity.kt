@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivitySplashBinding
-import com.yapp.buddycon.presentation.ui.BuddyConActivity
+import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
 
 // TODO : Android 12 대응
 class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {

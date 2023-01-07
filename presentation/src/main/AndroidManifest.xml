@@ -4,7 +4,7 @@
     <application android:theme="@style/Theme.BuddyCon">
         <activity
             android:theme="@style/Theme.BuddyCon"
-            android:name=".ui.BuddyConActivity"
+            android:name=".ui.main.BuddyConActivity"
             android:exported="false">
 
         </activity>
@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.addCoupon.AddCouponActivity"/>
+        <activity android:name=".ui.makeCoupon.MakeCouponActivity"/>
     </application>
 
 </manifest>
