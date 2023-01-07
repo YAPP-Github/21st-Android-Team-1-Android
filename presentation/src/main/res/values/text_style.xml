@@ -6,36 +6,48 @@
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">24sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-2</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <style name="bold22">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">22sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-2</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <style name="bold18">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">18sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <style name="bold16">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <style name="bold14">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <style name="bold12">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">12sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <!--ㅡMedium -->
@@ -43,12 +55,16 @@
         <item name="fontFamily">@font/pretendard_medium</item>
         <item name="android:textSize">30sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <style name="medium24">
         <item name="fontFamily">@font/pretendard_medium</item>
         <item name="android:textSize">24sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <!-- Regular -->
@@ -56,25 +72,33 @@
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">18sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <style name="regular16">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">16sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <style name="regular14">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">14sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
     <style name="regular12">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">12sp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
-    
-    
+
+
 </resources>

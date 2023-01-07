@@ -14,7 +14,7 @@
         android:layout_height="56dp">
 
         <ImageButton
-            android:id="@+id/appbar_ibn_back"
+            android:id="@+id/ibn_appbar_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
@@ -27,14 +27,14 @@
             android:background="#00000000"/>
 
         <TextView
-            android:id="@+id/appbar_tv_title"
+            android:id="@+id/tv_appbar_title"
             style="@style/bold16"
             android:textColor="@color/gray90"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            app:layout_constraintTop_toTopOf="@id/appbar_ibn_back"
-            app:layout_constraintBottom_toBottomOf="@id/appbar_ibn_back"
+            app:layout_constraintTop_toTopOf="@id/ibn_appbar_back"
+            app:layout_constraintBottom_toBottomOf="@id/ibn_appbar_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@{title}"/>
