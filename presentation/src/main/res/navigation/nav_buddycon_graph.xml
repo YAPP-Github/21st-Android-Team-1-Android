@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_buddycon_graph"
+    app:startDestination="@id/firstFragment">
+
+    <fragment
+        android:id="@+id/firstFragment"
+        android:name="com.yapp.buddycon.presentation.ui.first.FirstFragment"
+        android:label="제작티콘"
+        tools:layout="@layout/fragment_first" />
+
+    <fragment
+        android:id="@+id/secondFragment"
+        android:name="com.yapp.buddycon.presentation.ui.second.SecondFragment"
+        android:label="기프티콘"
+        tools:layout="@layout/fragment_second" />
+
+    <fragment
+        android:id="@+id/thirdFragment"
+        android:name="com.yapp.buddycon.presentation.ui.third.ThirdFragment"
+        android:label="마이페이지"
+        tools:layout="@layout/fragment_third" />
+</navigation>

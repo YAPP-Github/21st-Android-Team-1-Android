@@ -40,7 +40,6 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-
     testImplementation(ModuleDependency.Default.JUNIT)
     androidTestImplementation(ModuleDependency.Default.TEST_RUNNER)
     androidTestImplementation(ModuleDependency.Default.ESPRESSO_CORE)
