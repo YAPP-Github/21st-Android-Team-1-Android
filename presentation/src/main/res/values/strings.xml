@@ -4,4 +4,8 @@
     <string name="menu_my">마이페이지</string>
     <string name="menu_customcon">제작티콘</string>
     <string name="menu_giftcon">기프티콘</string>
+    <string name="kakao_login_buddycon_title">Buddycon</string>
+    <string name="kakao_login_buddycon_subtitle">기프티콘으로 마음을 전해요</string>
+    <string name="kakao_login_success">카카오톡 로그인 성공 %1$s!</string>
+    <string name="kakao_login_error">카카오톡 로그인 실패 %1$s!</string>
 </resources>
