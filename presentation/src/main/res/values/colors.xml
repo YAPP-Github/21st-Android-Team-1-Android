@@ -29,4 +29,8 @@
     <color name="gray_40">#FFCECCCE</color>
     <color name="gray_80">#FF4F5051</color>
 
+    <!-- 투명도 적용 -->
+    <color name="black_a40_dim">#66000000</color>
+    <color name="skyblue_a20">#1A16C1F4</color>
+
 </resources>

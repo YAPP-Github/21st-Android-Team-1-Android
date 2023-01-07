@@ -9,10 +9,11 @@
         tools:context=".ui.BuddyConActivity">
 
         <androidx.appcompat.widget.Toolbar
+            android:background="@color/white"
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            android:elevation="16dp"
+            app:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,6 +30,7 @@
             app:navGraph="@navigation/nav_buddycon_graph" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            style="@style/regular12"
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
             android:layout_height="56dp"
