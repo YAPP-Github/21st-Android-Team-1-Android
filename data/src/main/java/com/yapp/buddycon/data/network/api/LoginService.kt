@@ -5,8 +5,8 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface LoginService {
-    @POST("api/vi/login/{accessToken}")
+    @POST("api/vi/login/{kakaoAccessToken}")
     suspend fun requestUserInfo(
-        @Path("accessToken") accessToken: String
+        @Path("kakaoAccessToken") kakaoAccessToken: String
     ): UserInfoResponse
 }

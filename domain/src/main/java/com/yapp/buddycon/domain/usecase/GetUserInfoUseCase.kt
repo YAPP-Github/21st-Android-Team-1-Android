@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetUserInfoUseCase @Inject constructor(
-    private val userRepository: LoginRepository
+    private val loginRepository: LoginRepository
 ) {
-    operator fun invoke(accessToken: String): Flow<Result<UserInfo>> =
-        userRepository.requestUserInfo(accessToken)
+    operator fun invoke(kakaoAccessToken: String): Flow<Result<UserInfo>> =
+        loginRepository.requestUserInfo(kakaoAccessToken)
 }

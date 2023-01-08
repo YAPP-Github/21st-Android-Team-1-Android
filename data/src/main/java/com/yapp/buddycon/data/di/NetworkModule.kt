@@ -1,10 +1,15 @@
 package com.yapp.buddycon.data.di
 
+import com.yapp.buddycon.data.network.*
 import com.yapp.buddycon.data.network.api.LoginService
+import com.yapp.buddycon.data.network.interceptor.BuddyConInterceptor
+import com.yapp.buddycon.data.network.qualifiers.BuddyConRetrofit
+import com.yapp.buddycon.data.network.qualifiers.LoginRetrofit
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,23 +21,58 @@ import javax.inject.Singleton
 object NetworkModule {
     private const val BASE_URL = "http://3.36.52.192:8080/"
 
-    // TODO(OWS) : Interceptor 추가
+    @LoginClient
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient =
-        OkHttpClient.Builder().build()
+    fun provideLoginClient(
+        @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor,
+        @LoginInterceptorQualifier loginInterceptor: Interceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(loginInterceptor)
+            .build()
 
-
+    @BuddyConClient
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
+    fun provideBuddyConClient(
+        @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor,
+        @BuddyConInterceptorQualifier buddyConInterceptor: Interceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(buddyConInterceptor)
+            .build()
+
+    @LoginRetrofit
+    @Provides
+    @Singleton
+    fun provideLoginRetrofit(
+        @LoginClient okHttpClient: OkHttpClient
+    ): Retrofit =
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    @BuddyConRetrofit
+    @Provides
+    @Singleton
+    fun provideBuddyConRetrofit(
+        @BuddyConClient okHttpClient: OkHttpClient
+    ): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     @Provides
     @Singleton
-    fun provideLoginService(retrofit: Retrofit): LoginService =
+    fun provideLoginService(
+        @LoginRetrofit retrofit: Retrofit
+    ): LoginService =
         retrofit.create()
 }

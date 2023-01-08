@@ -5,5 +5,5 @@ import com.yapp.buddycon.domain.model.UserInfo
 import kotlinx.coroutines.flow.Flow
 
 interface LoginRemoteDataSource {
-    fun requestUserInfo(accessToken: String): Flow<Result<UserInfoResponse>>
+    fun requestUserInfo(kakaoAccessToken: String): Flow<Result<UserInfoResponse>>
 }
