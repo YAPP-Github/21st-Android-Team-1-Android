@@ -85,7 +85,7 @@
                 android:layout_marginBottom="24dp"
                 android:drawableStart="@drawable/btn_make_coupon"
                 android:drawablePadding="4dp"
-                android:text="@string/common_make_coupon"
+                android:text="@string/all_make_coupon"
                 android:textColor="@color/gray90"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

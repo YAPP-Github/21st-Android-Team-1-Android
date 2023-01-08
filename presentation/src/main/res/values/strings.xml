@@ -5,7 +5,8 @@
     <string name="menu_customcon">제작티콘</string>
     <string name="menu_giftcon">기프티콘</string>
     <string name="fab_add_coupon">쿠폰 등록하기</string>
-    <string name="common_make_coupon">제작티콘 만들기</string>
+    <string name="all_make_coupon">제작티콘 만들기</string>
+    <string name="all_next">다음</string>
     <string name="add_coupon_giftcon">기프티콘 등록하기</string>
     <string name="add_coupon_makecon">제작티콘 등록하기</string>
 

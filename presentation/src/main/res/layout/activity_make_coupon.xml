@@ -16,7 +16,10 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:title="@{@string/common_make_coupon}"/>
+            app:title="@{@string/all_make_coupon}"
+            app:rightText="@{@string/all_next}"/>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
