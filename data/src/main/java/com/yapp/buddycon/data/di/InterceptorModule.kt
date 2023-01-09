@@ -3,9 +3,7 @@ package com.yapp.buddycon.data.di
 import com.yapp.buddycon.data.BuildConfig
 import com.yapp.buddycon.data.network.BuddyConInterceptorQualifier
 import com.yapp.buddycon.data.network.HttpLoggingInterceptorQualifier
-import com.yapp.buddycon.data.network.LoginInterceptorQualifier
 import com.yapp.buddycon.data.network.interceptor.BuddyConInterceptor
-import com.yapp.buddycon.data.network.interceptor.LoginInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,11 +22,6 @@ object InterceptorModule {
         HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         }
-
-    @LoginInterceptorQualifier
-    @Provides
-    @Singleton
-    fun provideServiceInterceptor(): Interceptor = LoginInterceptor()
 
     @BuddyConInterceptorQualifier
     @Provides

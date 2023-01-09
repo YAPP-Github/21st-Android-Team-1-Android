@@ -1,5 +1,6 @@
 package com.yapp.buddycon.presentation.ui.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityKakaoLoginBinding
+import com.yapp.buddycon.presentation.ui.BuddyConActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -30,13 +32,14 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
         lifecycleScope.launch {
             viewModel.loginState
                 .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collect{
-                    when(it){
+                .collect {
+                    when (it) {
                         is KaKaoLoginState.Login -> {
-                            Timber.d("Login Success")
+                            startActivity(Intent(this@KakaoLoginActivity, BuddyConActivity::class.java))
                         }
-                        is KaKaoLoginState.LogOut -> Timber.d("LogOut")
-                        is KaKaoLoginState.Error -> Timber.e("Login Error : ${it.throwable}")
+                        else -> {
+                            Timber.e("Logout")
+                        }
                     }
                 }
         }
@@ -45,7 +48,7 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
     /**
      * @Description 카카오톡 설치되어 있으면 카카오톡으로 로그인, 없으면 카카오계정으로 로그인
      */
-    private fun onClickKaKaoLogin(view: View) {
+    fun onClickKaKaoLogin(view: View) {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
             UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                 error?.let { e ->
@@ -58,9 +61,7 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
 
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = getKaKaoAccountApiCallback())
                 } ?: kotlin.run {
-                    token?.let {
-                        handleKaKaoLoginSuccess(it.accessToken)
-                    }
+                    token?.let { handleKaKaoLoginSuccess(it.accessToken) }
                 }
             }
         } else {
@@ -72,13 +73,11 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
         error?.let { e ->
             Timber.e(getString(R.string.kakao_login_error, e))
         } ?: kotlin.run {
-            token?.let {
-                handleKaKaoLoginSuccess(it.accessToken)
-            }
+            token?.let { handleKaKaoLoginSuccess(it.accessToken) }
         }
     }
 
-    private fun handleKaKaoLoginSuccess(kakaoAccessToken: String){
+    private fun handleKaKaoLoginSuccess(kakaoAccessToken: String) {
         viewModel.requestUserInfo(kakaoAccessToken)
     }
 }

@@ -26,11 +26,9 @@ object NetworkModule {
     @Singleton
     fun provideLoginClient(
         @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor,
-        @LoginInterceptorQualifier loginInterceptor: Interceptor
     ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
-            .addInterceptor(loginInterceptor)
             .build()
 
     @BuddyConClient

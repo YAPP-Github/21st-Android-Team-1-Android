@@ -8,8 +8,4 @@ annotation class HttpLoggingInterceptorQualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class LoginInterceptorQualifier
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class BuddyConInterceptorQualifier
