@@ -3,10 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="buddyViewModel"
+            type="com.yapp.buddycon.presentation.ui.main.BuddyConViewModel" />
+
+        <import type="android.view.View" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.BuddyConActivity">
+        android:background="@{buddyViewModel.isFabState ? @color/black_a40_dim : @color/white}"
+        tools:context=".ui.main.BuddyConActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -29,17 +40,60 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:navGraph="@navigation/nav_buddycon_graph" />
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_plus"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_margin="20dp"
-            android:backgroundTint="@color/skb_blue"
-            android:src="@drawable/ic_fab_plus"
+            android:backgroundTint="@{buddyViewModel.isFabState ? @color/white : @color/skb_blue}"
+            android:onClick="@{() -> buddyViewModel.changeFab()}"
+            android:src="@{buddyViewModel.isFabState() ? @drawable/btn_fab_cancle :  @drawable/btn_fab_plus}"
             app:elevation="0dp"
             app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_fab_menu"
+            android:layout_width="163dp"
+            android:layout_height="108dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_fab_menu"
+            android:visibility="@{buddyViewModel.isFabState() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/fab_plus"
+            app:layout_constraintEnd_toEndOf="@id/fab_plus">
+
+            <TextView
+                android:id="@+id/tv_add_coupon"
+                style="@style/regular16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:drawableStart="@drawable/btn_add_coupon"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text="@string/fab_add_coupon"
+                android:textColor="@color/gray90"
+                app:layout_constraintStart_toStartOf="@id/tv_make_coupon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_make_coupon"
+                style="@style/regular16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:drawableStart="@drawable/btn_make_coupon"
+                android:drawablePadding="4dp"
+                android:text="@string/common_make_coupon"
+                android:textColor="@color/gray90"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_add_coupon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_view"
@@ -48,6 +102,7 @@
             android:layout_height="56dp"
             android:background="@color/white"
             android:elevation="16dp"
+            android:foreground="@{buddyViewModel.isFabState ? @color/black_a40_dim : #00000000 }"
             app:itemIconTint="@drawable/ic_navigation_icon"
             app:itemTextColor="@drawable/ic_navigation_icon"
             app:labelVisibilityMode="labeled"

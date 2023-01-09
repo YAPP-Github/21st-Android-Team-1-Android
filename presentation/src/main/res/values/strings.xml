@@ -8,4 +8,8 @@
     <string name="kakao_login_buddycon_subtitle">기프티콘으로 마음을 전해요</string>
     <string name="kakao_login_success">카카오톡 로그인 성공 %1$s!</string>
     <string name="kakao_login_error">카카오톡 로그인 실패 %1$s!</string>
+    <string name="fab_add_coupon">쿠폰 등록하기</string>
+    <string name="common_make_coupon">제작티콘 만들기</string>
+    <string name="add_coupon_giftcon">기프티콘 등록하기</string>
+    <string name="add_coupon_makecon">제작티콘 등록하기</string>
 </resources>

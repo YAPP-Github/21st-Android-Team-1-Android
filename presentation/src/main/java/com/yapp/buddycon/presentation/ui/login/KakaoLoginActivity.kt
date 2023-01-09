@@ -16,7 +16,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityKakaoLoginBinding
-import com.yapp.buddycon.presentation.ui.BuddyConActivity
+import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
