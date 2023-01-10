@@ -8,6 +8,6 @@ import javax.inject.Inject
 class GetUserInfoUseCase @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
-    operator fun invoke(kakaoAccessToken: String): Flow<Result<UserInfo>> =
+    operator fun invoke(kakaoAccessToken: String): Flow<UserInfo> =
         loginRepository.requestUserInfo(kakaoAccessToken)
 }

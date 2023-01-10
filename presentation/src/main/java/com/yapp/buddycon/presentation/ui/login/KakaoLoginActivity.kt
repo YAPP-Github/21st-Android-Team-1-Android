@@ -18,6 +18,8 @@ import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityKakaoLoginBinding
 import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -29,20 +31,22 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            viewModel.loginState
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collect {
-                    when (it) {
-                        is KaKaoLoginState.Login -> {
-                            startActivity(Intent(this@KakaoLoginActivity, BuddyConActivity::class.java))
-                        }
-                        else -> {
-                            Timber.e("Logout")
-                        }
+        viewModel.loginState
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                when(it){
+                    is KaKaoLoginState.Login -> {
+                        startActivity(Intent(this@KakaoLoginActivity, BuddyConActivity::class.java))
+                    }
+                    is KaKaoLoginState.LogOut -> {
+                        // TODO(OWS) : LogOut 정의
+                    }
+                    else -> {
+                        // TODO(OWS) : Error 처리
                     }
                 }
-        }
+            }
+            .launchIn(lifecycleScope)
     }
 
     /**

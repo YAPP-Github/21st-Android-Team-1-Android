@@ -11,13 +11,7 @@ import javax.inject.Inject
 class LoginRemoteDataSourceImpl @Inject constructor(
     private val loginService: LoginService
 ) : LoginRemoteDataSource {
-    override fun requestUserInfo(kakaoAccessToken: String): Flow<Result<UserInfoResponse>> = flow {
-        runCatching {
-            loginService.requestUserInfo(kakaoAccessToken)
-        }.onSuccess { response ->
-            emit(Result.success(response))
-        }.onFailure { error ->
-            emit(Result.failure(error))
-        }
+    override fun requestUserInfo(kakaoAccessToken: String): Flow<UserInfoResponse> = flow {
+        emit(loginService.requestUserInfo(kakaoAccessToken))
     }
 }
