@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -14,6 +16,8 @@ android {
         targetSdk = Configs.TARGET_SDK
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["KAKAO_APP_KEY"] = gradleLocalProperties(rootDir).getProperty("KAKAO_APP_KEY")
+        buildConfigField("String","KAKAO_APP_KEY", gradleLocalProperties(rootDir).getProperty("KAKAO_APP_KEY"))
     }
 
     buildTypes {
@@ -62,4 +66,5 @@ dependencies {
     implementation(ModuleDependency.Coroutine.COROUTINE_ANDROID)
     implementation(ModuleDependency.Hilt.HILT)
     kapt(ModuleDependency.Hilt.HILT_COMPILER)
+    implementation(ModuleDependency.KaKao.LOGIN)
 }

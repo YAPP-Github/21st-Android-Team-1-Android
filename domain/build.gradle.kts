@@ -10,4 +10,5 @@ java{
 
 dependencies {
     implementation(ModuleDependency.Javax.INJECT)
+    implementation(ModuleDependency.Coroutine.COROUTINE_CORE)
 }

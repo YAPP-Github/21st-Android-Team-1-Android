@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.login.KakaoLoginActivity">
+
+        <TextView
+            android:id="@+id/tv_budddycon_title"
+            android:layout_width="328dp"
+            android:layout_height="70dp"
+            android:fontFamily="@font/raleway_bold"
+            android:gravity="center"
+            android:text="@string/kakao_login_buddycon_title"
+            android:textColor="@color/skb_blue"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_buddycon_subtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_buddycon_subtitle"
+            style="@style/bold18"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:text="@string/kakao_login_buddycon_subtitle"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/iv_buddycon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_budddycon_title"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <ImageView
+            android:id="@+id/iv_buddycon"
+            android:layout_width="320dp"
+            android:layout_height="310dp"
+            android:layout_marginTop="13dp"
+            android:src="@drawable/img_buddycon"
+            app:layout_constraintBottom_toTopOf="@id/btn_kakako_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_buddycon_subtitle"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Button
+            android:id="@+id/btn_kakako_login"
+            android:layout_width="320dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_kakao_login"
+            android:onClick="onClickKaKaoLogin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_buddycon"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
