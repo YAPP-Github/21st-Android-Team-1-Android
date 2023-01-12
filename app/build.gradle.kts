@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -17,6 +19,7 @@ android {
         versionName = Configs.VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String","KAKAO_APP_KEY", gradleLocalProperties(rootDir).getProperty("KAKAO_APP_KEY"))
     }
 
     buildTypes {
@@ -53,4 +56,5 @@ dependencies {
     implementation(ModuleDependency.Default.CORE)
     implementation(ModuleDependency.Default.APP_COMPAT)
     implementation(ModuleDependency.Timber.TIMBER)
+    implementation(ModuleDependency.KaKao.LOGIN)
 }
