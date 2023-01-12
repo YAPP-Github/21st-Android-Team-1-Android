@@ -67,4 +67,5 @@ dependencies {
     implementation(ModuleDependency.Hilt.HILT)
     kapt(ModuleDependency.Hilt.HILT_COMPILER)
     implementation(ModuleDependency.KaKao.LOGIN)
+    implementation(ModuleDependency.MLkit.ML_Kit)
 }
