@@ -21,7 +21,7 @@ class TokenRepositoryImpl @Inject constructor(
 
     override suspend fun saveToken(accessToken: String) {
         dataStore.edit { preference ->
-            Timber.e("saveToken $accessToken")
+            Timber.d("saveToken $accessToken")
             preference[BUDDYCON_TOKEN] = accessToken
         }
     }
