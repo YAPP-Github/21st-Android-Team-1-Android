@@ -2,7 +2,6 @@ package com.yapp.buddycon.presentation.ui.addCoupon
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.yapp.buddycon.presentation.R
@@ -44,6 +43,12 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
                         }
                     } else {
                         Timber.tag(TAG).e("read image success but no barcode")
+                        MessageDialogFragment("바코드 인식 오류 \n이미지를 다시 선택해주세요") {
+                            finish()
+                        }.show(
+                            supportFragmentManager,
+                            null
+                        )
                     }
                 }.addOnFailureListener {
                     Timber.tag(TAG).e("read image fail")
