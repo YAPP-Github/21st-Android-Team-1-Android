@@ -38,9 +38,7 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
                     is KaKaoLoginState.Login -> {
                         startActivity(Intent(this@KakaoLoginActivity, BuddyConActivity::class.java))
                     }
-                    is KaKaoLoginState.LogOut -> {
-                        // TODO(OWS) : LogOut 정의
-                    }
+                    is KaKaoLoginState.LogOut -> Unit
                     else -> {
                         // TODO(OWS) : Error 처리
                     }
