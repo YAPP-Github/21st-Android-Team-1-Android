@@ -101,5 +101,9 @@ object ModuleDependency {
     object KaKao{
         const val LOGIN = "com.kakao.sdk:v2-user:${Versions.KAKAO_LOGIN}"
     }
+
+    object MLkit {
+        const val ML_Kit = "com.google.mlkit:barcode-scanning:${Versions.ML_KIT}"
+    }
 }
 

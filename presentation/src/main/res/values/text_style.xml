@@ -41,6 +41,10 @@
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
+    
+    <style name="bold14.skyblue" parent="bold14">
+        <item name="android:textColor">@color/skyblue</item>
+    </style>
 
     <style name="bold12">
         <item name="fontFamily">@font/pretendard_bold</item>
