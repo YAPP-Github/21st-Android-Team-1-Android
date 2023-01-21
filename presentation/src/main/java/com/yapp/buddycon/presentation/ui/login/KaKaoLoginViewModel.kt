@@ -21,7 +21,7 @@ class KaKaoLoginViewModel @Inject constructor(
         getUserInfoUseCase(kakaoAccessToken)
             .catch { e -> _loginState.value = KaKaoLoginState.Error(e) }
             .onEach {
-                saveTokenUseCase(it.accessToken)
+                saveTokenUseCase(it.accessToken, it.accessTokenExpiresIn)
                 _loginState.value = KaKaoLoginState.Login(it)
             }
             .launchIn(viewModelScope)

@@ -39,8 +39,8 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
                         startActivity(Intent(this@KakaoLoginActivity, BuddyConActivity::class.java))
                     }
                     is KaKaoLoginState.LogOut -> Unit
-                    else -> {
-                        // TODO(OWS) : Error 처리
+                    is KaKaoLoginState.Error -> {
+                        Timber.e(getString(R.string.kakao_login_error, it.throwable?.localizedMessage))
                     }
                 }
             }
