@@ -22,14 +22,28 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.math.exp
 
 @AndroidEntryPoint
 class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.activity_kakao_login) {
 
-    val viewModel: KaKaoLoginViewModel by viewModels()
+    private var firstLogin: Boolean = false
+    private val viewModel: KaKaoLoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.tokenInfoFlow
+            .onEach {
+                val (token, expiration) = it
+                val currentTime = System.currentTimeMillis()
+
+                if(token.isEmpty() && expiration == 0L) firstLogin = true
+                else if(currentTime < expiration){
+                    viewModel.requestLogin(token, expiration)
+                }
+            }
+            .launchIn(lifecycleScope)
 
         viewModel.loginState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
@@ -37,6 +51,7 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
                 when(it){
                     is KaKaoLoginState.Login -> {
                         startActivity(Intent(this@KakaoLoginActivity, BuddyConActivity::class.java))
+                        finish()
                     }
                     is KaKaoLoginState.LogOut -> Unit
                     is KaKaoLoginState.Error -> {
