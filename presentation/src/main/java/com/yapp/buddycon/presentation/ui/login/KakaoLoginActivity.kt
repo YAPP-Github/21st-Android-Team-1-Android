@@ -3,9 +3,11 @@ package com.yapp.buddycon.presentation.ui.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -49,17 +51,27 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 when(it){
-                    is KaKaoLoginState.Login -> {
-                        startActivity(Intent(this@KakaoLoginActivity, BuddyConActivity::class.java))
-                        finish()
-                    }
+                    is KaKaoLoginState.Login -> successLogin()
                     is KaKaoLoginState.LogOut -> Unit
-                    is KaKaoLoginState.Error -> {
-                        Timber.e(getString(R.string.kakao_login_error, it.throwable?.localizedMessage))
-                    }
+                    is KaKaoLoginState.Error -> Timber.e(getString(R.string.kakao_login_error, it.throwable?.localizedMessage))
                 }
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun successLogin() {
+        if(firstLogin){
+            binding.loginGroup.isVisible = false
+            binding.signUpGroup.isVisible = true
+
+            Handler(mainLooper).postDelayed({
+                startActivity(Intent(this, BuddyConActivity::class.java))
+                finish()
+            }, 4000)
+        }else{
+            startActivity(Intent(this, BuddyConActivity::class.java))
+            finish()
+        }
     }
 
     /**
