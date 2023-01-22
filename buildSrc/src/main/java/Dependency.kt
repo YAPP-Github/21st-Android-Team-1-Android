@@ -24,6 +24,7 @@ object Versions {
     const val INJECT = "1"
     const val PAGING = "3.1.1"
     const val KAKAO_LOGIN = "2.12.0"
+    const val SPLASH_SCREEN = "1.0.0-beta02"
 }
 
 object ModuleDependency {
@@ -104,6 +105,10 @@ object ModuleDependency {
 
     object MLkit {
         const val ML_Kit = "com.google.mlkit:barcode-scanning:${Versions.ML_KIT}"
+    }
+
+    object SplashScreen {
+        const val SPLASH_SCREEN = "androidx.core:core-splashscreen:${Versions.SPLASH_SCREEN}"
     }
 }
 
