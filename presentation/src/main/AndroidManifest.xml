@@ -1,23 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application android:theme="@style/Theme.BuddyCon">
         <activity
-            android:theme="@style/Theme.BuddyCon"
-            android:name=".ui.main.BuddyConActivity"
+            android:name=".ui.login.KakaoLoginActivity"
             android:exported="false">
+        </activity>
 
+        <activity
+            android:name=".ui.main.BuddyConActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BuddyCon">
         </activity>
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.addCoupon.AddCouponActivity"/>
-        <activity android:name=".ui.makeCoupon.MakeCouponActivity"/>
+
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao${KAKAO_APP_KEY}" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.addCoupon.AddCouponActivity" />
+        <activity android:name=".ui.makeCoupon.MakeCouponActivity" />
     </application>
 
 </manifest>

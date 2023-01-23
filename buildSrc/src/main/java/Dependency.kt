@@ -23,6 +23,7 @@ object Versions {
     const val GSON = "2.9.0"
     const val INJECT = "1"
     const val PAGING = "3.1.1"
+    const val KAKAO_LOGIN = "2.12.0"
 }
 
 object ModuleDependency {
@@ -95,6 +96,14 @@ object ModuleDependency {
 
     object Javax {
         const val INJECT = "javax.inject:javax.inject:${Versions.INJECT}"
+    }
+
+    object KaKao{
+        const val LOGIN = "com.kakao.sdk:v2-user:${Versions.KAKAO_LOGIN}"
+    }
+
+    object MLkit {
+        const val ML_Kit = "com.google.mlkit:barcode-scanning:${Versions.ML_KIT}"
     }
 }
 
