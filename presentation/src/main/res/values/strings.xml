@@ -24,5 +24,7 @@
     <string name="make_con_valid_date_hint">유효기간 선택</string>
 
     <string name="confirm_dialog">확인</string>
+    <string name="makecon_open_theme">테마</string>
+    <string name="makecon_close_choose_mode">접기</string>
 
 </resources>

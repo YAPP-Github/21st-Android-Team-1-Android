@@ -9,7 +9,11 @@ import com.yapp.buddycon.presentation.databinding.ActivityMakeCouponBinding
 class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.activity_make_coupon) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding.clOpenThemeMode.bringToFront()
+        binding.clCloseThemeMode.bringToFront()
         binding.appbarMakeCoupon.tvAppbarRight.visibility = View.VISIBLE
         binding.appbarMakeCoupon.ibnAppbarBack.setOnClickListener { finish() }
+
+
     }
 }
