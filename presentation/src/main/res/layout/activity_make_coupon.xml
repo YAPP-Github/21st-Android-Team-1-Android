@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,25 +9,31 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray30">
 
         <include
             android:id="@+id/appbar_make_coupon"
             layout="@layout/layout_appbar"
+            app:layout_constraintBottom_toTopOf="@id/cl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/cl"
             app:rightText="@{@string/all_next}"
             app:title="@{@string/all_make_coupon}" />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl"
             android:layout_width="0dp"
+            app:layout_constraintVertical_bias="0"
             android:layout_height="0dp"
             android:background="@color/white"
-            android:foreground="@drawable/bg_makecon_theme1"
+            android:foreground="@drawable/bg_theme1"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="360:640"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appbar_make_coupon">
@@ -38,7 +45,7 @@
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="24dp"
                 android:adjustViewBounds="true"
-                android:src="@drawable/theme1"
+                android:src="@drawable/img_theme1"
                 app:layout_constraintBottom_toTopOf="@id/et_coupon_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,27 +85,24 @@
 
 
             <EditText
-                app:layout_constraintVertical_chainStyle="packed"
                 android:id="@+id/et_coupon_title"
                 style="@style/bold22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLength="16"
                 android:layout_marginTop="20dp"
                 android:background="@null"
                 android:backgroundTint="@color/gray40"
                 android:gravity="center"
                 android:hint="@string/makecon_title_hint"
+                android:maxLength="16"
                 android:textColor="@color/gray90"
                 android:textColorHint="@color/gray40"
-                app:layout_constraintBottom_toTopOf="@id/et_explanation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_main" />
 
 
             <EditText
-                app:layout_constraintVertical_chainStyle="packed"
                 android:id="@+id/et_explanation"
                 style="@style/regular14"
                 android:layout_width="wrap_content"
@@ -110,25 +114,22 @@
                 android:hint="@string/makecon_explanation_hint"
                 android:textColor="@color/gray60"
                 android:textColorHint="@color/gray40"
-                app:layout_constraintBottom_toTopOf="@id/iv_barcode"
                 app:layout_constraintEnd_toEndOf="@id/et_coupon_title"
                 app:layout_constraintStart_toStartOf="@id/et_coupon_title"
-                app:layout_constraintTop_toBottomOf="@id/et_coupon_title" />
+                app:layout_constraintTop_toBottomOf="@id/et_coupon_title"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <ImageView
-                app:layout_constraintVertical_chainStyle="packed"
                 android:id="@+id/iv_barcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:src="@drawable/bg_barcode_temp"
-                app:layout_constraintBottom_toTopOf="@id/tv_barcode_num"
+                android:src="@drawable/img_barcode"
                 app:layout_constraintEnd_toEndOf="@id/et_explanation"
                 app:layout_constraintStart_toStartOf="@id/et_explanation"
                 app:layout_constraintTop_toBottomOf="@id/et_explanation" />
 
             <TextView
-                app:layout_constraintVertical_chainStyle="packed"
                 android:id="@+id/tv_barcode_num"
                 style="@style/bold14"
                 android:layout_width="wrap_content"
@@ -139,7 +140,7 @@
                 app:layout_constraintEnd_toEndOf="@id/iv_barcode"
                 app:layout_constraintStart_toStartOf="@id/iv_barcode"
                 app:layout_constraintTop_toBottomOf="@id/iv_barcode"
-                app:layout_constraintBottom_toTopOf="@id/cl_coupon_detail"/>
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_coupon_detail"
@@ -147,12 +148,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="28dp"
+                android:layout_marginBottom="28dp"
                 android:background="@drawable/bg_coupon_detail"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginBottom="28dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_barcode_num">
 
                 <TextView
