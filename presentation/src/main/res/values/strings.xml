@@ -13,4 +13,5 @@
     <string name="add_coupon_giftcon">기프티콘 등록하기</string>
     <string name="add_coupon_makecon">제작티콘 등록하기</string>
     <string name="confirm_dialog">확인</string>
+    <string name="kakao_signup_title">회원가입 완료!\n버디콘에 오신 것을 환영해요 :)</string>
 </resources>
