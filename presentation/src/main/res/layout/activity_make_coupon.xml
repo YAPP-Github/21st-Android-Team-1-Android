@@ -1,22 +1,360 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="couponViewModel"
+            type="com.yapp.buddycon.presentation.ui.makeCoupon.MakeCouponViewModel" />
+
+        <import type="com.yapp.buddycon.presentation.ui.makeCoupon.MakeCouponViewModel.Theme" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray30">
 
         <include
             android:id="@+id/appbar_make_coupon"
             layout="@layout/layout_appbar"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/cl"
             app:layout_constraintEnd_toEndOf="parent"
-            app:title="@{@string/common_make_coupon}"/>
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:rightText="@{@string/all_next}"
+            app:title="@{@string/all_make_coupon}" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_open_theme_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> couponViewModel.changeMode()}"
+            app:layout_constraintEnd_toEndOf="@id/cl"
+            app:layout_constraintTop_toTopOf="@id/cl">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_thumbnail"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:foreground="@color/black_a40_dim"
+                    android:src="@drawable/img_theme1" />
+
+                <TextView
+                    android:id="@+id/tv_open_theme"
+                    style="@style/bold16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableBottom="@drawable/ic_left_arrow"
+                    android:text="@string/makecon_open_theme"
+                    android:textColor="@color/white" />
+
+            </androidx.cardview.widget.CardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_close_theme_mode"
+            android:layout_width="0dp"
+            android:layout_height="96dp"
+            android:background="@color/black_a40_dim"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/cl"
+            app:layout_constraintStart_toStartOf="@id/cl"
+            app:layout_constraintTop_toTopOf="@id/cl">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_theme1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:onClick="@{()-> couponViewModel.changeTheme(Theme.BASIC)}"
+                app:cardCornerRadius="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_choose_theme1"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/img_theme1" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_theme2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:onClick="@{()-> couponViewModel.changeTheme(Theme.CELEBRATE)}"
+                app:cardCornerRadius="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/cv_theme1"
+                app:layout_constraintStart_toEndOf="@id/cv_theme1"
+                app:layout_constraintTop_toTopOf="@id/cv_theme1">
+
+                <ImageView
+                    android:id="@+id/iv_choose_theme2"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/img_theme2" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_theme3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:onClick="@{()-> couponViewModel.changeTheme(Theme.FUN)}"
+                app:cardCornerRadius="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/cv_theme2"
+                app:layout_constraintStart_toEndOf="@id/cv_theme2"
+                app:layout_constraintTop_toTopOf="@id/cv_theme2">
+
+                <ImageView
+                    android:id="@+id/iv_choose_theme3"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/img_theme3" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_close_choose_mode"
+                style="@style/bold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:drawableTop="@drawable/ic_right_arrow"
+                android:gravity="center"
+                android:onClick="@{() -> couponViewModel.changeMode()}"
+                android:text="@string/makecon_close_choose_mode"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:foreground="@drawable/bg_theme1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="360:640"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_make_coupon"
+            app:layout_constraintVertical_bias="0">
+
+
+            <ImageView
+                android:id="@+id/iv_main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="24dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/img_theme1"
+                app:layout_constraintBottom_toTopOf="@id/et_coupon_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_get_img"
+                style="@style/bold16"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_makeon_get"
+                android:backgroundTint="@color/black"
+                android:text="@string/makecon_get_img"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/iv_main"
+                app:layout_constraintEnd_toStartOf="@id/btn_get_giftcon"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@id/iv_main" />
+
+            <Button
+                android:id="@+id/btn_get_giftcon"
+                style="@style/bold16"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="23dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_makeon_get"
+                android:backgroundTint="@color/black"
+                android:text="@string/makecon_get_giftcon"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/iv_main"
+                app:layout_constraintEnd_toEndOf="@id/iv_main"
+                app:layout_constraintStart_toEndOf="@id/btn_get_img" />
+
+
+            <EditText
+                android:id="@+id/et_coupon_title"
+                style="@style/bold22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:backgroundTint="@color/gray40"
+                android:gravity="center"
+                android:hint="@string/makecon_title_hint"
+                android:maxLength="16"
+                android:textColor="@color/gray90"
+                android:textColorHint="@color/gray40"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_main" />
+
+
+            <EditText
+                android:id="@+id/et_explanation"
+                style="@style/regular14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@null"
+                android:backgroundTint="@color/gray40"
+                android:gravity="center"
+                android:hint="@string/makecon_explanation_hint"
+                android:textColor="@color/gray60"
+                android:textColorHint="@color/gray40"
+                app:layout_constraintEnd_toEndOf="@id/et_coupon_title"
+                app:layout_constraintStart_toStartOf="@id/et_coupon_title"
+                app:layout_constraintTop_toBottomOf="@id/et_coupon_title"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <ImageView
+                android:id="@+id/iv_barcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/img_barcode"
+                app:layout_constraintEnd_toEndOf="@id/et_explanation"
+                app:layout_constraintStart_toStartOf="@id/et_explanation"
+                app:layout_constraintTop_toBottomOf="@id/et_explanation" />
+
+            <TextView
+                android:id="@+id/tv_barcode_num"
+                style="@style/bold14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/makecon_barcode_num"
+                android:textColor="@color/gray90"
+                app:layout_constraintEnd_toEndOf="@id/iv_barcode"
+                app:layout_constraintStart_toStartOf="@id/iv_barcode"
+                app:layout_constraintTop_toBottomOf="@id/iv_barcode"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_coupon_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="28dp"
+                android:background="@drawable/bg_coupon_detail"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_barcode_num">
+
+                <TextView
+                    android:id="@+id/tv_use_place"
+                    style="@style/regular14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_where_use"
+                    android:textColor="@color/gray60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/view_line"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/gray30"
+                    app:layout_constraintBottom_toTopOf="@id/tv_validity"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_use_place" />
+
+                <TextView
+                    android:id="@+id/tv_validity"
+                    style="@style/regular14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/all_valid_date"
+                    android:textColor="@color/gray60"
+                    app:layout_constraintStart_toStartOf="@id/view_line"
+                    app:layout_constraintTop_toBottomOf="@id/view_line" />
+
+                <EditText
+                    android:id="@+id/et_use_place"
+                    style="@style/regular14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:hint="@string/makecon_where_use_hint"
+                    android:textColor="@color/gray60"
+                    android:textColorHint="@color/gray40"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_use_place"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_use_place" />
+
+                <EditText
+                    android:id="@+id/et_validity"
+                    style="@style/regular14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:hint="@string/make_con_valid_date_hint"
+                    android:textColor="@color/gray60"
+                    android:textColorHint="@color/gray40"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_validity"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_validity" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
