@@ -64,11 +64,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
 
     private fun bindViews() {
         binding.appbarSplash.tvSkip.setOnClickListener {
-            startActivity(Intent(this, KakaoLoginActivity::class.java))
+            startActivity(KakaoLoginActivity.newIntent(this, true))
         }
 
         binding.btnStart.setOnClickListener {
-            startActivity(Intent(this, KakaoLoginActivity::class.java))
+            startActivity(KakaoLoginActivity.newIntent(this, true))
         }
     }
 
@@ -96,12 +96,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                 binding.walkThroughGroup.isVisible = true
             }
             SplashResultState.KaKaoLogin -> {
-                startActivity(Intent(this, KakaoLoginActivity::class.java))
+                startActivity(KakaoLoginActivity.newIntent(this))
             }
             SplashResultState.BuddyCon -> {
                 startActivity(Intent(this, BuddyConActivity::class.java))
             }
-            else -> throw IllegalStateException()
+            else -> Unit
         }
     }
 }

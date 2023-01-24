@@ -1,5 +1,6 @@
 package com.yapp.buddycon.presentation.ui.login
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -29,25 +30,15 @@ import kotlin.math.exp
 @AndroidEntryPoint
 class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.activity_kakao_login) {
 
-    private var firstLogin: Boolean = false
-    private val viewModel: KaKaoLoginViewModel by viewModels()
+    private val isFirst: Boolean by lazy { intent?.getBooleanExtra(FIRST_LOGIN, false) ?: false }
+    private val kakaoViewModel: KaKaoLoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.tokenInfoFlow
-            .onEach {
-                val (token, expiration) = it
-                val currentTime = System.currentTimeMillis()
+        if(isFirst) kakaoViewModel.requestInitInfo()
 
-                if(token.isEmpty() && expiration == 0L) firstLogin = true
-                else if(currentTime < expiration){
-                    viewModel.requestLogin(token, expiration)
-                }
-            }
-            .launchIn(lifecycleScope)
-
-        viewModel.loginState
+        kakaoViewModel.loginState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 when(it){
@@ -60,7 +51,7 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
     }
 
     private fun successLogin() {
-        if(firstLogin){
+        if(isFirst){
             binding.loginGroup.isVisible = false
             binding.signUpGroup.isVisible = true
 
@@ -107,6 +98,15 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
     }
 
     private fun handleKaKaoLoginSuccess(kakaoAccessToken: String) {
-        viewModel.requestUserInfo(kakaoAccessToken)
+        kakaoViewModel.requestUserInfo(kakaoAccessToken)
+    }
+
+    companion object{
+        const val FIRST_LOGIN = "FIRST_JOIN"
+
+        fun newIntent(context: Context, isFirst: Boolean = false) =
+            Intent(context, KakaoLoginActivity::class.java).apply {
+                putExtra(FIRST_LOGIN, isFirst)
+            }
     }
 }
