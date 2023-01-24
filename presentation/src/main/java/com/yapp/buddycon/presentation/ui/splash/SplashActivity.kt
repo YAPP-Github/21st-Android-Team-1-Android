@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.onEach
 class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {
 
     private var isReady = false
+    private var isFirst = false
     private val splashViewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         bindViews()
 
         splashViewModel.walkThroughState
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
             .onEach { invalidateView(it) }
             .launchIn(lifecycleScope)
     }
@@ -56,18 +57,18 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         )
 
         Handler(mainLooper).postDelayed({
-            binding.splashGrop.isVisible = false
-            binding.walkThroughGroup.isVisible = true
+            finishSplash()
             isReady = true
         }, 2000)
     }
 
     private fun bindViews() {
         binding.appbarSplash.tvSkip.setOnClickListener {
-            // TODO
+            startActivity(Intent(this, KakaoLoginActivity::class.java))
         }
+
         binding.btnStart.setOnClickListener {
-            // TODO
+            startActivity(Intent(this, KakaoLoginActivity::class.java))
         }
     }
 
@@ -85,6 +86,22 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         if (state.idx == 2) {
             binding.btnNext.visibility = View.INVISIBLE
             binding.btnStart.isVisible = true
+        }
+    }
+
+    private fun finishSplash() {
+        when (splashViewModel.splashResultState.value) {
+            SplashResultState.WalkThrough -> {
+                binding.splashGrop.isVisible = false
+                binding.walkThroughGroup.isVisible = true
+            }
+            SplashResultState.KaKaoLogin -> {
+                startActivity(Intent(this, KakaoLoginActivity::class.java))
+            }
+            SplashResultState.BuddyCon -> {
+                startActivity(Intent(this, BuddyConActivity::class.java))
+            }
+            else -> throw IllegalStateException()
         }
     }
 }
