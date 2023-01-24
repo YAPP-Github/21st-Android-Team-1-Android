@@ -8,12 +8,141 @@
         android:layout_height="match_parent"
         tools:context=".ui.splash.SplashActivity">
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/splashGrop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="
+            iv_splash_bg,
+            iv_splash_icon" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/walkThroughGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="
+            appbar_splash,
+            iv_walk_through,
+            tv_walk_through_title,
+            tv_walk_through_subtitle,
+            ll_indicator" />
+
+        <ImageView
+            android:id="@+id/iv_splash_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/skyblue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_splash_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_buddycon_title"
+            app:layout_constraintBottom_toBottomOf="@id/iv_splash_bg"
+            app:layout_constraintEnd_toEndOf="@id/iv_splash_bg"
+            app:layout_constraintStart_toStartOf="@id/iv_splash_bg"
+            app:layout_constraintTop_toTopOf="@id/iv_splash_bg" />
+
         <include
-            android:id="@+id/appbar_skip"
+            android:id="@+id/appbar_splash"
             layout="@layout/layout_splash_toolbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_walk_through"
+            android:layout_width="328dp"
+            android:layout_height="382dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_walk_through_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_splash"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:src="@drawable/img_first_walk_through" />
+
+        <TextView
+            android:id="@+id/tv_walk_through_title"
+            style="@style/bold24"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:textColor="@color/gray90"
+            app:layout_constraintBottom_toTopOf="@id/tv_walk_through_subtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_walk_through"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="@string/walk_through_first_title" />
+
+
+        <TextView
+            android:id="@+id/tv_walk_through_subtitle"
+            style="@style/bold16"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:maxLines="2"
+            app:layout_constraintBottom_toTopOf="@id/ll_indicator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_walk_through_title"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="@string/walk_through_first_subtitle" />
+
+        <LinearLayout
+            android:id="@+id/ll_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/btn_next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_walk_through_subtitle"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <View
+                android:id="@+id/v_first_indicator"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/bg_walk_through_indicator" />
+
+            <View
+                android:id="@+id/v_second_indicator"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_walk_through_indicator" />
+
+            <View
+                android:id="@+id/v_third_indicator"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_walk_through_indicator" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_next"
+            style="@style/bold16"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/gray80"
+            android:text="다음"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
