@@ -1,9 +1,7 @@
 package com.yapp.buddycon.data.repository
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import com.yapp.buddycon.domain.repository.TokenRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -18,15 +16,22 @@ class TokenRepositoryImpl @Inject constructor(
             preference[BUDDYCON_TOKEN] ?: ""
         }
 
+    override fun getTokenExpiration(): Flow<Long> =
+        dataStore.data.map { preference ->
+            preference[BUDDYCON_TOKEN_EXPIRATION] ?: 0L
+        }
 
-    override suspend fun saveToken(accessToken: String) {
+
+    override suspend fun saveToken(accessToken: String,  accessTokenExpiresIn: Long) {
         dataStore.edit { preference ->
-            Timber.d("saveToken $accessToken")
+            Timber.d("saveToken accessToken: $accessToken accessTokenExpiresIn: $accessTokenExpiresIn")
             preference[BUDDYCON_TOKEN] = accessToken
+            preference[BUDDYCON_TOKEN_EXPIRATION] = accessTokenExpiresIn
         }
     }
 
     companion object {
         val BUDDYCON_TOKEN = stringPreferencesKey("BUDDYCON_TOKEN")
+        val BUDDYCON_TOKEN_EXPIRATION = longPreferencesKey("BUDDYCON_TOKEN_EXPIRATION")
     }
 }
