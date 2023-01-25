@@ -2,16 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application android:theme="@style/Theme.BuddyCon">
-
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".ui.login.KakaoLoginActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.main.BuddyConActivity"
             android:exported="false"
             android:theme="@style/Theme.BuddyCon" />
-
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
@@ -22,7 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -38,9 +41,7 @@
                     android:scheme="kakao${KAKAO_APP_KEY}" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.addCoupon.AddCouponActivity" />
-
         <activity android:name=".ui.makeCoupon.MakeCouponActivity" />
     </application>
 

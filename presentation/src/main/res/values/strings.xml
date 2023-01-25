@@ -22,4 +22,10 @@
     <string name="walk_through_third_title">제작티콘을 통해 마음을 전해요</string>
     <string name="walk_through_third_subtitle">어릴 적 부모님께 드렸던 안마 쿠폰처럼\n직접 쿠폰을 만들어 마음을 전해요</string>
     <string name="walk_through_start">시작하기</string>
+    <string name="signup_appbar">회원가입</string>
+    <string name="signup_terms">버디콘의 서비스\n이용약관에 동의해주세요</string>
+    <string name="signup_all_complete_terms">전체 동의하기</string>
+    <string name="signup_use_terms">[필수] 이용약관 동의</string>
+    <string name="signup_privacy_info_terms">[필수] 개인정보 처리방침 동의</string>
+    <string name="signup_complete">회원가입 완료</string>
 </resources>
