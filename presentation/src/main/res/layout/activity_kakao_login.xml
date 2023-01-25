@@ -9,27 +9,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.login.KakaoLoginActivity">
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/loginGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:constraint_referenced_ids="
-            tv_budddycon_title,
-            tv_buddycon_subtitle,
-            iv_buddycon,
-            btn_kakako_login" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/signUpGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="
-            tv_signup,
-            iv_signup" />
-
-
         <TextView
             android:id="@+id/tv_budddycon_title"
             android:layout_width="328dp"
@@ -83,31 +62,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_buddycon"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/tv_signup"
-            style="@style/bold22"
-            android:layout_width="328dp"
-            android:layout_height="wrap_content"
-            android:text="@string/kakao_signup_title"
-            android:textColor="@color/gray90"
-            app:layout_constraintBottom_toTopOf="@id/iv_signup"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <ImageView
-            android:id="@+id/iv_signup"
-            android:layout_width="328dp"
-            android:layout_height="394dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/bg_signup"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_signup"
             app:layout_constraintVertical_chainStyle="packed" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

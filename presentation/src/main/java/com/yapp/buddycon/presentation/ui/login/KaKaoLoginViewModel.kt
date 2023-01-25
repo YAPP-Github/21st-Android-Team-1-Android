@@ -16,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class KaKaoLoginViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val saveInitInfoUseCase: SaveInitInfoUseCase,
     private val saveTokenUseCase: SaveTokenUseCase
 ) : ViewModel() {
 
@@ -37,11 +36,5 @@ class KaKaoLoginViewModel @Inject constructor(
                 _loginState.emit(KaKaoLoginState.Login(it))
             }
             .launchIn(viewModelScope)
-    }
-
-    fun requestInitInfo(){
-        viewModelScope.launch {
-            saveInitInfoUseCase()
-        }
     }
 }

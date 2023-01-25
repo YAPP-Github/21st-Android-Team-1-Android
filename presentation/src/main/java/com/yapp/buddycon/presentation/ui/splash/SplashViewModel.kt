@@ -33,7 +33,6 @@ class SplashViewModel @Inject constructor(
     init {
         getInitInfoUseCase()
             .combine(getTokenUseCase()) { initInfo, tokenInfo ->
-                Timber.d("SplashViewModel $initInfo ${tokenInfo}")
                 if(initInfo){
                     val (token, expiration) = tokenInfo
                     val currentTime = System.currentTimeMillis()
@@ -46,11 +45,6 @@ class SplashViewModel @Inject constructor(
                 }
             }
             .launchIn(viewModelScope)
-    }
-
-    override fun onCleared() {
-        Timber.d("SplashViewModel onCleared")
-        super.onCleared()
     }
 
     fun nextWalkThrough() {

@@ -93,7 +93,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     }
 
     private fun finishSplash() {
-        Timber.d("finishSplash ${splashViewModel.splashResultState.value}")
         when (splashViewModel.splashResultState.value) {
             SplashResultState.WalkThrough -> {
                 binding.splashGrop.isVisible = false

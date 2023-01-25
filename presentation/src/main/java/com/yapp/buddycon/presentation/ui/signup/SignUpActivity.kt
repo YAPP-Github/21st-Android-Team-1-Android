@@ -3,7 +3,9 @@ package com.yapp.buddycon.presentation.ui.signup
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivitySignUpBinding
@@ -35,9 +37,14 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
         }
 
         binding.btnSignupComplete.setOnClickListener {
-            startActivity(Intent(this, BuddyConActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK
-            })
+            binding.signUpGroup.isVisible = false
+            binding.btnSignupComplete.isVisible = false
+            binding.completeGroup.isVisible = true
+            Handler(mainLooper).postDelayed({
+                startActivity(Intent(this, BuddyConActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                })
+            }, 4000)
         }
     }
 

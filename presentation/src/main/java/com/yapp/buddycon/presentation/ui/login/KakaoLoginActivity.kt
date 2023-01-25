@@ -37,8 +37,6 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if(isFirst) kakaoViewModel.requestInitInfo()
-
         kakaoViewModel.loginState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
