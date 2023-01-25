@@ -33,17 +33,24 @@ class SplashViewModel @Inject constructor(
     init {
         getInitInfoUseCase()
             .combine(getTokenUseCase()) { initInfo, tokenInfo ->
+                Timber.d("SplashViewModel $initInfo ${tokenInfo}")
                 if(initInfo){
                     val (token, expiration) = tokenInfo
                     val currentTime = System.currentTimeMillis()
 
                     if(token.isEmpty() && expiration == 0L) _splashResultState.value = SplashResultState.KaKaoLogin
-                    else if(currentTime < expiration) _splashResultState.value = SplashResultState.KaKaoLogin
+                    else if(expiration < currentTime) _splashResultState.value = SplashResultState.KaKaoLogin
                     else _splashResultState.value = SplashResultState.BuddyCon
                 }else{
                     _splashResultState.value = SplashResultState.WalkThrough
                 }
             }
+            .launchIn(viewModelScope)
+    }
+
+    override fun onCleared() {
+        Timber.d("SplashViewModel onCleared")
+        super.onCleared()
     }
 
     fun nextWalkThrough() {

@@ -21,6 +21,7 @@ import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {
@@ -65,10 +66,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     private fun bindViews() {
         binding.appbarSplash.tvSkip.setOnClickListener {
             startActivity(KakaoLoginActivity.newIntent(this, true))
+            finish()
         }
 
         binding.btnStart.setOnClickListener {
             startActivity(KakaoLoginActivity.newIntent(this, true))
+            finish()
         }
     }
 
@@ -90,6 +93,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     }
 
     private fun finishSplash() {
+        Timber.d("finishSplash ${splashViewModel.splashResultState.value}")
         when (splashViewModel.splashResultState.value) {
             SplashResultState.WalkThrough -> {
                 binding.splashGrop.isVisible = false
@@ -97,9 +101,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
             }
             SplashResultState.KaKaoLogin -> {
                 startActivity(KakaoLoginActivity.newIntent(this))
+                finish()
             }
             SplashResultState.BuddyCon -> {
                 startActivity(Intent(this, BuddyConActivity::class.java))
+                finish()
             }
             else -> Unit
         }
