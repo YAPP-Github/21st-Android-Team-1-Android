@@ -20,6 +20,7 @@ import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityKakaoLoginBinding
 import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
+import com.yapp.buddycon.presentation.ui.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -52,13 +53,7 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
 
     private fun successLogin() {
         if(isFirst){
-            binding.loginGroup.isVisible = false
-            binding.signUpGroup.isVisible = true
-
-            Handler(mainLooper).postDelayed({
-                startActivity(Intent(this, BuddyConActivity::class.java))
-                finish()
-            }, 4000)
+            startActivity(Intent(this, SignUpActivity::class.java))
         }else{
             startActivity(Intent(this, BuddyConActivity::class.java))
             finish()

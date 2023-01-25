@@ -5,6 +5,11 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.yapp.buddycon.presentation.ui.signup.SignUpViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,6 +54,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bg_signup_terms_checkbox"
+                android:isSelected="@{viewModel.allTerms}"
+                android:onClick="@{() -> viewModel.clickAllTerms()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,6 +86,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="76dp"
                 android:background="@drawable/bg_signup_terms_checkbox"
+                android:isSelected="@{viewModel.useTerms}"
+                android:onClick="@{() -> viewModel.clickUseTerms()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -110,6 +119,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="116dp"
                 android:background="@drawable/bg_signup_terms_checkbox"
+                android:isSelected="@{viewModel.privacyInfoTerms}"
+                android:onClick="@{() -> viewModel.clickPrivacyInfoTerms()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -144,6 +155,7 @@
             android:background="@color/gray40"
             android:text="@string/signup_complete"
             android:textColor="@color/gray60"
+            android:visibility="@{viewModel.allTerms ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -156,7 +168,7 @@
             android:background="@color/skb_blue"
             android:text="회원가입 완료"
             android:textColor="@color/white"
-            android:visibility="gone"
+            android:visibility="@{viewModel.allTerms ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

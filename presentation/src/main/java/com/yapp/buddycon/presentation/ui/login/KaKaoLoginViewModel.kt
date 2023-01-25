@@ -20,15 +20,21 @@ class KaKaoLoginViewModel @Inject constructor(
     private val saveTokenUseCase: SaveTokenUseCase
 ) : ViewModel() {
 
-    private val _loginState = MutableStateFlow<KaKaoLoginState>(KaKaoLoginState.LogOut)
-    val loginState: StateFlow<KaKaoLoginState> = _loginState.asStateFlow()
+    private val _loginState = MutableSharedFlow<KaKaoLoginState>()
+    val loginState: SharedFlow<KaKaoLoginState> = _loginState.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            _loginState.emit(KaKaoLoginState.LogOut)
+        }
+    }
 
     fun requestUserInfo(kakaoAccessToken: String) {
         getUserInfoUseCase(kakaoAccessToken)
-            .catch { e -> _loginState.value = KaKaoLoginState.Error(e) }
+            .catch { e -> _loginState.emit(KaKaoLoginState.Error(e)) }
             .onEach {
                 saveTokenUseCase(it.accessToken, it.accessTokenExpiresIn)
-                _loginState.value = KaKaoLoginState.Login(it)
+                _loginState.emit(KaKaoLoginState.Login(it))
             }
             .launchIn(viewModelScope)
     }

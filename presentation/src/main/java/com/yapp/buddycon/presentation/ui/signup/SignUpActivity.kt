@@ -1,14 +1,44 @@
 package com.yapp.buddycon.presentation.ui.signup
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivitySignUpBinding
+import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sign_up) {
+
+    private val signUpViewModel: SignUpViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding.viewModel = signUpViewModel
+        bindViews()
     }
+
+    private fun bindViews(){
+        binding.appbarSignup.ibnAppbarBack.setOnClickListener { finish() }
+
+        // TODO
+        binding.btnUseTermsArrow.setOnClickListener {
+
+        }
+
+        // TODO
+        binding.btnPrivacyInfoArrow.setOnClickListener {
+
+        }
+
+        binding.btnSignupComplete.setOnClickListener {
+            startActivity(Intent(this, BuddyConActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK
+            })
+        }
+    }
+
 }
