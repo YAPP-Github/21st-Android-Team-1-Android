@@ -1,6 +1,7 @@
 package com.yapp.buddycon.presentation.ui.main
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,16 +16,22 @@ import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityBuddyConBinding
 import com.yapp.buddycon.presentation.ui.addCoupon.AddCouponActivity
+import com.yapp.buddycon.presentation.ui.login.KakaoLoginActivity
 import com.yapp.buddycon.presentation.ui.makeCoupon.MakeCouponActivity
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity_buddy_con) {
 
+    private val isFirst: Boolean by lazy { intent?.getBooleanExtra(KakaoLoginActivity.FIRST_LOGIN, false) ?: false }
     private val buddyViewModel: BuddyConViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.buddyViewModel = buddyViewModel
+
+        if(isFirst) buddyViewModel.saveInitInfo()
 
         binding.tvMakeCoupon.setOnClickListener {
             startActivity(Intent(this, MakeCouponActivity::class.java))
@@ -96,5 +103,14 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
         binding.tvAddCoupon.setOnClickListener {
             requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
+    }
+
+    companion object{
+        const val FIRST_LOGIN = "FIRST_JOIN"
+
+        fun newIntent(context: Context, isFirst: Boolean = false) =
+            Intent(context, BuddyConActivity::class.java).apply {
+                putExtra(FIRST_LOGIN, isFirst)
+            }
     }
 }

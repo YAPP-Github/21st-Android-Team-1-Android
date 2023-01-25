@@ -103,7 +103,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                 finish()
             }
             SplashResultState.BuddyCon -> {
-                startActivity(Intent(this, BuddyConActivity::class.java))
+                startActivity(BuddyConActivity.newIntent(this))
                 finish()
             }
             else -> Unit

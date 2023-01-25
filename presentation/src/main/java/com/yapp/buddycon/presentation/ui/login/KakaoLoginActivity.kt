@@ -53,7 +53,7 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
         if(isFirst){
             startActivity(Intent(this, SignUpActivity::class.java))
         }else{
-            startActivity(Intent(this, BuddyConActivity::class.java))
+            startActivity(BuddyConActivity.newIntent(this))
             finish()
         }
     }

@@ -41,7 +41,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
             binding.btnSignupComplete.isVisible = false
             binding.completeGroup.isVisible = true
             Handler(mainLooper).postDelayed({
-                startActivity(Intent(this, BuddyConActivity::class.java).apply {
+                startActivity(BuddyConActivity.newIntent(this, true).apply {
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 })
             }, 4000)
