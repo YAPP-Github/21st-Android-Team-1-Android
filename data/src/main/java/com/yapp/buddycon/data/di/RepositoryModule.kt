@@ -1,10 +1,8 @@
 package com.yapp.buddycon.data.di
 
-import com.yapp.buddycon.data.repository.BuddyConRepositoryImpl
 import com.yapp.buddycon.data.repository.InitRepositoryImpl
 import com.yapp.buddycon.data.repository.LoginRepositoryImpl
 import com.yapp.buddycon.data.repository.TokenRepositoryImpl
-import com.yapp.buddycon.domain.repository.BuddyConRepository
 import com.yapp.buddycon.domain.repository.InitRepository
 import com.yapp.buddycon.domain.repository.LoginRepository
 import com.yapp.buddycon.domain.repository.TokenRepository
@@ -35,10 +33,4 @@ interface RepositoryModule {
     fun bindsInitRepository(
         initRepository: InitRepositoryImpl
     ): InitRepository
-
-    @Binds
-    @Singleton
-    fun bindsBuddyConRepository(
-        buddyConRepository: BuddyConRepositoryImpl
-    ): BuddyConRepository
 }

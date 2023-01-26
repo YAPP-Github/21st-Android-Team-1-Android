@@ -2,32 +2,21 @@ package com.yapp.buddycon.presentation.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yapp.buddycon.domain.usecase.BuddyConUseCase
 import com.yapp.buddycon.domain.usecase.SaveInitInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class BuddyConViewModel @Inject constructor(
-   private val saveInitInfoUseCase: SaveInitInfoUseCase,
-   private val buddyConUseCase: BuddyConUseCase
+   private val saveInitInfoUseCase: SaveInitInfoUseCase
 ): ViewModel() {
 
     private val _isFabState : MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isFabState : StateFlow<Boolean> = _isFabState.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            buddyConUseCase().collect{
-                Timber.e("BuddyConViewModel $it")
-            }
-        }
-    }
 
     fun changeFab() {
         _isFabState.value = !_isFabState.value

@@ -1,10 +1,7 @@
 package com.yapp.buddycon.data.di
 
-import com.google.gson.GsonBuilder
 import com.yapp.buddycon.data.network.*
-import com.yapp.buddycon.data.network.api.BuddyConService
 import com.yapp.buddycon.data.network.api.LoginService
-import com.yapp.buddycon.data.network.interceptor.BuddyConInterceptor
 import com.yapp.buddycon.data.network.qualifiers.BuddyConRetrofit
 import com.yapp.buddycon.data.network.qualifiers.LoginRetrofit
 import dagger.Module
@@ -69,6 +66,7 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
     @Provides
     @Singleton
     fun provideLoginService(
@@ -76,11 +74,4 @@ object NetworkModule {
     ): LoginService =
         retrofit.create()
 
-    // TODO Example 추후 삭제 예정
-    @Provides
-    @Singleton
-    fun provideBuddyConService(
-        @BuddyConRetrofit retrofit: Retrofit
-    ): BuddyConService =
-        retrofit.create()
 }
