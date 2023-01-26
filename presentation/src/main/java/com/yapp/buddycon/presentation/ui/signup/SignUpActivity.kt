@@ -44,7 +44,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
                 startActivity(BuddyConActivity.newIntent(this, true).apply {
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 })
-            }, 4000)
+            }, 1000)
         }
     }
 
