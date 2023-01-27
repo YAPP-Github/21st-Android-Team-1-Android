@@ -4,28 +4,28 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import com.yapp.buddycon.domain.repository.InitRepository
+import com.yapp.buddycon.domain.repository.BootRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import javax.inject.Inject
 
-class InitRepositoryImpl @Inject constructor(
+class BootRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
-) : InitRepository {
-    override fun getInitInfo(): Flow<Boolean> =
+) : BootRepository {
+    override fun getBootInfo(): Flow<Boolean> =
         dataStore.data.map { preference ->
-            preference[BUDDYCON_INIT] ?: false
+            preference[BUDDYCON_BOOT_INFO] ?: false
         }
 
-    override suspend fun saveInitInfo() {
+    override suspend fun saveBootInfo() {
         dataStore.edit { preference ->
             Timber.d("saveInitInfo")
-            preference[BUDDYCON_INIT] = true
+            preference[BUDDYCON_BOOT_INFO] = true
         }
     }
 
     companion object {
-        val BUDDYCON_INIT = booleanPreferencesKey("BUDDYCON_INIT")
+        val BUDDYCON_BOOT_INFO = booleanPreferencesKey("BUDDYCON_BOOT_INFO")
     }
 }

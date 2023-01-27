@@ -2,9 +2,10 @@ package com.yapp.buddycon.data.di
 
 import com.yapp.buddycon.data.network.*
 import com.yapp.buddycon.data.network.api.LoginService
-import com.yapp.buddycon.data.network.api.TokenService
+import com.yapp.buddycon.data.network.api.RefreshTokenService
 import com.yapp.buddycon.data.network.qualifiers.BuddyConRetrofit
 import com.yapp.buddycon.data.network.qualifiers.LoginRetrofit
+import com.yapp.buddycon.data.network.qualifiers.RefreshTokenRetrofit
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,10 +26,23 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideLoginClient(
-        @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor,
+        @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor
     ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .build()
+
+
+    @RefreshTokenClient
+    @Provides
+    @Singleton
+    fun provideRefreshTokenClient(
+        @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor,
+        @RefreshTokenInterceptorQualifier refreshTokenInterceptor: Interceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(refreshTokenInterceptor)
             .build()
 
 
@@ -50,6 +64,19 @@ object NetworkModule {
     @Singleton
     fun provideLoginRetrofit(
         @LoginClient okHttpClient: OkHttpClient
+    ): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+
+    @RefreshTokenRetrofit
+    @Provides
+    @Singleton
+    fun provideRefreshTokenRetrofit(
+        @RefreshTokenClient okHttpClient: OkHttpClient
     ): Retrofit =
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -82,7 +109,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideTokenService(
-        @BuddyConRetrofit retrofit: Retrofit
-    ): TokenService =
+        @RefreshTokenRetrofit retrofit: Retrofit
+    ): RefreshTokenService =
         retrofit.create()
 }

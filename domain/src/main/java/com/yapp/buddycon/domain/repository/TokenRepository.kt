@@ -7,6 +7,5 @@ interface TokenRepository {
     fun getToken(): Flow<String>
     fun getTokenExpiration(): Flow<Long>
     fun getRefreshToken(): Flow<String>
-    fun requestRefreshToken(accessToken: String, refreshToken: String): Flow<UserInfo>
     suspend fun saveToken(accessToken: String, accessTokenExpiresIn: Long, refreshToken: String)
 }

@@ -5,7 +5,7 @@ import com.yapp.buddycon.data.network.response.UserInfoResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface TokenService {
+interface RefreshTokenService {
     @POST("api/v1/reissue")
     suspend fun requestRefreshToken(
         @Body refreshTokenRequest: RefreshTokenRequest

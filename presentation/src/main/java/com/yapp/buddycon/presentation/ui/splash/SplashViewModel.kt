@@ -2,10 +2,8 @@ package com.yapp.buddycon.presentation.ui.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yapp.buddycon.domain.usecase.login.GetInitInfoUseCase
+import com.yapp.buddycon.domain.usecase.login.GetBootInfoUseCase
 import com.yapp.buddycon.domain.usecase.token.GetTokenUseCase
-import com.yapp.buddycon.domain.usecase.token.RefreshTokenUseCase
-import com.yapp.buddycon.domain.usecase.token.SaveTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -13,10 +11,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val getInitInfoUseCase: GetInitInfoUseCase,
+    private val getBootInfoUseCase: GetBootInfoUseCase,
     private val getTokenUseCase: GetTokenUseCase,
-    private val refreshTokenUseCase: RefreshTokenUseCase,
-    private val saveTokenUseCase: SaveTokenUseCase
+    //private val refreshTokenUseCase: RefreshTokenUseCase,
+    //private val saveTokenUseCase: SaveTokenUseCase
 ) : ViewModel() {
     private var idx = 0
     private val _walkThroughState = MutableStateFlow(
@@ -33,10 +31,10 @@ class SplashViewModel @Inject constructor(
     val splashResultState = _splashResultState.asStateFlow()
 
     init {
-        getInitInfoUseCase()
-            .combine(getTokenUseCase()) { initInfo, tokenInfo ->
+        getBootInfoUseCase()
+            .combine(getTokenUseCase()) { bootInfo, tokenInfo ->
                 Timber.d("TokenInfo accessToken: ${tokenInfo.accessToken}, refreshToken: ${tokenInfo.refreshToken} accessTokenExpiration: ${tokenInfo.accessTokenExpiresIn}")
-                if(initInfo){
+                if(bootInfo){
                     val currentTime = System.currentTimeMillis()
                     val (accessToken, refreshToken, accessTokenExpiration) = tokenInfo
 
@@ -61,12 +59,12 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun requestRefreshToken(accessToken: String, refreshToken: String){
-        refreshTokenUseCase(accessToken, refreshToken)
-            .catch { _splashResultState.value = SplashResultState.KaKaoLogin }
-            .onEach {
-                saveTokenUseCase(it.accessToken,it.accessTokenExpiresIn, it.refreshToken)
-                _splashResultState.value = SplashResultState.BuddyCon
-            }
-            .launchIn(viewModelScope)
+//        refreshTokenUseCase(accessToken, refreshToken)
+//            .catch { _splashResultState.value = SplashResultState.KaKaoLogin }
+//            .onEach {
+//                saveTokenUseCase(it.accessToken,it.accessTokenExpiresIn, it.refreshToken)
+//                _splashResultState.value = SplashResultState.BuddyCon
+//            }
+//            .launchIn(viewModelScope)
     }
 }

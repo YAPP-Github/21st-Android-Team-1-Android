@@ -1,12 +1,12 @@
 package com.yapp.buddycon.domain.usecase.login
 
 import com.yapp.buddycon.domain.model.UserInfo
-import com.yapp.buddycon.domain.repository.LoginRepository
+import com.yapp.buddycon.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetUserInfoUseCase @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val userRepository: UserRepository
 ) {
     operator fun invoke(
         kakaoAccessToken: String,
@@ -15,5 +15,5 @@ class GetUserInfoUseCase @Inject constructor(
         gender: String? = null,
         ageRange: String? = null
     ): Flow<UserInfo> =
-        loginRepository.requestUserInfo(kakaoAccessToken, name, email, gender, ageRange)
+        userRepository.requestUserInfo(kakaoAccessToken, name, email, gender, ageRange)
 }
