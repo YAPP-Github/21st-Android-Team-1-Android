@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yapp.buddycon.domain.usecase.login.GetInitInfoUseCase
 import com.yapp.buddycon.domain.usecase.token.GetTokenUseCase
+import com.yapp.buddycon.domain.usecase.token.RefreshTokenUseCase
+import com.yapp.buddycon.domain.usecase.token.SaveTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -12,7 +14,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val getInitInfoUseCase: GetInitInfoUseCase,
-    private val getTokenUseCase: GetTokenUseCase
+    private val getTokenUseCase: GetTokenUseCase,
+    private val refreshTokenUseCase: RefreshTokenUseCase,
+    private val saveTokenUseCase: SaveTokenUseCase
 ) : ViewModel() {
     private var idx = 0
     private val _walkThroughState = MutableStateFlow(
@@ -31,14 +35,14 @@ class SplashViewModel @Inject constructor(
     init {
         getInitInfoUseCase()
             .combine(getTokenUseCase()) { initInfo, tokenInfo ->
-                Timber.d("TokenInfo accessToken: ${tokenInfo.first}, accessTokenExpiration: ${tokenInfo.second}")
+                Timber.d("TokenInfo accessToken: ${tokenInfo.accessToken}, refreshToken: ${tokenInfo.refreshToken} accessTokenExpiration: ${tokenInfo.accessTokenExpiresIn}")
                 if(initInfo){
-                    val (token, expiration) = tokenInfo
                     val currentTime = System.currentTimeMillis()
+                    val (accessToken, refreshToken, accessTokenExpiration) = tokenInfo
 
-                    if(token.isEmpty() && expiration == 0L) _splashResultState.value = SplashResultState.KaKaoLogin
-                    else if(expiration < currentTime) _splashResultState.value = SplashResultState.KaKaoLogin
-                    else _splashResultState.value = SplashResultState.BuddyCon
+                    if(accessToken.isEmpty() && refreshToken.isEmpty() && accessTokenExpiration == 0L) _splashResultState.value = SplashResultState.KaKaoLogin
+                    else if(accessTokenExpiration < currentTime) _splashResultState.value = SplashResultState.KaKaoLogin
+                    else requestRefreshToken(accessToken, refreshToken)
                 }else{
                     _splashResultState.value = SplashResultState.WalkThrough
                 }
@@ -54,5 +58,15 @@ class SplashViewModel @Inject constructor(
             title = idx.toWalkThroughTitle(),
             subTitle = idx.toWalkThroughSubTitle()
         )
+    }
+
+    private fun requestRefreshToken(accessToken: String, refreshToken: String){
+        refreshTokenUseCase(accessToken, refreshToken)
+            .catch { _splashResultState.value = SplashResultState.KaKaoLogin }
+            .onEach {
+                saveTokenUseCase(it.accessToken,it.accessTokenExpiresIn, it.refreshToken)
+                _splashResultState.value = SplashResultState.BuddyCon
+            }
+            .launchIn(viewModelScope)
     }
 }
