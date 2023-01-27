@@ -2,12 +2,10 @@ package com.yapp.buddycon.presentation.ui.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yapp.buddycon.domain.usecase.GetInitInfoUseCase
-import com.yapp.buddycon.domain.usecase.GetTokenUseCase
-import com.yapp.buddycon.presentation.R
+import com.yapp.buddycon.domain.usecase.login.GetInitInfoUseCase
+import com.yapp.buddycon.domain.usecase.token.GetTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 

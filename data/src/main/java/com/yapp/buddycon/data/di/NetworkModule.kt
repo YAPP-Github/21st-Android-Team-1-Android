@@ -2,6 +2,7 @@ package com.yapp.buddycon.data.di
 
 import com.yapp.buddycon.data.network.*
 import com.yapp.buddycon.data.network.api.LoginService
+import com.yapp.buddycon.data.network.api.TokenService
 import com.yapp.buddycon.data.network.qualifiers.BuddyConRetrofit
 import com.yapp.buddycon.data.network.qualifiers.LoginRetrofit
 import dagger.Module
@@ -30,6 +31,7 @@ object NetworkModule {
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
+
     @BuddyConClient
     @Provides
     @Singleton
@@ -41,6 +43,7 @@ object NetworkModule {
             .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(buddyConInterceptor)
             .build()
+
 
     @LoginRetrofit
     @Provides
@@ -67,6 +70,7 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+
     @Provides
     @Singleton
     fun provideLoginService(
@@ -74,4 +78,11 @@ object NetworkModule {
     ): LoginService =
         retrofit.create()
 
+
+    @Provides
+    @Singleton
+    fun provideTokenService(
+        @BuddyConRetrofit retrofit: Retrofit
+    ): TokenService =
+        retrofit.create()
 }

@@ -2,15 +2,11 @@ package com.yapp.buddycon.presentation.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yapp.buddycon.domain.model.UserInfo
-import com.yapp.buddycon.domain.usecase.GetTokenUseCase
-import com.yapp.buddycon.domain.usecase.GetUserInfoUseCase
-import com.yapp.buddycon.domain.usecase.SaveInitInfoUseCase
-import com.yapp.buddycon.domain.usecase.SaveTokenUseCase
+import com.yapp.buddycon.domain.usecase.login.GetUserInfoUseCase
+import com.yapp.buddycon.domain.usecase.token.SaveTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel

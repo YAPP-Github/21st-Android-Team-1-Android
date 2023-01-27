@@ -1,4 +1,4 @@
-package com.yapp.buddycon.domain.usecase
+package com.yapp.buddycon.domain.usecase.login
 
 import com.yapp.buddycon.domain.model.UserInfo
 import com.yapp.buddycon.domain.repository.LoginRepository

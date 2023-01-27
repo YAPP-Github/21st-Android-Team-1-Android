@@ -1,4 +1,4 @@
-package com.yapp.buddycon.domain.usecase
+package com.yapp.buddycon.domain.usecase.token
 
 import com.yapp.buddycon.domain.repository.TokenRepository
 import javax.inject.Inject
