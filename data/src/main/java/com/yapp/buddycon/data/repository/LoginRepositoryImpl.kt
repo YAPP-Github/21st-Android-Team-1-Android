@@ -12,7 +12,14 @@ import javax.inject.Inject
 class LoginRepositoryImpl @Inject constructor(
     private val loginRemoteDataSource: LoginRemoteDataSource
 ) : LoginRepository {
-    override fun requestUserInfo(kakaoAccessToken: String): Flow<UserInfo> =
-        loginRemoteDataSource.requestUserInfo(kakaoAccessToken)
-            .map { it.toModel()}
+
+    override fun requestUserInfo(
+        kakaoAccessToken: String,
+        name: String,
+        email: String?,
+        gender: String?,
+        ageRange: String?
+    ): Flow<UserInfo> =
+        loginRemoteDataSource.requestUserInfo(kakaoAccessToken, name, email, gender, ageRange)
+            .map { it.toModel() }
 }

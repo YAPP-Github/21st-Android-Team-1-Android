@@ -33,6 +33,7 @@ class SplashViewModel @Inject constructor(
     init {
         getInitInfoUseCase()
             .combine(getTokenUseCase()) { initInfo, tokenInfo ->
+                Timber.d("TokenInfo accessToken: ${tokenInfo.first}, accessTokenExpiration: ${tokenInfo.second}")
                 if(initInfo){
                     val (token, expiration) = tokenInfo
                     val currentTime = System.currentTimeMillis()

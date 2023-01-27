@@ -8,6 +8,12 @@ import javax.inject.Inject
 class GetUserInfoUseCase @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
-    operator fun invoke(kakaoAccessToken: String): Flow<UserInfo> =
-        loginRepository.requestUserInfo(kakaoAccessToken)
+    operator fun invoke(
+        kakaoAccessToken: String,
+        name: String,
+        email: String? = null,
+        gender: String? = null,
+        ageRange: String? = null
+    ): Flow<UserInfo> =
+        loginRepository.requestUserInfo(kakaoAccessToken, name, email, gender, ageRange)
 }
