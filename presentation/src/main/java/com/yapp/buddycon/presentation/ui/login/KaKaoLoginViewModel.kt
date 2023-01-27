@@ -28,13 +28,12 @@ class KaKaoLoginViewModel @Inject constructor(
         }
     }
 
-    fun requestUserInfo(kakaoAccessToken: String) {
-        getUserInfoUseCase(kakaoAccessToken)
-            .catch { e -> _loginState.emit(KaKaoLoginState.Error(e)) }
-            .onEach {
-                saveTokenUseCase(it.accessToken, it.accessTokenExpiresIn)
-                _loginState.emit(KaKaoLoginState.Login(it))
-            }
-            .launchIn(viewModelScope)
-    }
+    fun requestUserInfo(
+        kakaoAccessToken: String, name: String, email: String?, gender: String?, ageRange: String?
+    ) = getUserInfoUseCase(kakaoAccessToken, name, email, gender, ageRange)
+        .catch { e -> _loginState.emit(KaKaoLoginState.Error(e)) }
+        .onEach {
+            saveTokenUseCase(it.accessToken, it.accessTokenExpiresIn, it.refreshToken)
+            _loginState.emit(KaKaoLoginState.Login(it))
+        }.launchIn(viewModelScope)
 }
