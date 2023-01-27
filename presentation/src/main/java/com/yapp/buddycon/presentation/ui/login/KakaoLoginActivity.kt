@@ -52,8 +52,6 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
                 }
             }
             .launchIn(lifecycleScope)
-
-        UserApiClient.instance.unlink {  }
     }
 
     private fun successLogin() {
