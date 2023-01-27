@@ -68,4 +68,5 @@ dependencies {
     kapt(ModuleDependency.Hilt.HILT_COMPILER)
     implementation(ModuleDependency.KaKao.LOGIN)
     implementation(ModuleDependency.MLkit.ML_Kit)
+    implementation(ModuleDependency.SplashScreen.SPLASH_SCREEN)
 }

@@ -13,4 +13,10 @@
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
     </style>
+    
+    <style name="Theme.BuddyCon.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/skb_blue</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_buddycon_title</item>
+        <item name="postSplashScreenTheme">@style/Theme.BuddyCon</item>
+    </style>
 </resources>

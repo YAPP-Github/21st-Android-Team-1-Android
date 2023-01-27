@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.yapp.buddycon.presentation.ui.signup.SignUpViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.signup.SignUpActivity">
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/signUpGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="
+            appbar_signup,
+            tv_signup,
+            cl_terms,
+            btn_complete" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/completeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="
+            tv_complete_signup,
+            iv_complete_signup" />
+
+        <include
+            android:id="@+id/appbar_signup"
+            layout="@layout/layout_appbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@{@string/signup_appbar}" />
+
+        <TextView
+            android:id="@+id/tv_signup"
+            style="@style/bold22"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/signup_terms"
+            android:textColor="@color/gray90"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_signup" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_terms"
+            android:layout_width="328dp"
+            android:layout_height="174dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/bg_signup_terms"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_signup">
+
+            <Button
+                android:id="@+id/btn_all_complete_terms"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_signup_terms_checkbox"
+                android:isSelected="@{viewModel.allTerms}"
+                android:onClick="@{() -> viewModel.clickAllTerms()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_all_complete_terms"
+                style="@style/regular16"
+                android:layout_width="86dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/signup_all_complete_terms"
+                android:textColor="@color/gray90"
+                app:layout_constraintStart_toEndOf="@id/btn_all_complete_terms"
+                app:layout_constraintTop_toTopOf="@id/btn_all_complete_terms" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="60dp"
+                android:background="@color/gray30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_use_terms"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="76dp"
+                android:background="@drawable/bg_signup_terms_checkbox"
+                android:isSelected="@{viewModel.useTerms}"
+                android:onClick="@{() -> viewModel.clickUseTerms()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_use_terms"
+                style="@style/regular16"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/signup_use_terms"
+                android:textColor="@color/gray90"
+                app:layout_constraintStart_toEndOf="@id/btn_use_terms"
+                app:layout_constraintTop_toTopOf="@id/btn_use_terms" />
+
+            <Button
+                android:id="@+id/btn_use_terms_arrow"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="77dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ic_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_privacy_info_terms"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="116dp"
+                android:background="@drawable/bg_signup_terms_checkbox"
+                android:isSelected="@{viewModel.privacyInfoTerms}"
+                android:onClick="@{() -> viewModel.clickPrivacyInfoTerms()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_privacy_info_terms"
+                style="@style/regular16"
+                android:layout_width="184dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/signup_privacy_info_terms"
+                android:textColor="@color/gray90"
+                app:layout_constraintStart_toEndOf="@id/btn_privacy_info_terms"
+                app:layout_constraintTop_toTopOf="@id/btn_privacy_info_terms" />
+
+            <Button
+                android:id="@+id/btn_privacy_info_arrow"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="118dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ic_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btn_complete"
+            style="@style/bold16"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/gray40"
+            android:text="@string/signup_complete"
+            android:textColor="@color/gray60"
+            android:visibility="@{viewModel.allTerms ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_signup_complete"
+            style="@style/bold16"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/skb_blue"
+            android:text="회원가입 완료"
+            android:textColor="@color/white"
+            android:visibility="@{viewModel.allTerms ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_complete_signup"
+            style="@style/bold22"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:text="@string/kakao_signup_title"
+            android:textColor="@color/gray90"
+            app:layout_constraintBottom_toTopOf="@id/iv_complete_signup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <ImageView
+            android:id="@+id/iv_complete_signup"
+            android:layout_width="328dp"
+            android:layout_height="394dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/bg_signup"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_signup"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
