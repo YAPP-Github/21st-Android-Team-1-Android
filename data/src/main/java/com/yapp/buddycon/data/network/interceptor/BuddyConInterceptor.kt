@@ -18,31 +18,36 @@ class BuddyConInterceptor @Inject constructor(
     private val userRepository: UserRepository
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val tokenInfo = runBlocking { combine(
-            tokenRepository.getToken(),
-            tokenRepository.getRefreshToken(),
-            tokenRepository.getTokenExpiration()
-        ) { accessToken, refreshToken, accessTokenExpiresIn ->
-            UserInfo(accessToken, refreshToken, accessTokenExpiresIn)
-        }.first()}
-//
-//        var (accessToken, refreshToken, accessTokenExpiresIn) = tokenInfo
-//        val currentTime = System.currentTimeMillis()
-//
-//        if(accessTokenExpiresIn < currentTime){
-//            try{
-//                val refreshTokenInfo = runBlocking { tokenRepository.requestRefreshToken(accessToken, refreshToken).first() }
-//                accessToken = refreshTokenInfo.accessToken
-//                refreshToken = refreshTokenInfo.refreshToken
-//                accessTokenExpiresIn = refreshTokenInfo.accessTokenExpiresIn
-//            }catch (_: Exception){
-//
-//            }
-//        }
+        val tokenInfo = runBlocking {
+            combine(
+                tokenRepository.getToken(),
+                tokenRepository.getRefreshToken(),
+                tokenRepository.getTokenExpiration()
+            ) { accessToken, refreshToken, accessTokenExpiresIn ->
+                UserInfo(accessToken, refreshToken, accessTokenExpiresIn)
+            }.first()
+        }
+
+        var (accessToken, refreshToken, accessTokenExpiresIn) = tokenInfo
+        val currentTime = System.currentTimeMillis()
+
+        if (accessTokenExpiresIn < currentTime) {
+            try {
+                val refreshTokenInfo = runBlocking {
+                    userRepository.requestRefreshToken(accessToken, refreshToken).first()
+                }
+
+                accessToken = refreshTokenInfo.accessToken
+                refreshToken = refreshTokenInfo.refreshToken
+                accessTokenExpiresIn = refreshTokenInfo.accessTokenExpiresIn
+            } catch (_: Exception) {
+
+            }
+        }
 
         val newRequest = chain.request().newBuilder()
             .addHeader("Authorization", "Bearer $accessToken")
             .build()
-        return chain.proceed(chain.request())
+        return chain.proceed(newRequest)
     }
 }

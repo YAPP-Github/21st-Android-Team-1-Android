@@ -31,6 +31,6 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindsBootRepository(
-        bootRepositoryImpl: UserRepositoryImpl
+        bootRepositoryImpl: BootRepositoryImpl
     ): BootRepository
 }
