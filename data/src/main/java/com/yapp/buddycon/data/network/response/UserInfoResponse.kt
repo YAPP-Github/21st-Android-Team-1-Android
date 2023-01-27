@@ -1,6 +1,5 @@
 package com.yapp.buddycon.data.network.response
 
-import com.yapp.buddycon.data.mapper.toModel
 import com.yapp.buddycon.domain.model.UserInfo
 
 

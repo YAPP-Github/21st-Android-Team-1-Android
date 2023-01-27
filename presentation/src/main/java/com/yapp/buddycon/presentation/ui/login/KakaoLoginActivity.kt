@@ -52,6 +52,8 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
                 }
             }
             .launchIn(lifecycleScope)
+
+        UserApiClient.instance.unlink {  }
     }
 
     private fun successLogin() {
@@ -124,9 +126,14 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
             error?.let { e ->
                 Timber.e(getString(R.string.kakao_login_error, e))
             } ?: kotlin.run {
+                Timber.d(
+                    "getKaKaoAccontInfo kakaoAccessToken: $kakaoAccessToken, name: ${user?.kakaoAccount?.profile?.nickname} " +
+                            "email ${user?.kakaoAccount?.email} gender: ${user?.kakaoAccount?.gender?.name} ageRange: ${user?.kakaoAccount?.ageRange?.name}"
+                )
+
                 handleKaKaoLoginSuccess(
                     kakaoAccessToken = kakaoAccessToken,
-                    name = user?.kakaoAccount?.name ?: throw IllegalStateException(),
+                    name = user?.kakaoAccount?.profile?.nickname ?: throw IllegalStateException(),
                     email = user.kakaoAccount?.email,
                     gender = user.kakaoAccount?.gender?.name,
                     ageRange = user.kakaoAccount?.ageRange?.name

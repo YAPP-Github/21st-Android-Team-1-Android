@@ -1,6 +1,5 @@
 package com.yapp.buddycon.data.datasource.remote.login
 
-import com.yapp.buddycon.data.mapper.toModel
 import com.yapp.buddycon.data.network.api.LoginService
 import com.yapp.buddycon.data.network.request.UserInfoRequest
 import com.yapp.buddycon.data.network.response.UserInfoResponse
