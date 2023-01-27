@@ -22,17 +22,23 @@ class TokenRepositoryImpl @Inject constructor(
             preference[BUDDYCON_TOKEN_EXPIRATION] ?: 0L
         }
 
+    override fun getRefreshToken(): Flow<String> =
+        dataStore.data.map { preference ->
+            preference[BUDDYCON_REFRESH_TOKEN] ?: ""
+        }
 
-    override suspend fun saveToken(accessToken: String,  accessTokenExpiresIn: Long) {
+    override suspend fun saveToken(accessToken: String,  accessTokenExpiresIn: Long, refreshToken: String) {
         dataStore.edit { preference ->
-            Timber.d("saveToken accessToken: $accessToken accessTokenExpiresIn: $accessTokenExpiresIn")
+            Timber.d("saveToken accessToken: $accessToken accessTokenExpiresIn: $accessTokenExpiresIn refreshToken: $refreshToken")
             preference[BUDDYCON_TOKEN] = accessToken
             preference[BUDDYCON_TOKEN_EXPIRATION] = accessTokenExpiresIn
+            preference[BUDDYCON_REFRESH_TOKEN] = refreshToken
         }
     }
 
     companion object {
         val BUDDYCON_TOKEN = stringPreferencesKey("BUDDYCON_TOKEN")
         val BUDDYCON_TOKEN_EXPIRATION = longPreferencesKey("BUDDYCON_TOKEN_EXPIRATION")
+        val BUDDYCON_REFRESH_TOKEN = stringPreferencesKey("BUDDYCON_REFRESH_TOKEN")
     }
 }
