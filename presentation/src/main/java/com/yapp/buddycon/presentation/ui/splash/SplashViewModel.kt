@@ -40,9 +40,8 @@ class SplashViewModel @Inject constructor(
                     val currentTime = System.currentTimeMillis()
                     val (accessToken, refreshToken, accessTokenExpiration) = tokenInfo
 
-                    if (accessToken.isEmpty() && refreshToken.isEmpty() && accessTokenExpiration == 0L) _splashResultState.value =
-                        SplashResultState.KaKaoLogin
-                    else if (accessTokenExpiration / 10 < currentTime) requestRefreshToken(
+                    if (accessToken.isEmpty() && refreshToken.isEmpty() && accessTokenExpiration == 0L) _splashResultState.value = SplashResultState.KaKaoLogin
+                    else if (accessTokenExpiration < currentTime) requestRefreshToken(
                         accessToken,
                         refreshToken
                     )

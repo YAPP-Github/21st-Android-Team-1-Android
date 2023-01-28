@@ -15,7 +15,6 @@ class RefreshTokenInterceptor @Inject constructor(
     private val tokenRepository: TokenRepository
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        Timber.d("RefreshTokenInterceptor")
         val tokenInfo = runBlocking {
             combine(
                 tokenRepository.getToken(),
