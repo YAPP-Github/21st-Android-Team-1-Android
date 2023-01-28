@@ -40,6 +40,7 @@ class BuddyConInterceptor @Inject constructor(
                 accessToken = refreshTokenInfo.accessToken
                 refreshToken = refreshTokenInfo.refreshToken
                 accessTokenExpiresIn = refreshTokenInfo.accessTokenExpiresIn
+                runBlocking { tokenRepository.saveToken(accessToken, accessTokenExpiresIn, refreshToken) }
             } catch (_: Exception) {
 
             }
