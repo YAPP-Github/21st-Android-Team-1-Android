@@ -2,9 +2,10 @@ package com.yapp.buddycon.data.di
 
 import com.yapp.buddycon.data.network.*
 import com.yapp.buddycon.data.network.api.LoginService
-import com.yapp.buddycon.data.network.interceptor.BuddyConInterceptor
+import com.yapp.buddycon.data.network.api.RefreshTokenService
 import com.yapp.buddycon.data.network.qualifiers.BuddyConRetrofit
 import com.yapp.buddycon.data.network.qualifiers.LoginRetrofit
+import com.yapp.buddycon.data.network.qualifiers.RefreshTokenRetrofit
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,11 +26,25 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideLoginClient(
-        @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor,
+        @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor
     ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
             .build()
+
+
+    @RefreshTokenClient
+    @Provides
+    @Singleton
+    fun provideRefreshTokenClient(
+        @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor,
+        @RefreshTokenInterceptorQualifier refreshTokenInterceptor: Interceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(refreshTokenInterceptor)
+            .build()
+
 
     @BuddyConClient
     @Provides
@@ -43,6 +58,7 @@ object NetworkModule {
             .addInterceptor(buddyConInterceptor)
             .build()
 
+
     @LoginRetrofit
     @Provides
     @Singleton
@@ -54,6 +70,20 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+
+    @RefreshTokenRetrofit
+    @Provides
+    @Singleton
+    fun provideRefreshTokenRetrofit(
+        @RefreshTokenClient okHttpClient: OkHttpClient
+    ): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
 
     @BuddyConRetrofit
     @Provides
@@ -67,10 +97,19 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+
     @Provides
     @Singleton
     fun provideLoginService(
         @LoginRetrofit retrofit: Retrofit
     ): LoginService =
+        retrofit.create()
+
+
+    @Provides
+    @Singleton
+    fun provideTokenService(
+        @RefreshTokenRetrofit retrofit: Retrofit
+    ): RefreshTokenService =
         retrofit.create()
 }

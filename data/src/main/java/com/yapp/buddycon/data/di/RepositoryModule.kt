@@ -1,10 +1,10 @@
 package com.yapp.buddycon.data.di
 
-import com.yapp.buddycon.data.repository.InitRepositoryImpl
-import com.yapp.buddycon.data.repository.LoginRepositoryImpl
+import com.yapp.buddycon.data.repository.BootRepositoryImpl
+import com.yapp.buddycon.data.repository.UserRepositoryImpl
 import com.yapp.buddycon.data.repository.TokenRepositoryImpl
-import com.yapp.buddycon.domain.repository.InitRepository
-import com.yapp.buddycon.domain.repository.LoginRepository
+import com.yapp.buddycon.domain.repository.BootRepository
+import com.yapp.buddycon.domain.repository.UserRepository
 import com.yapp.buddycon.domain.repository.TokenRepository
 import dagger.Binds
 import dagger.Module
@@ -18,19 +18,19 @@ interface RepositoryModule {
 
     @Binds
     @Singleton
-    fun bindsLoginRepository(
-        loginRepositoryImpl: LoginRepositoryImpl
-    ): LoginRepository
+    fun bindsUserRepository(
+        userRepositoryImpl: UserRepositoryImpl
+    ): UserRepository
 
     @Binds
     @Singleton
     fun bindsTokenRepository(
-        tokenRepository: TokenRepositoryImpl
+        tokenRepositoryImpl: TokenRepositoryImpl
     ): TokenRepository
 
     @Binds
     @Singleton
-    fun bindsInitRepository(
-        initRepository: InitRepositoryImpl
-    ): InitRepository
+    fun bindsBootRepository(
+        bootRepositoryImpl: BootRepositoryImpl
+    ): BootRepository
 }

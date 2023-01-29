@@ -40,19 +40,24 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
         kakaoViewModel.loginState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                when(it){
+                when (it) {
                     is KaKaoLoginState.Login -> successLogin()
                     is KaKaoLoginState.LogOut -> Unit
-                    is KaKaoLoginState.Error -> Timber.e(getString(R.string.kakao_login_error, it.throwable?.localizedMessage))
+                    is KaKaoLoginState.Error -> Timber.e(
+                        getString(
+                            R.string.kakao_login_error,
+                            it.throwable?.localizedMessage
+                        )
+                    )
                 }
             }
             .launchIn(lifecycleScope)
     }
 
     private fun successLogin() {
-        if(isFirst){
+        if (isFirst) {
             startActivity(Intent(this, SignUpActivity::class.java))
-        }else{
+        } else {
             startActivity(BuddyConActivity.newIntent(this))
             finish()
         }
@@ -72,13 +77,28 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
                         return@loginWithKakaoTalk
                     }
 
-                    UserApiClient.instance.loginWithKakaoAccount(this, callback = getKaKaoAccountApiCallback())
+                    UserApiClient.instance.loginWithKakaoAccount(
+                        this,
+                        callback = getKaKaoAccountApiCallback()
+                    )
                 } ?: kotlin.run {
-                    token?.let { handleKaKaoLoginSuccess(it.accessToken) }
+                    token?.let {
+                        getKaKaoAccountInfo(it.accessToken)
+                    } ?: kotlin.run {
+                        Timber.e(
+                            getString(
+                                R.string.kakao_login_error,
+                                IllegalStateException().localizedMessage
+                            )
+                        )
+                    }
                 }
             }
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(this, callback = getKaKaoAccountApiCallback())
+            UserApiClient.instance.loginWithKakaoAccount(
+                this,
+                callback = getKaKaoAccountApiCallback()
+            )
         }
     }
 
@@ -86,15 +106,52 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
         error?.let { e ->
             Timber.e(getString(R.string.kakao_login_error, e))
         } ?: kotlin.run {
-            token?.let { handleKaKaoLoginSuccess(it.accessToken) }
+            token?.let {
+                getKaKaoAccountInfo(it.accessToken)
+            } ?: kotlin.run {
+                Timber.e(
+                    getString(
+                        R.string.kakao_login_error,
+                        IllegalStateException().localizedMessage
+                    )
+                )
+            }
         }
     }
 
-    private fun handleKaKaoLoginSuccess(kakaoAccessToken: String) {
-        kakaoViewModel.requestUserInfo(kakaoAccessToken)
+    private fun getKaKaoAccountInfo(kakaoAccessToken: String) {
+        UserApiClient.instance.me { user, error ->
+            error?.let { e ->
+                Timber.e(getString(R.string.kakao_login_error, e))
+            } ?: kotlin.run {
+                Timber.d(
+                    "getKaKaoAccontInfo kakaoAccessToken: $kakaoAccessToken, name: ${user?.kakaoAccount?.profile?.nickname} " +
+                            "email ${user?.kakaoAccount?.email} gender: ${user?.kakaoAccount?.gender?.name} ageRange: ${user?.kakaoAccount?.ageRange?.name}"
+                )
+
+                handleKaKaoLoginSuccess(
+                    kakaoAccessToken = kakaoAccessToken,
+                    name = user?.kakaoAccount?.profile?.nickname ?: throw IllegalStateException(),
+                    email = user.kakaoAccount?.email,
+                    gender = user.kakaoAccount?.gender?.name,
+                    ageRange = user.kakaoAccount?.ageRange?.name
+                )
+            }
+        }
     }
 
-    companion object{
+    private fun handleKaKaoLoginSuccess(
+        kakaoAccessToken: String,
+        name: String,
+        email: String?,
+        gender: String?,
+        ageRange: String?
+    ) {
+        kakaoViewModel.requestUserInfo(kakaoAccessToken, name, email, gender, ageRange)
+    }
+
+
+    companion object {
         const val FIRST_LOGIN = "FIRST_JOIN"
 
         fun newIntent(context: Context, isFirst: Boolean = false) =

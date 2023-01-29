@@ -3,7 +3,11 @@ package com.yapp.buddycon.data.di
 import com.yapp.buddycon.data.BuildConfig
 import com.yapp.buddycon.data.network.BuddyConInterceptorQualifier
 import com.yapp.buddycon.data.network.HttpLoggingInterceptorQualifier
+import com.yapp.buddycon.data.network.RefreshTokenInterceptorQualifier
 import com.yapp.buddycon.data.network.interceptor.BuddyConInterceptor
+import com.yapp.buddycon.data.network.interceptor.RefreshTokenInterceptor
+import com.yapp.buddycon.data.repository.TokenRepositoryImpl
+import com.yapp.buddycon.data.repository.UserRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +19,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object InterceptorModule {
+
     @HttpLoggingInterceptorQualifier
     @Provides
     @Singleton
@@ -23,8 +28,19 @@ object InterceptorModule {
             level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         }
 
+    @RefreshTokenInterceptorQualifier
+    @Provides
+    @Singleton
+    fun provideRefreshTokenInterceptor(
+        tokenRepositoryImpl: TokenRepositoryImpl
+    ): Interceptor =
+        RefreshTokenInterceptor(tokenRepositoryImpl)
+
     @BuddyConInterceptorQualifier
     @Provides
     @Singleton
-    fun provideBuddyConInterceptor(): Interceptor = BuddyConInterceptor()
+    fun provideBuddyConInterceptor(
+        tokenRepositoryImpl: TokenRepositoryImpl,
+        userRepositoryImpl: UserRepositoryImpl
+    ): Interceptor = BuddyConInterceptor(tokenRepositoryImpl, userRepositoryImpl)
 }
