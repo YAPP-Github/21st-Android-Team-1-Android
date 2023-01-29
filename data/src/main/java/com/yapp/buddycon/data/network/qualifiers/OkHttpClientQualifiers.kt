@@ -9,8 +9,4 @@ annotation class LoginClient
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class RefreshTokenClient
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class BuddyConClient

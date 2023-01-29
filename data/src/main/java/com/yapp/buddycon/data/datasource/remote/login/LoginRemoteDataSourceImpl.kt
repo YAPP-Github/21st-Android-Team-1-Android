@@ -1,6 +1,7 @@
 package com.yapp.buddycon.data.datasource.remote.login
 
 import com.yapp.buddycon.data.network.api.LoginService
+import com.yapp.buddycon.data.network.request.RefreshTokenRequest
 import com.yapp.buddycon.data.network.request.UserInfoRequest
 import com.yapp.buddycon.data.network.response.UserInfoResponse
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +27,20 @@ class LoginRemoteDataSourceImpl @Inject constructor(
                     email = email,
                     gender = gender,
                     ageRange = ageRange
+                )
+            )
+        )
+    }
+
+    override fun requestRefreshToken(
+        accessToken: String,
+        refreshToken: String
+    ): Flow<UserInfoResponse> = flow {
+        emit(
+            loginService.requestRefreshToken(
+                RefreshTokenRequest(
+                    accessToken = accessToken,
+                    refreshToken = refreshToken
                 )
             )
         )
