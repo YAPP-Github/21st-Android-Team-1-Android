@@ -62,6 +62,7 @@
             android:layout_marginBottom="8dp"
             android:elevation="1dp"
             android:src="@drawable/ic_tooltip"
+            android:visibility="@{buddyViewModel.isTooltipState() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toTopOf="@id/fab_plus"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -72,6 +73,8 @@
             android:layout_marginTop="26.17dp"
             android:layout_marginEnd="16.02dp"
             android:background="@drawable/ic_close"
+            android:onClick="@{() -> buddyViewModel.closeTooltip()}"
+            android:visibility="@{buddyViewModel.isTooltipState() ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@id/iv_tooltip"
             app:layout_constraintTop_toTopOf="@id/iv_tooltip" />
 

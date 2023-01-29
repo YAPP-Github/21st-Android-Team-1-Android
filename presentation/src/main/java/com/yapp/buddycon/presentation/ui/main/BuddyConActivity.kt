@@ -31,7 +31,7 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
         super.onCreate(savedInstanceState)
         binding.buddyViewModel = buddyViewModel
 
-        if(isFirst) buddyViewModel.saveInitInfo()
+        if(isFirst) buddyViewModel.saveBootInfo()
 
         binding.tvMakeCoupon.setOnClickListener {
             startActivity(Intent(this, MakeCouponActivity::class.java))
