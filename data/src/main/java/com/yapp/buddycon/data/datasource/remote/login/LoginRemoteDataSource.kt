@@ -11,4 +11,9 @@ interface LoginRemoteDataSource {
         gender: String?,
         ageRange: String?
     ): Flow<UserInfoResponse>
+
+    fun requestRefreshToken(
+        accessToken: String,
+        refreshToken: String
+    ): Flow<UserInfoResponse>
 }

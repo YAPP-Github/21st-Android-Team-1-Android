@@ -36,8 +36,10 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.0"
             app:navGraph="@navigation/nav_buddycon_graph" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -51,6 +53,30 @@
             app:elevation="0dp"
             app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_tooltip"
+            android:layout_width="232dp"
+            android:layout_height="76dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="1dp"
+            android:src="@drawable/ic_tooltip"
+            android:visibility="@{buddyViewModel.isTooltipState() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/fab_plus"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btn_tooltip"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginTop="26.17dp"
+            android:layout_marginEnd="16.02dp"
+            android:background="@drawable/ic_close"
+            android:onClick="@{() -> buddyViewModel.closeTooltip()}"
+            android:visibility="@{buddyViewModel.isTooltipState() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="@id/iv_tooltip"
+            app:layout_constraintTop_toTopOf="@id/iv_tooltip" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_fab_menu"
