@@ -58,9 +58,9 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.firstFragment,
-                R.id.secondFragment,
-                R.id.thirdFragment
+                R.id.giftconFragment,
+                R.id.customconFragment,
+                R.id.mypageFragment
             )
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
