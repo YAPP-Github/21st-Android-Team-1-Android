@@ -55,6 +55,8 @@ class BuddyConViewModel @Inject constructor(
 
     fun changeFilterList(filter: Int) {
         _filterState.value = filter
+        _isBottomSheetState.value = false
+        _isDimState.value = false
     }
 
     fun changeBottomSheet() {
