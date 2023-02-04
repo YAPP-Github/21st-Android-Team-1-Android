@@ -41,4 +41,8 @@
     <string name="signup_use_terms">[필수] 이용약관 동의</string>
     <string name="signup_privacy_info_terms">[필수] 개인정보 처리방침 동의</string>
     <string name="signup_complete">회원가입 완료</string>
+    <string name="usable_coupon">사용가능</string>
+    <string name="used_coupon">사용완료</string>
+    <string name="validation_date_filter">유효기간순</string>
+    <string name="making_coupon">만든쿠폰</string>
 </resources>
