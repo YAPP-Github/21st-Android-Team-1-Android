@@ -7,8 +7,11 @@ import com.google.mlkit.vision.common.InputImage
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityAddCouponBinding
+import com.yapp.buddycon.presentation.utils.Logging
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activity_add_coupon) {
 
     private val TAG = "AppTest"
@@ -26,7 +29,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
     private fun getBarcodeNumber() {
         val imageUri = intent.getParcelableExtra<Uri>("imageUri")
-        Timber.tag(TAG).e("AddCouponActivity/ imgUri : %s", imageUri)
+        Logging.error("AddCouponActivity/ imgUri : $imageUri")
         binding.shivCoupon.setImageURI(imageUri)// 현재 테스트용으로 전달받은 이미지 uri로 이미지뷰에 보여주고 있음
 
         imageUri?.let { uri ->
@@ -40,6 +43,9 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
                         barcodes[0]?.let { barcode ->
                             val barcodeNumber = barcode.rawValue
                             Timber.tag(TAG).e("barcode number : %s", barcodeNumber)
+
+                            // 바코드 정보로 서버에 데이터 요청하기
+
                         }
                     } else {
                         Timber.tag(TAG).e("read image success but no barcode")
