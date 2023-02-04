@@ -45,4 +45,8 @@
     <string name="used_coupon">사용완료</string>
     <string name="validation_date_filter">유효기간순</string>
     <string name="made_coupon">만든쿠폰</string>
+    <string name="filter_not_share">미공유순</string>
+    <string name="filter_expiration_date">유효기간순</string>
+    <string name="filter_upload">등록순</string>
+    <string name="filter_name">이름순</string>
 </resources>

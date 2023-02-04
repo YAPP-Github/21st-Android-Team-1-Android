@@ -7,6 +7,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="buddyConViewModel"
+            type="com.yapp.buddycon.presentation.ui.main.BuddyConViewModel" />
+
+        <variable
             name="viewModel"
             type="com.yapp.buddycon.presentation.ui.customcon.CustomConViewModel" />
     </data>
@@ -105,10 +109,12 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/tv_filter"
                 style="@style/regular14"
                 android:layout_width="60dp"
                 android:layout_height="20dp"
                 android:text="@string/validation_date_filter"
+                android:onClick="@{() -> buddyConViewModel.changeBottomSheet()}"
                 android:textColor="@color/gray60"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/iv_filter"
