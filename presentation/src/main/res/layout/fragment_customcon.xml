@@ -2,6 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.yapp.buddycon.presentation.ui.customcon.CustomConViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,8 +30,9 @@
                 android:layout_height="22dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="2dp"
+                android:onClick="@{() -> viewModel.changeTab(0)}"
                 android:text="@string/usable_coupon"
-                android:textColor="@color/gray60"
+                android:textColor="@{viewModel.tabState == 0 ? @color/gray90 : @color/gray60}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -31,6 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="@color/gray90"
+                android:visibility="@{viewModel.tabState == 0 ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tv_usable"
                 app:layout_constraintStart_toStartOf="@id/tv_usable" />
@@ -42,8 +53,9 @@
                 android:layout_height="22dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="2dp"
+                android:onClick="@{() -> viewModel.changeTab(1)}"
                 android:text="@string/used_coupon"
-                android:textColor="@color/gray60"
+                android:textColor="@{viewModel.tabState == 1 ? @color/gray90 : @color/gray60}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_usable"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,19 +65,21 @@
                 android:layout_height="4dp"
                 android:layout_marginStart="18dp"
                 android:background="@color/gray90"
+                android:visibility="@{viewModel.tabState == 1 ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tv_used"
                 app:layout_constraintStart_toEndOf="@id/tv_usable" />
 
             <TextView
-                android:id="@+id/tv_custom"
+                android:id="@+id/tv_made"
                 style="@style/bold16"
                 android:layout_width="55dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="2dp"
-                android:text="@string/making_coupon"
-                android:textColor="@color/gray60"
+                android:onClick="@{() -> viewModel.changeTab(2)}"
+                android:text="@string/made_coupon"
+                android:textColor="@{viewModel.tabState == 2 ? @color/gray90 : @color/gray60}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_used"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -75,8 +89,9 @@
                 android:layout_height="4dp"
                 android:layout_marginStart="18dp"
                 android:background="@color/gray90"
+                android:visibility="@{viewModel.tabState == 2 ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/tv_custom"
+                app:layout_constraintEnd_toEndOf="@id/tv_made"
                 app:layout_constraintStart_toEndOf="@id/tv_used" />
 
             <ImageView
