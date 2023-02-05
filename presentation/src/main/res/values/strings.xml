@@ -70,4 +70,6 @@
     <string name="filter_expiration_date">유효기간순</string>
     <string name="filter_upload">등록순</string>
     <string name="filter_name">이름순</string>
+    <string name="get_giftcon_guide_message">제작티콘으로 만드실\n기프티콘을 선택해주세요</string>
+    <string name="all_select">선택하기</string>
 </resources>
