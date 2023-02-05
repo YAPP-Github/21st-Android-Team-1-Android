@@ -19,4 +19,8 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_buddycon_title</item>
         <item name="postSplashScreenTheme">@style/Theme.BuddyCon</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize.20" parent="">
+        <item name="cornerSize">20dp</item>
+    </style>
 </resources>

@@ -27,6 +27,7 @@
     <string name="makecon_open_theme">테마</string>
     <string name="makecon_close_choose_mode">접기</string>
     <string name="kakao_signup_title">회원가입 완료!\n버디콘에 오신 것을 환영해요 :)</string>
+
     <string name="splash_skip">건너뛰기</string>
     <string name="walk_through_first_title">기프티콘을 한곳에서 관리해요</string>
     <string name="walk_through_first_subtitle">흩어져 있는 기프티콘을 한곳에서 확인하고\n만료 전 알림으로 유효기간을 관리해요</string>
@@ -41,6 +42,25 @@
     <string name="signup_use_terms">[필수] 이용약관 동의</string>
     <string name="signup_privacy_info_terms">[필수] 개인정보 처리방침 동의</string>
     <string name="signup_complete">회원가입 완료</string>
+    
+    <string name="add_coupon_accept">저장하기</string>
+    <string name="add_coupon_cancel">취소하기</string>
+    <string name="add_coupon_hint_title">기프티콘 이름 (최대 16자) *</string>
+    <string name="add_coupon_expire_date">유효기간</string>
+    <string name="add_coupon_expire_date_input">유효기간*</string>
+    <string name="add_coupon_hint_expire_date">유효기간 선택</string>
+    <string name="add_coupon_store_name">사용처</string>
+    <string name="add_coupon_hint_store_name">예) 버디편의점</string>
+    <string name="add_coupon_sent_member">보낸사람</string>
+    <string name="add_coupon_hint_sent_member">최대 16자 입력</string>
+    <string name="add_coupon_memo">메모</string>
+    <string name="add_coupon_hint_memo">최대 50자 입력</string>
+    <string name="add_coupon_input_gifticon_message">기프티콘 정보를 등록해주세요</string>
+    <string name="add_coupon_load_gifticon_message">기프티콘 정보를 불러왔어요</string>
+    <string name="add_coupon_load_makecon_message">제작티콘 정보를 불러왔어요</string>
+    <string name="add_coupon_app_bar_title_gifticon">기프티콘 등록하기</string>
+    <string name="add_coupon_app_bar_title_makecon">제작티콘 등록하기</string>
+
     <string name="usable_coupon">사용가능</string>
     <string name="used_coupon">사용완료</string>
     <string name="validation_date_filter">유효기간순</string>
