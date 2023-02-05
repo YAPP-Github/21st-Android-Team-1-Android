@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="buddyConViewModel"
+            type="com.yapp.buddycon.presentation.ui.main.BuddyConViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="276dp"
+        android:background="@drawable/bg_bottom_sheet"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="32dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_bottom_sheet_clip"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="328dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_not_share"
+                android:layout_width="0dp"
+                android:layout_height="22dp"
+                android:onClick="@{() -> buddyConViewModel.changeFilterList(0)}"
+                android:setStyle="@{buddyConViewModel.filterState}"
+                android:tag="not_share"
+                android:text="@string/filter_not_share"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/v_not_share"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/gray30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_not_share" />
+
+            <TextView
+                android:id="@+id/tv_expiration_date"
+                style="@style/regular16"
+                android:layout_width="0dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:onClick="@{() -> buddyConViewModel.changeFilterList(1)}"
+                android:setStyle="@{buddyConViewModel.filterState}"
+                android:tag="expiration_date"
+                android:text="@string/filter_expiration_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_not_share" />
+
+            <View
+                android:id="@+id/v_expiration_date"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/gray30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_expiration_date" />
+
+            <TextView
+                android:id="@+id/tv_upload"
+                style="@style/regular16"
+                android:layout_width="0dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:onClick="@{() -> buddyConViewModel.changeFilterList(2)}"
+                android:setStyle="@{buddyConViewModel.filterState}"
+                android:tag="upload"
+                android:text="@string/filter_upload"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_expiration_date" />
+
+            <View
+                android:id="@+id/v_upload"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/gray30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_upload" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/regular16"
+                android:layout_width="0dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:onClick="@{() -> buddyConViewModel.changeFilterList(3)}"
+                android:setStyle="@{buddyConViewModel.filterState}"
+                android:tag="name"
+                android:text="@string/filter_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_upload" />
+
+            <View
+                android:id="@+id/v_name"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/gray30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

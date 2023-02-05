@@ -6,11 +6,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
@@ -19,19 +24,26 @@ import com.yapp.buddycon.presentation.ui.addCoupon.AddCouponActivity
 import com.yapp.buddycon.presentation.ui.login.KakaoLoginActivity
 import com.yapp.buddycon.presentation.ui.makeCoupon.MakeCouponActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
 class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity_buddy_con) {
 
-    private val isFirst: Boolean by lazy { intent?.getBooleanExtra(KakaoLoginActivity.FIRST_LOGIN, false) ?: false }
+    private val isFirst: Boolean by lazy {
+        intent?.getBooleanExtra(
+            KakaoLoginActivity.FIRST_LOGIN,
+            false
+        ) ?: false
+    }
     private val buddyViewModel: BuddyConViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.buddyViewModel = buddyViewModel
 
-        if(isFirst) buddyViewModel.saveBootInfo()
+        if (isFirst) buddyViewModel.saveBootInfo()
 
         binding.tvMakeCoupon.setOnClickListener {
             startActivity(Intent(this, MakeCouponActivity::class.java))
@@ -40,6 +52,7 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
         initForAddCoupon()
         initToolbar()
         initNavigation()
+        initBottSheet()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -58,9 +71,9 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.firstFragment,
-                R.id.secondFragment,
-                R.id.thirdFragment
+                R.id.giftconFragment,
+                R.id.customconFragment,
+                R.id.mypageFragment
             )
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
@@ -105,7 +118,31 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
         }
     }
 
-    companion object{
+    private fun initBottSheet(){
+        val bottomSheet = binding.bottomSheet.root
+        val behavior = BottomSheetBehavior.from(bottomSheet)
+        buddyViewModel.isBottomSheetState
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { isShow ->
+                if(isShow) bottomSheet.bringToFront()
+                behavior.state = if(isShow) BottomSheetBehavior.STATE_EXPANDED else BottomSheetBehavior.STATE_COLLAPSED
+            }
+            .launchIn(lifecycleScope)
+
+        behavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback(){
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if(newState == BottomSheetBehavior.STATE_COLLAPSED){
+                    buddyViewModel.hideBottomSheet()
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float){
+
+            }
+        })
+    }
+
+    companion object {
         const val FIRST_LOGIN = "FIRST_JOIN"
 
         fun newIntent(context: Context, isFirst: Boolean = false) =
