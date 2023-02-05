@@ -34,6 +34,8 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.vm = addCouponViewModel
+
         init()
         observeCouponInfoState()
     }
@@ -136,7 +138,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         }
     }
 
-    // 세부 수정 예정
+    // 세부 수정 및 바인딩어댑터로 전환 예정
     // 새로 등록하는 기프티콘의 경우 사용자가 직접 입력을 할 수 있어야 함
     private fun setContentInputType(inputState: InputState) {
         when (inputState) {
