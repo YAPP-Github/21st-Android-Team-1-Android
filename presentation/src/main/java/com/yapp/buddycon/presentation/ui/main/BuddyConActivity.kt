@@ -85,7 +85,6 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == RESULT_OK) {
                     //Snackbar.make(binding.root, "사진을 불러왔습니다", Snackbar.LENGTH_SHORT).show()
-
                     val intent = Intent(this, AddCouponActivity::class.java)
                     it.data?.let { galleryIntent ->
                         galleryIntent.data?.let { uri ->
