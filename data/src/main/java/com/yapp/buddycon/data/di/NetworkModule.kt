@@ -1,6 +1,7 @@
 package com.yapp.buddycon.data.di
 
 import com.yapp.buddycon.data.network.*
+import com.yapp.buddycon.data.network.api.AddCouponService
 import com.yapp.buddycon.data.network.api.LoginService
 import com.yapp.buddycon.data.network.qualifiers.BuddyConRetrofit
 import com.yapp.buddycon.data.network.qualifiers.LoginRetrofit
@@ -67,11 +68,17 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-
     @Provides
     @Singleton
     fun provideLoginService(
         @LoginRetrofit retrofit: Retrofit
     ): LoginService =
+        retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideAddCouponService(
+        @BuddyConRetrofit retrofit: Retrofit
+    ): AddCouponService =
         retrofit.create()
 }
