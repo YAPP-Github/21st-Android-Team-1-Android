@@ -49,5 +49,9 @@ dependencies {
     implementation(ModuleDependency.Coroutine.COROUTINE_ANDROID)
     implementation(ModuleDependency.DataStore.DATASTORE)
     implementation(ModuleDependency.Hilt.HILT)
+    implementation(ModuleDependency.Room.ROOM_KTX)
+    implementation(ModuleDependency.Room.ROOM_RUNTIME)
+    annotationProcessor(ModuleDependency.Room.ROOM_COMPILER)
+    implementation(ModuleDependency.Paging.PAGING_RUNTIME_KTX)
     kapt(ModuleDependency.Hilt.HILT_COMPILER)
 }
