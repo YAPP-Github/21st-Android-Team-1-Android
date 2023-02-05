@@ -77,15 +77,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenService(
-        @RefreshTokenRetrofit retrofit: Retrofit
-    ): RefreshTokenService =
-        retrofit.create()
-
-    @Provides
-    @Singleton
     fun provideAddCouponService(
-        @RefreshTokenRetrofit retrofit: Retrofit
+        @BuddyConRetrofit retrofit: Retrofit
     ): AddCouponService =
         retrofit.create()
 }
