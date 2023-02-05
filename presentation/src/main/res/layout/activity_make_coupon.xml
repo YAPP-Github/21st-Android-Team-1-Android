@@ -183,7 +183,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize20Percent"/>
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize.20"/>
 
             <Button
                 app:layout_constraintVertical_chainStyle="packed"

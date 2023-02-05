@@ -60,7 +60,7 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
         }.launchIn(lifecycleScope)
     }
 
-    fun openGallery() {
+    private fun openGallery() {
         val getImageContent =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == RESULT_OK) {
