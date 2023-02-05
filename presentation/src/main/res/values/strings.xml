@@ -17,6 +17,7 @@
     <string name="makecon_explanation_hint">전하고 싶은 한 마디 입력</string>
     <string name="makecon_get_img">이미지 불러오기</string>
     <string name="makecon_get_giftcon">기프티콘 불러오기</string>
+    <string name="makecon_change_img">이미지 변경하기 </string>
     <string name="makecon_barcode_num">9912 7099 6043</string>
     <string name="all_where_use">사용처</string>
     <string name="all_valid_date">유효기간</string>
