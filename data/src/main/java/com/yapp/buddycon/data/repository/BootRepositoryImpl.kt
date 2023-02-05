@@ -20,7 +20,6 @@ class BootRepositoryImpl @Inject constructor(
 
     override suspend fun saveBootInfo() {
         dataStore.edit { preference ->
-            Timber.d("saveInitInfo")
             preference[BUDDYCON_BOOT_INFO] = true
         }
     }

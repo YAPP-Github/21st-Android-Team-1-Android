@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_buddycon_graph"
-    app:startDestination="@id/firstFragment">
+    app:startDestination="@id/giftconFragment">
 
     <fragment
-        android:id="@+id/firstFragment"
-        android:name="com.yapp.buddycon.presentation.ui.first.FirstFragment"
-        android:label="제작티콘"
-        tools:layout="@layout/fragment_first" />
+        android:id="@+id/giftconFragment"
+        android:name="com.yapp.buddycon.presentation.ui.giftcon.GiftConFragment"
+        android:label="@string/menu_giftcon"
+        tools:layout="@layout/fragment_giftcon" />
 
     <fragment
-        android:id="@+id/secondFragment"
-        android:name="com.yapp.buddycon.presentation.ui.second.SecondFragment"
-        android:label="기프티콘"
-        tools:layout="@layout/fragment_second" />
+        android:id="@+id/customconFragment"
+        android:name="com.yapp.buddycon.presentation.ui.customcon.CustomConFragment"
+        android:label="@string/menu_customcon"
+        tools:layout="@layout/fragment_customcon" />
 
     <fragment
-        android:id="@+id/thirdFragment"
-        android:name="com.yapp.buddycon.presentation.ui.third.ThirdFragment"
-        android:label="마이페이지"
-        tools:layout="@layout/fragment_third" />
+        android:id="@+id/mypageFragment"
+        android:name="com.yapp.buddycon.presentation.ui.mypage.MyPageFragment"
+        android:label="@string/menu_my_page"
+        tools:layout="@layout/fragment_my_page" />
 </navigation>

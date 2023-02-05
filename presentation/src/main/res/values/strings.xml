@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">버디콘</string>
     <string name="menu_notification">menu_notification</string>
-    <string name="menu_my">마이페이지</string>
+    <string name="menu_my_page">마이페이지</string>
     <string name="menu_customcon">제작티콘</string>
     <string name="menu_giftcon">기프티콘</string>
     <string name="kakao_login_buddycon_title">Buddycon</string>
@@ -60,4 +60,13 @@
     <string name="add_coupon_load_makecon_message">제작티콘 정보를 불러왔어요</string>
     <string name="add_coupon_app_bar_title_gifticon">기프티콘 등록하기</string>
     <string name="add_coupon_app_bar_title_makecon">제작티콘 등록하기</string>
+
+    <string name="usable_coupon">사용가능</string>
+    <string name="used_coupon">사용완료</string>
+    <string name="validation_date_filter">유효기간순</string>
+    <string name="made_coupon">만든쿠폰</string>
+    <string name="filter_not_share">미공유순</string>
+    <string name="filter_expiration_date">유효기간순</string>
+    <string name="filter_upload">등록순</string>
+    <string name="filter_name">이름순</string>
 </resources>

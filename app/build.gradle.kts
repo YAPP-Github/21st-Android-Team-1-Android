@@ -57,4 +57,6 @@ dependencies {
     implementation(ModuleDependency.Default.APP_COMPAT)
     implementation(ModuleDependency.Timber.TIMBER)
     implementation(ModuleDependency.KaKao.LOGIN)
+    implementation(platform(ModuleDependency.Firebase.FIREBASE_BOM))
+    implementation(ModuleDependency.Firebase.FIREBASE_KTX)
 }

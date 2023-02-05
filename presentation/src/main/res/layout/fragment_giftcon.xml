@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="buddyConViewModel"
+            type="com.yapp.buddycon.presentation.ui.main.BuddyConViewModel" />
+
+        <variable
+            name="viewModel"
+            type="com.yapp.buddycon.presentation.ui.giftcon.GiftConViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_tab"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_usable"
+                style="@style/bold16"
+                android:layout_width="55dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.changeTab(0)}"
+                android:paddingTop="2dp"
+                android:text="@string/usable_coupon"
+                android:textColor="@{viewModel.tabState == 0 ? @color/gray90 : @color/gray60}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="55dp"
+                android:layout_height="4dp"
+                android:background="@color/gray90"
+                android:visibility="@{viewModel.tabState == 0 ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_usable" />
+
+            <TextView
+                android:id="@+id/tv_used"
+                style="@style/bold16"
+                android:layout_width="55dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="18dp"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.changeTab(1)}"
+                android:paddingTop="2dp"
+                android:text="@string/used_coupon"
+                android:textColor="@{viewModel.tabState == 1 ? @color/gray90 : @color/gray60}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_usable"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="55dp"
+                android:layout_height="4dp"
+                android:layout_marginStart="18dp"
+                android:background="@color/gray90"
+                android:visibility="@{viewModel.tabState == 1 ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_usable" />
+
+            <ImageView
+                android:id="@+id/iv_filter"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_filter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_filter"
+                style="@style/regular14"
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:onClick="@{() -> buddyConViewModel.changeBottomSheet()}"
+                android:text="@string/validation_date_filter"
+                android:textColor="@color/gray60"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_filter"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/gray30"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_tab" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

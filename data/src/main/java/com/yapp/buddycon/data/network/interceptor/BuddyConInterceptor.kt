@@ -1,6 +1,5 @@
 package com.yapp.buddycon.data.network.interceptor
 
-import com.yapp.buddycon.data.network.api.RefreshTokenService
 import com.yapp.buddycon.domain.model.UserInfo
 import com.yapp.buddycon.domain.repository.TokenRepository
 import com.yapp.buddycon.domain.repository.UserRepository
@@ -9,7 +8,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
-import retrofit2.create
 import javax.inject.Inject
 
 

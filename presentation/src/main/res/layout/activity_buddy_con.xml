@@ -13,103 +13,140 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{buddyViewModel.isFabState ? @color/black_a40_dim : @color/white}"
+        android:background="@{buddyViewModel.isDimState ? @color/black_a40_dim : @color/white}"
         tools:context=".ui.main.BuddyConActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            app:elevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container_view"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:navGraph="@navigation/nav_buddycon_graph" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_plus"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_margin="20dp"
-            android:backgroundTint="@{buddyViewModel.isFabState ? @color/white : @color/skb_blue}"
-            android:onClick="@{() -> buddyViewModel.changeFab()}"
-            android:src="@{buddyViewModel.isFabState() ? @drawable/btn_fab_cancle :  @drawable/btn_fab_plus}"
-            app:elevation="0dp"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
-            app:layout_constraintEnd_toEndOf="parent" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_fab_menu"
-            android:layout_width="163dp"
-            android:layout_height="108dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_fab_menu"
-            android:visibility="@{buddyViewModel.isFabState() ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@id/fab_plus"
-            app:layout_constraintEnd_toEndOf="@id/fab_plus">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tv_add_coupon"
-                style="@style/regular16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:drawableStart="@drawable/btn_add_coupon"
-                android:drawablePadding="4dp"
-                android:gravity="center"
-                android:text="@string/fab_add_coupon"
-                android:textColor="@color/gray90"
-                app:layout_constraintStart_toStartOf="@id/tv_make_coupon"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:backgroundTint="@{buddyViewModel.isDimState ? @color/black_a40_dim : @color/white}"
+                app:elevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_make_coupon"
-                style="@style/regular16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp"
-                android:drawableStart="@drawable/btn_make_coupon"
-                android:drawablePadding="4dp"
-                android:text="@string/all_make_coupon"
-                android:textColor="@color/gray90"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragment_container_view"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintVertical_bias="0.0"
+                app:navGraph="@navigation/nav_buddycon_graph" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_plus"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="20dp"
+                android:backgroundTint="@{buddyViewModel.isFabState ? @color/white : @color/skb_blue}"
+                android:onClick="@{() -> buddyViewModel.changeFab()}"
+                android:src="@{buddyViewModel.isFabState() ? @drawable/btn_fab_cancle :  @drawable/btn_fab_plus}"
+                app:elevation="0dp"
+                app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_tooltip"
+                android:layout_width="232dp"
+                android:layout_height="76dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="1dp"
+                android:src="@drawable/ic_tooltip"
+                android:visibility="@{buddyViewModel.isTooltipState() ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toTopOf="@id/fab_plus"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <Button
+                android:id="@+id/btn_tooltip"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginTop="26.17dp"
+                android:layout_marginEnd="16.02dp"
+                android:background="@drawable/ic_close"
+                android:onClick="@{() -> buddyViewModel.closeTooltip()}"
+                android:visibility="@{buddyViewModel.isTooltipState() ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="@id/iv_tooltip"
+                app:layout_constraintTop_toTopOf="@id/iv_tooltip" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_fab_menu"
+                android:layout_width="163dp"
+                android:layout_height="108dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_fab_menu"
+                android:visibility="@{buddyViewModel.isFabState() ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toTopOf="@id/fab_plus"
+                app:layout_constraintEnd_toEndOf="@id/fab_plus">
+
+                <TextView
+                    android:id="@+id/tv_add_coupon"
+                    style="@style/regular16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:drawableStart="@drawable/btn_add_coupon"
+                    android:drawablePadding="4dp"
+                    android:gravity="center"
+                    android:text="@string/fab_add_coupon"
+                    android:textColor="@color/gray90"
+                    app:layout_constraintStart_toStartOf="@id/tv_make_coupon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_make_coupon"
+                    style="@style/regular16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:drawableStart="@drawable/btn_make_coupon"
+                    android:drawablePadding="4dp"
+                    android:text="@string/all_make_coupon"
+                    android:textColor="@color/gray90"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_add_coupon" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation_view"
+                style="@style/regular12"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:elevation="16dp"
+                android:foreground="@{buddyViewModel.isDimState ? @color/black_a40_dim : #00000000 }"
+                app:itemIconTint="@drawable/ic_navigation_icon"
+                app:itemTextColor="@drawable/ic_navigation_icon"
+                app:labelVisibilityMode="labeled"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_add_coupon" />
+                app:menu="@menu/menu_nav_buddycon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation_view"
-            style="@style/regular12"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:elevation="16dp"
-            android:foreground="@{buddyViewModel.isFabState ? @color/black_a40_dim : #00000000 }"
-            app:itemIconTint="@drawable/ic_navigation_icon"
-            app:itemTextColor="@drawable/ic_navigation_icon"
-            app:labelVisibilityMode="labeled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/menu_nav_buddycon" />
+        <include
+            android:id="@+id/bottomSheet"
+            layout="@layout/layout_bottom_sheet"
+            app:buddyConViewModel="@{buddyViewModel}" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
