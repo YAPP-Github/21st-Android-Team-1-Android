@@ -2,8 +2,10 @@ package com.yapp.buddycon.presentation.ui.addCoupon
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.activity.viewModels
@@ -19,7 +21,7 @@ import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityAddCouponBinding
 import com.yapp.buddycon.presentation.ui.addCoupon.state.CouponInfoLoadState
-import com.yapp.buddycon.presentation.ui.addCoupon.state.InputState
+import com.yapp.buddycon.presentation.ui.addCoupon.state.WhetherInputPossibleState
 import com.yapp.buddycon.presentation.utils.Logging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -44,6 +46,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         initAppbar()
         getBarcodeNumber()
         initTitleHint()
+        initTextWatcher()
     }
 
     private fun getBarcodeNumber() {
@@ -122,17 +125,17 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             is CouponInfoLoadState.LoadError -> {}
             is CouponInfoLoadState.NewGifticon -> {
                 setAppbarTitle(getString(R.string.add_coupon_app_bar_title_gifticon))
-                setContentInputType(InputState.Possible)
+                setContentInputType(WhetherInputPossibleState.Possible)
                 setSentMemberVisibility(state)
             }
             is CouponInfoLoadState.ExistGifticon -> {
                 setAppbarTitle(getString(R.string.add_coupon_app_bar_title_gifticon))
-                setContentInputType(InputState.Impossible)
+                setContentInputType(WhetherInputPossibleState.Impossible)
                 setSentMemberVisibility(state)
             }
             is CouponInfoLoadState.ExistMakeCon -> {
                 setAppbarTitle(getString(R.string.add_coupon_app_bar_title_makecon))
-                setContentInputType(InputState.Impossible)
+                setContentInputType(WhetherInputPossibleState.Impossible)
                 setSentMemberVisibility(state)
             }
         }
@@ -140,16 +143,16 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
     // 세부 수정 및 바인딩어댑터로 전환 예정
     // 새로 등록하는 기프티콘의 경우 사용자가 직접 입력을 할 수 있어야 함
-    private fun setContentInputType(inputState: InputState) {
-        when (inputState) {
-            is InputState.Possible -> {
+    private fun setContentInputType(whetherInputPossibleState: WhetherInputPossibleState) {
+        when (whetherInputPossibleState) {
+            is WhetherInputPossibleState.Possible -> {
                 with(binding) {
                     etTitle.isEnabled = true
                     etStoreName.isEnabled = true
                     etSentMember.isEnabled = true
                 }
             }
-            is InputState.Impossible -> {
+            is WhetherInputPossibleState.Impossible -> {
                 with(binding) {
                     etTitle.isEnabled = false
                     etStoreName.isEnabled = false
@@ -170,5 +173,24 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
     fun onClickAddCouponExpireDate(view: View) {
         Timber.tag(TAG).e("onClickAddCouponExpireDate called")
+
+        // date picker
+
+    }
+
+    private fun initTextWatcher() {
+        initTitleTextWatcher()
+    }
+
+    private fun initTitleTextWatcher() {
+        binding.etTitle.addTextChangedListener( object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                addCouponViewModel.checkTitle(s.toString())
+            }
+        })
     }
 }
