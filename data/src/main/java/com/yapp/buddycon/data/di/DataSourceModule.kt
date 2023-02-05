@@ -1,5 +1,7 @@
 package com.yapp.buddycon.data.di
 
+import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSource
+import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSourceImpl
 import com.yapp.buddycon.data.datasource.remote.login.LoginRemoteDataSource
 import com.yapp.buddycon.data.datasource.remote.login.LoginRemoteDataSourceImpl
 import com.yapp.buddycon.data.datasource.remote.token.RefreshTokenRemoteDataSource
@@ -22,4 +24,9 @@ interface DataSourceModule {
     fun bindsRefreshTokenRemoteDataSource(
         refreshTokenRemoteDataSourceImpl: RefreshTokenRemoteDataSourceImpl
     ): RefreshTokenRemoteDataSource
+
+    @Binds
+    fun bindsAddCouponRemoteDataSource(
+        addCouponRemoteDataSourceImpl: AddCouponRemoteDataSourceImpl
+    ): AddCouponRemoteDataSource
 }

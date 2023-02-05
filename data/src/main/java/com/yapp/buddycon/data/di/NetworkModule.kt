@@ -1,6 +1,7 @@
 package com.yapp.buddycon.data.di
 
 import com.yapp.buddycon.data.network.*
+import com.yapp.buddycon.data.network.api.AddCouponService
 import com.yapp.buddycon.data.network.api.LoginService
 import com.yapp.buddycon.data.network.api.RefreshTokenService
 import com.yapp.buddycon.data.network.qualifiers.BuddyConRetrofit
@@ -111,5 +112,12 @@ object NetworkModule {
     fun provideTokenService(
         @RefreshTokenRetrofit retrofit: Retrofit
     ): RefreshTokenService =
+        retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideAddCouponService(
+        @RefreshTokenRetrofit retrofit: Retrofit
+    ): AddCouponService =
         retrofit.create()
 }

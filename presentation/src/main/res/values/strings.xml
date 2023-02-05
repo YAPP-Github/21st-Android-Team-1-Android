@@ -51,9 +51,13 @@
     <string name="add_coupon_hint_expire_date">유효기간 선택</string>
     <string name="add_coupon_store_name">사용처</string>
     <string name="add_coupon_hint_store_name">예) 버디편의점</string>
+    <string name="add_coupon_sent_member">보낸사람</string>
+    <string name="add_coupon_hint_sent_member">최대 16자 입력</string>
     <string name="add_coupon_memo">메모</string>
     <string name="add_coupon_hint_memo">최대 50자 입력</string>
     <string name="add_coupon_input_gifticon_message">기프티콘 정보를 등록해주세요</string>
     <string name="add_coupon_load_gifticon_message">기프티콘 정보를 불러왔어요</string>
     <string name="add_coupon_load_makecon_message">제작티콘 정보를 불러왔어요</string>
+    <string name="add_coupon_app_bar_title_gifticon">기프티콘 등록하기</string>
+    <string name="add_coupon_app_bar_title_makecon">제작티콘 등록하기</string>
 </resources>

@@ -2,29 +2,46 @@ package com.yapp.buddycon.presentation.ui.addCoupon
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.view.View
+import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityAddCouponBinding
+import com.yapp.buddycon.presentation.ui.addCoupon.state.CouponInfoLoadState
+import com.yapp.buddycon.presentation.ui.addCoupon.state.InputState
 import com.yapp.buddycon.presentation.utils.Logging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
 class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activity_add_coupon) {
-
     private val TAG = "AppTest"
+    private val addCouponViewModel: AddCouponViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         init()
+        observeCouponInfoState()
     }
 
     private fun init() {
-        setAppbar()
+        initAppbar()
         getBarcodeNumber()
+        initTitleHint()
     }
 
     private fun getBarcodeNumber() {
@@ -44,7 +61,10 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
                             val barcodeNumber = barcode.rawValue
                             Timber.tag(TAG).e("barcode number : %s", barcodeNumber)
 
-                            // 바코드 정보로 서버에 데이터 요청하기
+                            // 바코드 정보로 서버에 데이터 요청하기\
+                            barcodeNumber?.let {
+                                addCouponViewModel.checkBarcodeInfo(it)
+                            }
 
                         }
                     } else {
@@ -62,7 +82,91 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         }
     }
 
-    private fun setAppbar() {
+    private fun initAppbar() {
         binding.appbarAddCoupon.ibnAppbarBack.setOnClickListener { finish() }
+    }
+
+    private fun setAppbarTitle(title: String) {
+        binding.appbarAddCoupon.title = title
+    }
+
+    private fun initTitleHint() {
+        // 입력 필수 표시를 위함
+        val builder = SpannableStringBuilder()
+        val titleHint = binding.etTitle.hint.toString()
+        val titleHintSpannable = SpannableString(titleHint)
+
+        titleHintSpannable.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this, R.color.orange100)),
+            titleHint.length - 1, titleHint.length, 0
+        )
+
+        builder.append(titleHintSpannable)
+        binding.etTitle.hint = builder
+    }
+
+    private fun observeCouponInfoState() {
+        addCouponViewModel.couponInfoLoadState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                handleCouponInfoLoadState(it)
+            }.launchIn(lifecycleScope)
+    }
+
+    // 세부기능 추가 예정 ex> loading progress bar
+    private fun handleCouponInfoLoadState(state: CouponInfoLoadState<CouponInfo>) {
+        when (state) {
+            is CouponInfoLoadState.Init -> {}
+            is CouponInfoLoadState.Loading -> {}
+            is CouponInfoLoadState.LoadError -> {}
+            is CouponInfoLoadState.NewGifticon -> {
+                setAppbarTitle(getString(R.string.add_coupon_app_bar_title_gifticon))
+                setContentInputType(InputState.Possible)
+                setSentMemberVisibility(state)
+            }
+            is CouponInfoLoadState.ExistGifticon -> {
+                setAppbarTitle(getString(R.string.add_coupon_app_bar_title_gifticon))
+                setContentInputType(InputState.Impossible)
+                setSentMemberVisibility(state)
+            }
+            is CouponInfoLoadState.ExistMakeCon -> {
+                setAppbarTitle(getString(R.string.add_coupon_app_bar_title_makecon))
+                setContentInputType(InputState.Impossible)
+                setSentMemberVisibility(state)
+            }
+        }
+    }
+
+    // 세부 수정 예정
+    // 새로 등록하는 기프티콘의 경우 사용자가 직접 입력을 할 수 있어야 함
+    private fun setContentInputType(inputState: InputState) {
+        when (inputState) {
+            is InputState.Possible -> {
+                with(binding) {
+                    etTitle.isEnabled = true
+                    etStoreName.isEnabled = true
+                    etSentMember.isEnabled = true
+                }
+            }
+            is InputState.Impossible -> {
+                with(binding) {
+                    etTitle.isEnabled = false
+                    etStoreName.isEnabled = false
+                    etSentMember.isEnabled = false
+                }
+            }
+        }
+    }
+
+    // 제작티콘의 경우에만 '보낸사람' 영역 보임
+    private fun setSentMemberVisibility(couponInfoState: CouponInfoLoadState<CouponInfo>) {
+        with(binding) {
+            etSentMember.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInfo>
+            tvSentMemberDescription.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInfo>
+            viewDivider3.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInfo>
+        }
+    }
+
+    fun onClickAddCouponExpireDate(view: View) {
+        Timber.tag(TAG).e("onClickAddCouponExpireDate called")
     }
 }

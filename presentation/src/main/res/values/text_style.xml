@@ -104,6 +104,10 @@
         <item name="android:textColor">@color/gray90</item>
     </style>
 
+    <style name="regular16.gray.40" parent="regular16">
+        <item name="android:textColor">@color/gray40</item>
+    </style>
+
     <style name="regular14">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">14sp</item>
