@@ -38,10 +38,4 @@ object LocalDataModule {
         BuddyConDataBase::class.java,
         BUDDYCON_DATABASE
     )
-
-    @Provides
-    @Singleton
-    fun provideGiftconDao(
-        buddyConDataBase: BuddyConDataBase
-    ) = buddyConDataBase.giftconDao()
 }
