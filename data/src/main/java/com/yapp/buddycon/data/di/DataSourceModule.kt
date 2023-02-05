@@ -19,11 +19,6 @@ interface DataSourceModule {
     ): LoginRemoteDataSource
 
     @Binds
-    fun bindsRefreshTokenRemoteDataSource(
-        refreshTokenRemoteDataSourceImpl: RefreshTokenRemoteDataSourceImpl
-    ): RefreshTokenRemoteDataSource
-
-    @Binds
     fun bindsAddCouponRemoteDataSource(
         addCouponRemoteDataSourceImpl: AddCouponRemoteDataSourceImpl
     ): AddCouponRemoteDataSource
