@@ -13,7 +13,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
     </style>
-    
+
     <style name="Theme.BuddyCon.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/skb_blue</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_buddycon_title</item>
@@ -22,5 +22,38 @@
 
     <style name="ShapeAppearanceOverlay.App.CornerSize.20" parent="">
         <item name="cornerSize">20dp</item>
+    </style>
+
+    <style name="Theme.AddCouponActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/skb_blue</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="custom_date_picker_style" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="materialCalendarHeaderLayout">
+            @style/Widget.AppTheme.MaterialCalendar.HeaderToggleButton
+        </item>
+        <item name="shapeAppearanceMediumComponent">
+            @style/ShapeAppearance.App.MediumComponent
+        </item>
+        <item name="colorPrimary">@color/skyblue</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="Widget.AppTheme.MaterialCalendar.HeaderToggleButton" parent="Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">16dp</item>
     </style>
 </resources>
