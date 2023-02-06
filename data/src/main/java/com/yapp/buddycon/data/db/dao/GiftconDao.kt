@@ -19,6 +19,6 @@ interface GiftconDao {
     @Query("SELECT * FROM giftcon ORDER BY :sort DESC")
     fun getGiftconByDESC(sort: String)
 
-    @Delete
-    suspend fun delete(giftcon: GiftconEntity)
+    @Query("DELETE FROM giftcon")
+    suspend fun clearGiftcon()
 }

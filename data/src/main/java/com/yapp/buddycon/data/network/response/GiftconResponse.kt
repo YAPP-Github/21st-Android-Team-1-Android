@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class GiftconResponse(
     @SerializedName("expireDate")
-    val expireDate: String?,
+    val expireDate: String,
     @SerializedName("id")
-    val id: Int?,
+    val id: Int,
     @SerializedName("imageUrl")
-    val imageUrl: String?,
+    val imageUrl: String,
     @SerializedName("name")
-    val name: String?
+    val name: String
 )

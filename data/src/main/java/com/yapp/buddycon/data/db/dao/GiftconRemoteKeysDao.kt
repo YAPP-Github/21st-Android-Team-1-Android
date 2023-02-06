@@ -13,4 +13,7 @@ interface GiftconRemoteKeysDao {
 
     @Query("SELECT * FROM giftcon_remote_keys WHERE id = :id")
     suspend fun getGiftconRemoteKey(id: Int): GiftconRemoteKeysEntity
+
+    @Query("DELETE FROM giftcon_remote_keys")
+    suspend fun clearGiftconRemoteKeys()
 }
