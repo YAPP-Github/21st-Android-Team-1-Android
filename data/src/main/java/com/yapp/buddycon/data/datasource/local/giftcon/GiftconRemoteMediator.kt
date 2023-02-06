@@ -1,4 +1,4 @@
-package com.yapp.buddycon.data.datasource.local
+package com.yapp.buddycon.data.datasource.local.giftcon
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -15,13 +15,20 @@ import javax.inject.Inject
 
 const val GIFTCON_STARTING_PAEG_INDEX = 0
 
+enum class GIFTCON_PAGING_SORT(val value: String) {
+    EXPIREDATE("expireDate"), EXPIREDATE_ASC("expireDate,ASC"),
+    NAME("name"), NAME_ASC("name,ASC"),
+    CREATEDAT("createdAt"), CREATEDAT_ASC("createdAt,ASC")
+}
+
 @OptIn(ExperimentalPagingApi::class)
 class GiftconRemoteMediator @Inject constructor(
-    private val usable: Boolean,
-    private val sort: String,
     private val service: GiftconService,
     private val buddyConDataBase: BuddyConDataBase
 ) : RemoteMediator<Int, GiftconEntity>() {
+
+    var usable: Boolean = false
+    var sort: String = GIFTCON_PAGING_SORT.EXPIREDATE.value
 
     override suspend fun load(
         loadType: LoadType,
@@ -34,12 +41,16 @@ class GiftconRemoteMediator @Inject constructor(
             }
             LoadType.APPEND -> {
                 val remoteKey = getRemoteKeyInLastItem(state)
-                val nextKey = remoteKey?.nextKey ?: return MediatorResult.Success(endOfPaginationReached = remoteKey != null)
+                val nextKey = remoteKey?.nextKey ?: return MediatorResult.Success(
+                    endOfPaginationReached = remoteKey != null
+                )
                 nextKey
             }
             LoadType.PREPEND -> {
                 val remoteKey = getRemoteKeyInFirstItem(state)
-                val prevKey = remoteKey?.prevKey ?: return MediatorResult.Success(endOfPaginationReached = remoteKey != null)
+                val prevKey = remoteKey?.prevKey ?: return MediatorResult.Success(
+                    endOfPaginationReached = remoteKey != null
+                )
                 prevKey
             }
         }

@@ -33,9 +33,9 @@ object LocalDataModule {
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context
-    ) = Room.databaseBuilder(
+    ): BuddyConDataBase = Room.databaseBuilder(
         context,
         BuddyConDataBase::class.java,
         BUDDYCON_DATABASE
-    )
+    ).build()
 }
