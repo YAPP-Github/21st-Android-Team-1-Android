@@ -9,27 +9,20 @@ import com.yapp.buddycon.data.db.BuddyConDataBase
 import com.yapp.buddycon.data.db.entity.GiftconEntity
 import com.yapp.buddycon.data.db.entity.GiftconRemoteKeysEntity
 import com.yapp.buddycon.data.network.api.GiftconService
+import com.yapp.buddycon.domain.repository.GIFTCON_PAGING_SORT
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
 const val GIFTCON_STARTING_PAEG_INDEX = 0
 
-enum class GIFTCON_PAGING_SORT(val value: String) {
-    EXPIREDATE("expireDate"), EXPIREDATE_ASC("expireDate,ASC"),
-    NAME("name"), NAME_ASC("name,ASC"),
-    CREATEDAT("createdAt"), CREATEDAT_ASC("createdAt,ASC")
-}
-
 @OptIn(ExperimentalPagingApi::class)
-class GiftconRemoteMediator @Inject constructor(
+class GiftconRemoteMediator(
+    private val usable: Boolean,
+    private val sort: GIFTCON_PAGING_SORT,
     private val service: GiftconService,
     private val buddyConDataBase: BuddyConDataBase
 ) : RemoteMediator<Int, GiftconEntity>() {
-
-    var usable: Boolean = false
-    var sort: String = GIFTCON_PAGING_SORT.EXPIREDATE.value
-
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, GiftconEntity>
@@ -56,7 +49,7 @@ class GiftconRemoteMediator @Inject constructor(
         }
 
         try {
-            val giftcons = service.requestGiftConList(usable, page, state.config.pageSize, sort)
+            val giftcons = service.requestGiftConList(usable, page, state.config.pageSize, sort.value)
             buddyConDataBase.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     buddyConDataBase.giftconDao().clearGiftcon()
@@ -68,12 +61,13 @@ class GiftconRemoteMediator @Inject constructor(
                 val keys = giftcons.map {
                     GiftconRemoteKeysEntity(it.id, prevKey, nextKey)
                 }
-                buddyConDataBase.giftconDao().insertAl(giftcons.map {
+                buddyConDataBase.giftconDao().insertAll(giftcons.map {
                     GiftconEntity(
                         expireDate = it.expireDate,
                         id = it.id,
                         imageUrl = it.imageUrl,
-                        name = it.name
+                        name = it.name,
+                        usable = usable
                     )
                 })
                 buddyConDataBase.giftconRemoteKeysDao().insertAl(keys)

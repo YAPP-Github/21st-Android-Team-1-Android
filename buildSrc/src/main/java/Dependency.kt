@@ -81,6 +81,7 @@ object ModuleDependency {
 
     object Paging {
         const val PAGING_RUNTIME_KTX = "androidx.paging:paging-runtime-ktx:${Versions.PAGING}"
+        const val PAGING_COMMON = "androidx.paging:paging-common:${Versions.PAGING}"
     }
 
     object Timber{

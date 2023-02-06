@@ -11,13 +11,13 @@ import com.yapp.buddycon.data.db.entity.GiftconEntity
 @Dao
 interface GiftconDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAl(giftcons: List<GiftconEntity>)
+    suspend fun insertAll(giftcons: List<GiftconEntity>)
 
-    @Query("SELECT * FROM giftcon ORDER BY :sort ASC")
-    fun getGiftconByASC(sort: String): PagingSource<Int, GiftconEntity>
+    @Query("SELECT * FROM giftcon WHERE usable = :usable ORDER BY :sort ASC")
+    fun getGiftconByASC(usable: Boolean, sort: String): PagingSource<Int, GiftconEntity>
 
-    @Query("SELECT * FROM giftcon ORDER BY :sort DESC")
-    fun getGiftconByDESC(sort: String)
+    @Query("SELECT * FROM giftcon WHERE usable = :usable ORDER BY :sort DESC")
+    fun getGiftconByDESC(usable: Boolean, sort: String): PagingSource<Int, GiftconEntity>
 
     @Query("DELETE FROM giftcon")
     suspend fun clearGiftcon()

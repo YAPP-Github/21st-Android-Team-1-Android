@@ -8,5 +8,6 @@ data class GiftconEntity(
     val expireDate: String,
     @PrimaryKey val id: Int,
     val imageUrl: String,
-    val name: String
+    val name: String,
+    val usable: Boolean = false
 )
