@@ -6,6 +6,6 @@ object Logging {
     private const val TAG = "AppTest"
 
     fun error(msg: String) {
-        Timber.tag("TAG").e(msg)
+        Timber.tag(TAG).e(msg)
     }
 }

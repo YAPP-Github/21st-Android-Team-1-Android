@@ -2,8 +2,10 @@ package com.yapp.buddycon.presentation.ui.addCoupon
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.activity.viewModels
@@ -12,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.yapp.buddycon.domain.model.CouponInfo
@@ -19,12 +22,12 @@ import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityAddCouponBinding
 import com.yapp.buddycon.presentation.ui.addCoupon.state.CouponInfoLoadState
-import com.yapp.buddycon.presentation.ui.addCoupon.state.InputState
+import com.yapp.buddycon.presentation.ui.addCoupon.state.WhetherInputPossibleState
 import com.yapp.buddycon.presentation.utils.Logging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
+import java.util.*
 
 @AndroidEntryPoint
 class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activity_add_coupon) {
@@ -34,6 +37,8 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.vm = addCouponViewModel
+
         init()
         observeCouponInfoState()
     }
@@ -42,6 +47,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         initAppbar()
         getBarcodeNumber()
         initTitleHint()
+        initTextWatcher()
     }
 
     private fun getBarcodeNumber() {
@@ -55,11 +61,12 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
             barcodeScanner.process(inputImage)
                 .addOnSuccessListener { barcodes ->
-                    Timber.tag(TAG).e("barcode list size : %s", barcodes.size.toString())
+                    Logging.error("barcode list size : ${barcodes.size}")
+
                     if (barcodes.size >= 1) {
                         barcodes[0]?.let { barcode ->
                             val barcodeNumber = barcode.rawValue
-                            Timber.tag(TAG).e("barcode number : %s", barcodeNumber)
+                            Logging.error("barcode number : $barcodeNumber")
 
                             // 바코드 정보로 서버에 데이터 요청하기\
                             barcodeNumber?.let {
@@ -68,7 +75,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
                         }
                     } else {
-                        Timber.tag(TAG).e("read image success but no barcode")
+                        Logging.error("read image success but no barcode")
                         MessageDialogFragment("바코드 인식 오류 \n이미지를 다시 선택해주세요") {
                             finish()
                         }.show(
@@ -77,7 +84,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
                         )
                     }
                 }.addOnFailureListener {
-                    Timber.tag(TAG).e("read image fail")
+                    Logging.error("read image fail")
                 }
         }
     }
@@ -120,34 +127,34 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             is CouponInfoLoadState.LoadError -> {}
             is CouponInfoLoadState.NewGifticon -> {
                 setAppbarTitle(getString(R.string.add_coupon_app_bar_title_gifticon))
-                setContentInputType(InputState.Possible)
+                setContentInputType(WhetherInputPossibleState.Possible)
                 setSentMemberVisibility(state)
             }
             is CouponInfoLoadState.ExistGifticon -> {
                 setAppbarTitle(getString(R.string.add_coupon_app_bar_title_gifticon))
-                setContentInputType(InputState.Impossible)
+                setContentInputType(WhetherInputPossibleState.Impossible)
                 setSentMemberVisibility(state)
             }
             is CouponInfoLoadState.ExistMakeCon -> {
                 setAppbarTitle(getString(R.string.add_coupon_app_bar_title_makecon))
-                setContentInputType(InputState.Impossible)
+                setContentInputType(WhetherInputPossibleState.Impossible)
                 setSentMemberVisibility(state)
             }
         }
     }
 
-    // 세부 수정 예정
+    // 세부 수정 및 바인딩어댑터로 전환 예정
     // 새로 등록하는 기프티콘의 경우 사용자가 직접 입력을 할 수 있어야 함
-    private fun setContentInputType(inputState: InputState) {
-        when (inputState) {
-            is InputState.Possible -> {
+    private fun setContentInputType(whetherInputPossibleState: WhetherInputPossibleState) {
+        when (whetherInputPossibleState) {
+            is WhetherInputPossibleState.Possible -> {
                 with(binding) {
                     etTitle.isEnabled = true
                     etStoreName.isEnabled = true
                     etSentMember.isEnabled = true
                 }
             }
-            is InputState.Impossible -> {
+            is WhetherInputPossibleState.Impossible -> {
                 with(binding) {
                     etTitle.isEnabled = false
                     etStoreName.isEnabled = false
@@ -167,6 +174,78 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     fun onClickAddCouponExpireDate(view: View) {
-        Timber.tag(TAG).e("onClickAddCouponExpireDate called")
+        Logging.error("onClickAddCouponExpireDate called")
+
+        // date picker
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTheme(R.style.custom_date_picker_style)
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { longValue ->
+            Logging.error("selected date's Long value : ${longValue}")
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = longValue
+            val date = calendar.time
+            Logging.error("selected date : $date")
+            // 날짜 변환 수정 필요
+        }
+
+        datePicker.show(supportFragmentManager, "date_picker")
+        // Activity 의 theme이 MaterialComponent 이어야 정상 작동 >> Manifest 에서 설정해주기!!
+    }
+
+    private fun initTextWatcher() {
+        initTitleTextWatcher()
+        initStoreNameTextWatcher()
+        initSentMemberTextWatcher()
+        initMemoTextWatcher()
+    }
+
+    private fun initTitleTextWatcher() {
+        binding.etTitle.addTextChangedListener( object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                addCouponViewModel.checkTitle(s.toString())
+            }
+        })
+    }
+
+    private fun initStoreNameTextWatcher() {
+        binding.etStoreName.addTextChangedListener( object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                addCouponViewModel.checkStoreName(s.toString())
+            }
+        })
+    }
+
+    private fun initSentMemberTextWatcher() {
+        binding.etSentMember.addTextChangedListener( object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                addCouponViewModel.checkSentMemberName(s.toString())
+            }
+        })
+    }
+
+    private fun initMemoTextWatcher() {
+        binding.etMemo.addTextChangedListener( object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                addCouponViewModel.checkMemo(s.toString())
+            }
+        })
     }
 }
