@@ -96,6 +96,10 @@
         <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
+    <style name="regular14.gray.90" parent="regular16">
+        <item name="android:textColor">@color/gray90</item>
+    </style>
+
     <style name="regular12">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">12sp</item>
