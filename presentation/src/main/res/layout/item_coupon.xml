@@ -3,20 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:paddingBottom="28dp">
+        android:layout_marginBottom="28dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_coupon"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/item_coupon_img"
+                android:id="@+id/iv_coupon"
                 android:layout_width="156dp"
                 android:layout_height="156dp"
                 android:background="@color/white"
@@ -32,15 +28,29 @@
                 android:src="@drawable/img_theme1" />
 
             <ImageView
-                android:id="@+id/item_coupon_iv_selected"
+                android:id="@+id/iv_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_margin="8dp"
                 android:background="@null"
                 android:src="@drawable/ic_checkbox"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
 
+            <Button
+                android:id="@+id/iv_expire_date"
+                style="@style/bold14"
+                android:layout_width="47dp"
+                android:layout_height="28dp"
+                android:layout_gravity="end"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_coupon_expire_date"
+                android:src="@drawable/ic_checkbox"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                tools:text="D-1"
+                tools:visibility="visible" />
         </androidx.cardview.widget.CardView>
 
 
