@@ -13,11 +13,14 @@ interface GiftconDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(giftcons: List<GiftconEntity>)
 
-    @Query("SELECT * FROM giftcon WHERE usable = :usable ORDER BY :sort ASC")
-    fun getGiftconByASC(usable: Boolean, sort: String): PagingSource<Int, GiftconEntity>
+    @Query("SELECT * FROM giftcon WHERE usable = :usable ORDER BY expireDate")
+    fun getGiftconByExpireDate(usable: Boolean): PagingSource<Int, GiftconEntity>
 
-    @Query("SELECT * FROM giftcon WHERE usable = :usable ORDER BY :sort DESC")
-    fun getGiftconByDESC(usable: Boolean, sort: String): PagingSource<Int, GiftconEntity>
+    @Query("SELECT * FROM giftcon WHERE usable = :usable ORDER BY name")
+    fun getGiftconByName(usable: Boolean): PagingSource<Int, GiftconEntity>
+
+    //@Query("SELECT * FROM giftcon WHERE usable = :usable ORDER BY createdAt")
+    //fun getGiftconByCreatedAt(usable: Boolean): PagingSource<Int, GiftconEntity>
 
     @Query("DELETE FROM giftcon")
     suspend fun clearGiftcon()

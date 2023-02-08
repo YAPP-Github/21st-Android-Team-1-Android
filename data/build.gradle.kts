@@ -51,7 +51,8 @@ dependencies {
     implementation(ModuleDependency.Hilt.HILT)
     implementation(ModuleDependency.Room.ROOM_KTX)
     implementation(ModuleDependency.Room.ROOM_RUNTIME)
-    annotationProcessor(ModuleDependency.Room.ROOM_COMPILER)
+    implementation(ModuleDependency.Room.ROOM_PAGING)
+    kapt(ModuleDependency.Room.ROOM_COMPILER)
     implementation(ModuleDependency.Paging.PAGING_RUNTIME_KTX)
     kapt(ModuleDependency.Hilt.HILT_COMPILER)
 }

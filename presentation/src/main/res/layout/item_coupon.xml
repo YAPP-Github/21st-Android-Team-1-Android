@@ -25,11 +25,11 @@
 
             <ImageView
                 android:id="@+id/item_coupon_img"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="156dp"
+                android:layout_height="156dp"
                 android:background="@color/white"
                 android:scaleType="fitCenter"
-                tools:src="@drawable/img_theme1" />
+                android:src="@drawable/img_theme1" />
 
             <ImageView
                 android:id="@+id/item_coupon_iv_selected"

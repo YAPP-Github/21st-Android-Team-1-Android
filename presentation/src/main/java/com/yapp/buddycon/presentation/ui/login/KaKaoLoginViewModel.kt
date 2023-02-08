@@ -29,7 +29,11 @@ class KaKaoLoginViewModel @Inject constructor(
     ) = getUserInfoUseCase(kakaoAccessToken, name, email, gender, ageRange)
         .catch { e -> _loginState.emit(KaKaoLoginState.Error(e)) }
         .onEach {
-            saveTokenUseCase(it.accessToken, it.accessTokenExpiresIn, it.refreshToken)
+            //saveTokenUseCase(it.accessToken, it.accessTokenExpiresIn, it.refreshToken)
+            saveTokenUseCase(
+                "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiaWF0IjoxNjc0ODEyMjk5LCJleHAiOjE2ODA4MTcwOTl9.8buxTCLp_erwERq7d96AORKCyzbLNaqhg7ozNFKs0_M",
+                Long.MAX_VALUE, ""
+            )
             _loginState.emit(KaKaoLoginState.Login(it))
         }.launchIn(viewModelScope)
 }

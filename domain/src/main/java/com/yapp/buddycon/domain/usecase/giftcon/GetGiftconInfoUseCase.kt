@@ -10,6 +10,6 @@ import javax.inject.Inject
 class GetGiftconInfoUseCase @Inject constructor(
     private val giftconRepository: GiftconRepository
 ) {
-    operator fun invoke(usable: Boolean, sort: GIFTCON_PAGING_SORT): Flow<PagingData<GiftconInfo>> =
+    operator fun invoke(usable: Boolean = true, sort: GIFTCON_PAGING_SORT = GIFTCON_PAGING_SORT.EXPIREDATE): Flow<PagingData<GiftconInfo>> =
         giftconRepository.getGiftconList(usable, sort)
 }

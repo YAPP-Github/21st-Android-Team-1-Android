@@ -34,9 +34,9 @@ class GiftconAdapter : PagingDataAdapter<GiftconInfo, GiftconAdapter.GiftconView
         fun bind(info: GiftconInfo) {
             binding.itemCouponTvTitle.text = info.name
             binding.itemTvExpirationPeriod.text = "~${info.expireDate.replace("-",".")}"
-            Glide.with(binding.itemCouponImg.context)
-                .load(info.imageUrl)
-                .into(binding.itemCouponImg)
+//            Glide.with(binding.itemCouponImg.context)
+//                .load(info.imageUrl)
+//                .into(binding.itemCouponImg)
         }
     }
 

@@ -15,6 +15,7 @@ class GiftconRepositoryImpl @Inject constructor(
     private val giftconService: GiftconService,
     private val buddyConDataBase: BuddyConDataBase
 ) : GiftconRepository {
+
     @OptIn(ExperimentalPagingApi::class)
     override fun getGiftconList(
         usable: Boolean,
@@ -29,17 +30,13 @@ class GiftconRepositoryImpl @Inject constructor(
         ),
         pagingSourceFactory = {
             when (sort) {
-                GIFTCON_PAGING_SORT.EXPIREDATE,
-                GIFTCON_PAGING_SORT.NAME,
-                GIFTCON_PAGING_SORT.CREATEDAT -> {
-                    buddyConDataBase.giftconDao().getGiftconByDESC(usable, sort.value)
+                GIFTCON_PAGING_SORT.EXPIREDATE -> {
+                    buddyConDataBase.giftconDao().getGiftconByExpireDate(usable)
                 }
-                GIFTCON_PAGING_SORT.EXPIREDATE_ASC,
-                GIFTCON_PAGING_SORT.NAME_ASC,
-                GIFTCON_PAGING_SORT.CREATEDAT_ASC -> {
-                    buddyConDataBase.giftconDao()
-                        .getGiftconByASC(usable, sort.value.split(",").first())
+                GIFTCON_PAGING_SORT.NAME -> {
+                    buddyConDataBase.giftconDao().getGiftconByName(usable)
                 }
+                // GIFTCON_PAGING_SORT.CREATEDAT -> // TODO
             }
         }
     ).flow.map { data ->
