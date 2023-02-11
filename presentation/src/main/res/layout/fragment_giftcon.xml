@@ -90,7 +90,7 @@
             <TextView
                 android:id="@+id/tv_sort_mode"
                 style="@style/regular14"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:onClick="@{() -> buddyConViewModel.changeBottomSheet()}"
                 android:text="@string/validation_date_filter"
