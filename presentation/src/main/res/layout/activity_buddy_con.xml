@@ -16,10 +16,10 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{buddyViewModel.isDimState ? @color/black_a40_dim : @color/white}"
         tools:context=".ui.main.BuddyConActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -27,7 +27,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="0dp"
                 android:layout_height="?attr/actionBarSize"
-                android:backgroundTint="@{buddyViewModel.isDimState ? @color/black_a40_dim : @color/white}"
                 app:elevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,18 +44,6 @@
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:layout_constraintVertical_bias="0.0"
                 app:navGraph="@navigation/nav_buddycon_graph" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_plus"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_margin="20dp"
-                android:backgroundTint="@{buddyViewModel.isFabState ? @color/white : @color/skb_blue}"
-                android:onClick="@{() -> buddyViewModel.changeFab()}"
-                android:src="@{buddyViewModel.isFabState() ? @drawable/btn_fab_cancle :  @drawable/btn_fab_plus}"
-                app:elevation="0dp"
-                app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
-                app:layout_constraintEnd_toEndOf="parent" />
 
             <ImageView
                 android:id="@+id/iv_tooltip"
@@ -81,6 +68,46 @@
                 android:visibility="@{buddyViewModel.isTooltipState() ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="@id/iv_tooltip"
                 app:layout_constraintTop_toTopOf="@id/iv_tooltip" />
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation_view"
+                style="@style/regular12"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:elevation="16dp"
+                app:itemBackground="@color/white"
+                app:itemIconTint="@drawable/ic_navigation_icon"
+                app:itemTextColor="@drawable/ic_navigation_icon"
+                app:labelVisibilityMode="labeled"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:menu="@menu/menu_nav_buddycon" />
+
+            <View
+                android:id="@+id/v_dim_background"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/black_a40_dim"
+                android:visibility="@{buddyViewModel.isDimState ? View.VISIBLE : View.INVISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_plus"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="20dp"
+                android:backgroundTint="@{buddyViewModel.isFabState ? @color/white : @color/skb_blue}"
+                android:onClick="@{() -> buddyViewModel.changeFab()}"
+                android:src="@{buddyViewModel.isFabState() ? @drawable/btn_fab_cancle :  @drawable/btn_fab_plus}"
+                app:elevation="0dp"
+                app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_fab_menu"
@@ -124,22 +151,6 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_add_coupon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_navigation_view"
-                style="@style/regular12"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@color/white"
-                android:elevation="16dp"
-                android:foreground="@{buddyViewModel.isDimState ? @color/black_a40_dim : #00000000 }"
-                app:itemIconTint="@drawable/ic_navigation_icon"
-                app:itemTextColor="@drawable/ic_navigation_icon"
-                app:labelVisibilityMode="labeled"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:menu="@menu/menu_nav_buddycon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

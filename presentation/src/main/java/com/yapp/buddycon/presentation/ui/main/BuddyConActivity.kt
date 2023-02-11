@@ -6,16 +6,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.view.children
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.snackbar.Snackbar
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
@@ -29,7 +35,7 @@ import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
-class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity_buddy_con) {
+class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity_buddy_con), NavigationBarView.OnItemSelectedListener {
 
     private val isFirst: Boolean by lazy {
         intent?.getBooleanExtra(
@@ -44,7 +50,6 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
         binding.buddyViewModel = buddyViewModel
 
         if (isFirst) buddyViewModel.saveBootInfo()
-
         binding.tvMakeCoupon.setOnClickListener {
             startActivity(Intent(this, MakeCouponActivity::class.java))
         }
@@ -58,6 +63,14 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_buddycon, menu)
         return true
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return if(buddyViewModel.isDimState.value){
+            false
+        } else {
+            NavigationUI.onNavDestinationSelected(item, binding.fragmentContainerView.findNavController())
+        }
     }
 
     private fun initToolbar() {
@@ -78,6 +91,8 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigationView.setOnItemSelectedListener(this)
+        binding.vDimBackground.setOnClickListener { true }
     }
 
     private fun initForAddCoupon() { // 불필요 주석은 추후 제거 예정
