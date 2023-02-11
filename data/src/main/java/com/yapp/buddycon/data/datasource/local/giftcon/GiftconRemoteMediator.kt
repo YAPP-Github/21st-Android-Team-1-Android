@@ -70,7 +70,7 @@ class GiftconRemoteMediator(
                         usable = usable
                     )
                 })
-                buddyConDataBase.giftconRemoteKeysDao().insertAl(keys)
+                buddyConDataBase.giftconRemoteKeysDao().insertAll(keys)
             }
             return MediatorResult.Success(giftcons.isEmpty())
         } catch (e: IOException) {

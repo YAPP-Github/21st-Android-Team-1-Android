@@ -1,6 +1,7 @@
 package com.yapp.buddycon.presentation.ui.giftcon
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -43,7 +44,10 @@ class GiftconAdapter :
             if (info.usable) {
                 val (year, month, day) = info.expireDate.split("-").map { it.toInt() }
                 binding.btnExpireDate.isVisible = true
-                binding.btnExpireDate.text = "D${Period.between(LocalDate.now(), LocalDate.of(year, month, day)).days}"
+                binding.btnExpireDate.text =
+                    "D${Period.between(LocalDate.now(), LocalDate.of(year, month, day)).days}"
+            } else {
+                binding.btnExpireDate.isVisible = false
             }
 
             Glide.with(binding.ivCoupon.context)

@@ -34,10 +34,10 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.changeTab(0)}"
+                android:onClick="@{() -> viewModel.changeUsable(true)}"
                 android:paddingTop="2dp"
                 android:text="@string/usable_coupon"
-                android:textColor="@{viewModel.tabState == 0 ? @color/gray90 : @color/gray60}"
+                android:textColor="@{viewModel.usableState == true ? @color/gray90 : @color/gray60}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +46,7 @@
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="@color/gray90"
-                android:visibility="@{viewModel.tabState == 0 ? View.VISIBLE : View.GONE}"
+                android:visibility="@{viewModel.usableState == true ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tv_usable"
                 app:layout_constraintStart_toStartOf="@id/tv_usable" />
@@ -58,10 +58,10 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="18dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.changeTab(1)}"
+                android:onClick="@{() -> viewModel.changeUsable(false)}"
                 android:paddingTop="2dp"
                 android:text="@string/used_coupon"
-                android:textColor="@{viewModel.tabState == 1 ? @color/gray90 : @color/gray60}"
+                android:textColor="@{viewModel.usableState == false ? @color/gray90 : @color/gray60}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_usable"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -70,7 +70,7 @@
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="@color/gray90"
-                android:visibility="@{viewModel.tabState == 1 ? View.VISIBLE : View.GONE}"
+                android:visibility="@{viewModel.usableState == false ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tv_used"
                 app:layout_constraintStart_toStartOf="@id/tv_used" />

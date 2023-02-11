@@ -18,6 +18,7 @@ import com.yapp.buddycon.presentation.ui.main.BuddyConViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_giftcon) {
@@ -30,28 +31,12 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = giftConViewMoel
         binding.buddyConViewModel = buddyConViewModel
+
         initViews()
-
-        buddyConViewModel.filterState
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.RESUMED)
-            .onEach {
-                binding.tvFilter.text = when (it) {
-                    0 -> "미공유순"
-                    1 -> "유효기간순"
-                    2 -> "등록순"
-                    else -> "이름순"
-                }
-            }
-            .launchIn(lifecycleScope)
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                giftConViewMoel.giftconFlow.collect {
-                    giftconAdapter.submitData(it)
-                }
-            }
-        }
+        observeFilterTab()
+        observeGiftcon()
     }
+
 
     private fun initViews() {
         if (::giftconAdapter.isInitialized.not()) {
@@ -60,4 +45,27 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
         binding.giftconRecyclerView.layoutManager = GridLayoutManager(activity, 2)
         binding.giftconRecyclerView.adapter = giftconAdapter
     }
+
+    private fun observeFilterTab() {
+        buddyConViewModel.filterState
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                binding.tvFilter.text = when (it) {
+                    0 -> "미공유순"
+                    1 -> "유효기간순"
+                    2 -> "등록순"
+                    else -> "이름순"
+                }
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun observeGiftcon() {
+        lifecycleScope.launch {
+            giftConViewMoel.giftconPagingData.collectLatest {
+                giftconAdapter.submitData(it)
+            }
+        }
+    }
+
 }

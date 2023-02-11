@@ -9,7 +9,7 @@ import com.yapp.buddycon.data.db.entity.GiftconRemoteKeysEntity
 @Dao
 interface GiftconRemoteKeysDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAl(remoteKeys: List<GiftconRemoteKeysEntity>)
+    suspend fun insertAll(remoteKeys: List<GiftconRemoteKeysEntity>)
 
     @Query("SELECT * FROM giftcon_remote_keys WHERE id = :id")
     suspend fun getGiftconRemoteKey(id: Int): GiftconRemoteKeysEntity

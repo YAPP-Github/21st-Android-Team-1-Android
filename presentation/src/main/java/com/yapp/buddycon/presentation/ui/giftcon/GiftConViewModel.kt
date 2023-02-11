@@ -5,25 +5,34 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.yapp.buddycon.domain.model.GiftconInfo
+import com.yapp.buddycon.domain.repository.GIFTCON_PAGING_SORT
 import com.yapp.buddycon.domain.usecase.giftcon.GetGiftconInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class GiftConViewModel @Inject constructor(
     private val getGiftconInfoUseCase: GetGiftconInfoUseCase
 ) : ViewModel() {
-    private val _tabState = MutableStateFlow(0) // 0 : usable, 1: used
-    val tabState = _tabState.asStateFlow()
+    private val sortState = MutableStateFlow(GIFTCON_PAGING_SORT.EXPIREDATE)
+    private val _usableState = MutableStateFlow(true)
+    val usableState: StateFlow<Boolean> = _usableState.asStateFlow()
 
-    val giftconFlow: Flow<PagingData<GiftconInfo>> = getGiftconInfoUseCase().cachedIn(viewModelScope)
+    val giftconPagingData = usableState
+        .combine(sortState) { usable, sort ->
+            usable to sort
+        }.distinctUntilChanged()
+        .flatMapLatest { requestGiftconList() }
+        .cachedIn(viewModelScope)
 
-    fun changeTab(tab: Int) {
-        _tabState.value = tab
+    fun changeUsable(usable: Boolean) {
+        _usableState.value = usable
     }
+
+    private fun requestGiftconList(): Flow<PagingData<GiftconInfo>> =
+        getGiftconInfoUseCase(usableState.value, sortState.value)
 }
