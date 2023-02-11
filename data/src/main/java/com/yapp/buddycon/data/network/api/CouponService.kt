@@ -21,4 +21,12 @@ interface CouponService {
         @Query("size") size: Int,
         @Query("sort") sort: String
     ): List<CouponResponse>
+
+    @GET("api/v1/coupon/share")
+    suspend fun requestMadeCouponList(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String,
+        @Query("unshared") unshared: Boolean = true
+    ): List<CouponResponse>
 }

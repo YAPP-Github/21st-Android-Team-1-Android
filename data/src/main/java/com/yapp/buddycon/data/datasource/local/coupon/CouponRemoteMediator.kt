@@ -63,7 +63,11 @@ class CouponRemoteMediator(
                     state.config.pageSize,
                     sort.value
                 )
-                else -> listOf()    // TODO
+                CouponType.Made -> service.requestMadeCouponList(
+                    page,
+                    state.config.pageSize,
+                    SortMode.CreatedAt.value
+                )
             }
             buddyConDataBase.withTransaction {
                 if (loadType == LoadType.REFRESH) {

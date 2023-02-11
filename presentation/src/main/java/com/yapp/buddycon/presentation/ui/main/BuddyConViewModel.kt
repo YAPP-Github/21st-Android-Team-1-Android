@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 enum class TabMode {
-    Usable, Used, Custom
+    Usable, Used, Made
 }
 
 @HiltViewModel
@@ -108,6 +108,13 @@ class BuddyConViewModel @Inject constructor(
     }
 
     fun changeTabMode(tabMode: TabMode) {
+        if(tabMode == TabMode.Made){
+            changeCouponType(CouponType.Made)
+        }
+
+        if(tabModeState.value == TabMode.Made){
+            changeCouponType(CouponType.Custom)
+        }
         _tabModeState.value = tabMode
     }
 
