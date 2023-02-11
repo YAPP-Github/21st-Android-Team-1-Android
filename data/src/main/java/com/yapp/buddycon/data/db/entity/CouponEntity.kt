@@ -2,7 +2,7 @@ package com.yapp.buddycon.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.yapp.buddycon.domain.model.CouponInfo
+import com.yapp.buddycon.domain.model.CouponItem
 
 @Entity(tableName = "coupon")
 data class CouponEntity(
@@ -14,7 +14,7 @@ data class CouponEntity(
     val usable: Boolean = false,
     val shared: Boolean = false
 ) {
-    fun toModel() = CouponInfo(
+    fun toModel() = CouponItem(
         id = id,
         imageUrl = imageUrl,
         name = name,

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="couponViewModel"
             type="com.yapp.buddycon.presentation.ui.makeCoupon.MakeCouponViewModel" />
@@ -36,7 +35,8 @@
             android:layout_height="wrap_content"
             android:onClick="@{() -> couponViewModel.changeMode()}"
             app:layout_constraintEnd_toEndOf="@id/cl"
-            app:layout_constraintTop_toTopOf="@id/cl">
+            app:layout_constraintTop_toTopOf="@id/cl"
+            setBoxVisible="@{couponViewModel.chooseMode}">
 
 
             <androidx.cardview.widget.CardView
@@ -79,7 +79,8 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/cl"
             app:layout_constraintStart_toStartOf="@id/cl"
-            app:layout_constraintTop_toTopOf="@id/cl">
+            app:layout_constraintTop_toTopOf="@id/cl"
+            setBoxVisible="@{couponViewModel.chooseMode}">
 
 
             <androidx.cardview.widget.CardView
@@ -170,31 +171,31 @@
             app:layout_constraintTop_toBottomOf="@id/appbar_make_coupon"
             app:layout_constraintVertical_bias="0">
 
-
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_main"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="24dp"
-                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:src="@drawable/img_theme1"
-                app:layout_constraintBottom_toTopOf="@id/et_coupon_title"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize.20"/>
 
             <Button
+                app:layout_constraintVertical_chainStyle="packed"
                 android:id="@+id/btn_get_img"
                 style="@style/bold16"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="38dp"
-                android:layout_marginStart="23dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_makeon_get"
                 android:backgroundTint="@color/black"
                 android:text="@string/makecon_get_img"
+                android:gravity="center"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/iv_main"
                 app:layout_constraintEnd_toStartOf="@id/btn_get_giftcon"
@@ -204,9 +205,9 @@
             <Button
                 android:id="@+id/btn_get_giftcon"
                 style="@style/bold16"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="38dp"
-                android:layout_marginEnd="23dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_makeon_get"
                 android:backgroundTint="@color/black"
@@ -349,7 +350,6 @@
                     app:layout_constraintBottom_toBottomOf="@id/tv_validity"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_validity" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

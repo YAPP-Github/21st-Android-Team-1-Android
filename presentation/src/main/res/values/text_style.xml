@@ -10,6 +10,10 @@
         <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
+    <style name="bold24.grey.40" parent="bold24">
+        <item name="android:textColor">@color/gray40</item>
+    </style>
+
     <style name="bold22">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">22sp</item>
@@ -32,6 +36,10 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:lineSpacingMultiplier">1.4</item>
+    </style>
+
+    <style name="bold16.white" parent="bold16">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="bold14">
@@ -86,6 +94,18 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:lineSpacingMultiplier">1.4</item>
+    </style>
+
+    <style name="regular16.gray.60" parent="regular16">
+        <item name="android:textColor">@color/gray60</item>
+    </style>
+
+    <style name="regular16.gray.90" parent="regular16">
+        <item name="android:textColor">@color/gray90</item>
+    </style>
+
+    <style name="regular16.gray.40" parent="regular16">
+        <item name="android:textColor">@color/gray40</item>
     </style>
 
     <style name="regular14">

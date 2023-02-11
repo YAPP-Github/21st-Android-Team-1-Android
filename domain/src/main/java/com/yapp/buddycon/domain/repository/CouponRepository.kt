@@ -2,6 +2,7 @@ package com.yapp.buddycon.domain.repository
 
 import androidx.paging.PagingData
 import com.yapp.buddycon.domain.model.CouponInfo
+import com.yapp.buddycon.domain.model.CouponItem
 import kotlinx.coroutines.flow.Flow
 
 enum class SortMode(val value: String) {
@@ -20,5 +21,5 @@ interface CouponRepository {
         usable: Boolean,
         sort: SortMode,
         couponType: CouponType
-    ): Flow<PagingData<CouponInfo>>
+    ): Flow<PagingData<CouponItem>>
 }

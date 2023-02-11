@@ -1,5 +1,7 @@
 package com.yapp.buddycon.data.di
 
+import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSource
+import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSourceImpl
 import com.yapp.buddycon.data.datasource.remote.login.LoginRemoteDataSource
 import com.yapp.buddycon.data.datasource.remote.login.LoginRemoteDataSourceImpl
 import dagger.Binds
@@ -15,4 +17,9 @@ interface DataSourceModule {
     fun bindsLoginRemoteDataSource(
         loginRemoteDataSourceImpl: LoginRemoteDataSourceImpl
     ): LoginRemoteDataSource
+
+    @Binds
+    fun bindsAddCouponRemoteDataSource(
+        addCouponRemoteDataSourceImpl: AddCouponRemoteDataSourceImpl
+    ): AddCouponRemoteDataSource
 }

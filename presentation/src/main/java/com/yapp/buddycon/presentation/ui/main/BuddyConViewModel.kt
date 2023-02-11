@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.yapp.buddycon.domain.model.CouponInfo
+import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.domain.repository.CouponType
 import com.yapp.buddycon.domain.repository.SortMode
 import com.yapp.buddycon.domain.usecase.giftcon.GetCouponInfoUseCase
@@ -49,7 +50,7 @@ class BuddyConViewModel @Inject constructor(
         MutableStateFlow(CouponType.GiftCon)
     val couponTypeState = _couponTypeState.asStateFlow()
 
-    val couponPagingData: Flow<PagingData<CouponInfo>> =
+    val couponPagingData: Flow<PagingData<CouponItem>> =
         combine(
             tabModeState,
             sortModeState,
@@ -66,7 +67,7 @@ class BuddyConViewModel @Inject constructor(
         }
     }
 
-    private fun requestCouponList(): Flow<PagingData<CouponInfo>> =
+    private fun requestCouponList(): Flow<PagingData<CouponItem>> =
         getCouponInfoUseCase(
             usable = when (tabModeState.value) {
                 TabMode.Used -> false
@@ -108,7 +109,7 @@ class BuddyConViewModel @Inject constructor(
         _isDimState.value = false
     }
 
-    fun changeTabMode(tabMode: TabMode){
+    fun changeTabMode(tabMode: TabMode) {
         _tabModeState.value = tabMode
     }
 }
