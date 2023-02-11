@@ -74,7 +74,7 @@
                 style="@style/regular12"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="@color/white"
+                android:foreground="@{buddyViewModel.isDimState ? @color/black_a40_dim : #00000000 }"
                 android:elevation="16dp"
                 app:itemBackground="@color/white"
                 app:itemIconTint="@drawable/ic_navigation_icon"
