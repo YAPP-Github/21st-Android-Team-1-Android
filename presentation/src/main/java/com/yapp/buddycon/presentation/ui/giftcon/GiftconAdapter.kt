@@ -40,8 +40,7 @@ class GiftconAdapter : PagingDataAdapter<CouponItem, GiftconAdapter.GiftconViewH
             if (info.usable) {
                 val (year, month, day) = info.expireDate.split("-").map { it.toInt() }
                 binding.btnExpireDate.isVisible = true
-                binding.btnExpireDate.text =
-                    "D${Period.between(LocalDate.now(), LocalDate.of(year, month, day)).days}"
+                binding.btnExpireDate.text = "D${Period.between(LocalDate.now(), LocalDate.of(year, month, day)).days}"
             } else {
                 binding.btnExpireDate.isVisible = false
             }

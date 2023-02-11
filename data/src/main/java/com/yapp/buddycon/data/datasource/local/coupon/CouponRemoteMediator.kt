@@ -12,6 +12,7 @@ import com.yapp.buddycon.data.network.api.CouponService
 import com.yapp.buddycon.domain.repository.CouponType
 import com.yapp.buddycon.domain.repository.SortMode
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 
 const val COUPON_START_PAEGING_INDEX = 0

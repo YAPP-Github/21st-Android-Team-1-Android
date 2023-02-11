@@ -68,8 +68,8 @@ class BuddyConViewModel @Inject constructor(
     private fun requestCouponList(): Flow<PagingData<CouponItem>> =
         getCouponInfoUseCase(
             usable = when (tabModeState.value) {
-                TabMode.Used -> false
-                else -> true
+                TabMode.Usable -> true
+                else -> false
             },
             sort = sortModeState.value,
             couponType = couponTypeState.value
