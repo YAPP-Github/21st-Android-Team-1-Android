@@ -34,7 +34,7 @@ class CouponRepositoryImpl @Inject constructor(
                 SortMode.NoShared -> {
                     buddyConDataBase.couponDao().getCouponByShared(usable)
                 }
-                SortMode.Expiredate -> {
+                SortMode.ExpireDate -> {
                     buddyConDataBase.couponDao().getCouponByExpireDate(usable)
                 }
                 SortMode.Name -> {

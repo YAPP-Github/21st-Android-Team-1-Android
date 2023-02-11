@@ -10,11 +10,13 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import com.yapp.buddycon.domain.repository.SortMode
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseFragment
 import com.yapp.buddycon.presentation.databinding.FragmentGiftconBinding
 import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
 import com.yapp.buddycon.presentation.ui.main.BuddyConViewModel
+import com.yapp.buddycon.presentation.ui.main.TabMode
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -29,11 +31,13 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = giftConViewMoel
+        binding.giftConViewModel = giftConViewMoel
         binding.buddyConViewModel = buddyConViewModel
 
+        buddyConViewModel.changeTabMode(TabMode.Usable)
+        buddyConViewModel.changeSortMode(SortMode.ExpireDate)
         initViews()
-        observeFilterTab()
+        observeSortMode()
         observeGiftcon()
     }
 
@@ -46,15 +50,15 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
         binding.giftconRecyclerView.adapter = giftconAdapter
     }
 
-    private fun observeFilterTab() {
-        buddyConViewModel.filterState
+    private fun observeSortMode() {
+        buddyConViewModel.sortModeState
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                binding.tvFilter.text = when (it) {
-                    0 -> "미공유순"
-                    1 -> "유효기간순"
-                    2 -> "등록순"
-                    else -> "이름순"
+                binding.tvSortMode.text = when (it) {
+                    SortMode.NoShared -> "미공유순"
+                    SortMode.ExpireDate -> "유효기간순"
+                    SortMode.CreatedAt -> "등록순"
+                    SortMode.Name -> "이름순"
                 }
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
@@ -62,8 +66,9 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
 
     private fun observeGiftcon() {
         lifecycleScope.launch {
-            giftConViewMoel.giftconPagingData.collectLatest {
+            buddyConViewModel.couponPagingData.collectLatest {
                 giftconAdapter.submitData(it)
+                binding.giftconRecyclerView.scrollToPosition(0)
             }
         }
     }

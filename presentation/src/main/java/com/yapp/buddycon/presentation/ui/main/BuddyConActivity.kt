@@ -135,10 +135,7 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
                     buddyViewModel.hideBottomSheet()
                 }
             }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float){
-
-            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
         })
     }
 

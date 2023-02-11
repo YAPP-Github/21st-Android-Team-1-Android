@@ -6,12 +6,14 @@
 
         <import type="android.view.View" />
 
+        <import type="com.yapp.buddycon.presentation.ui.main.TabMode" />
+
         <variable
             name="buddyConViewModel"
             type="com.yapp.buddycon.presentation.ui.main.BuddyConViewModel" />
 
         <variable
-            name="viewModel"
+            name="giftConViewModel"
             type="com.yapp.buddycon.presentation.ui.giftcon.GiftConViewModel" />
     </data>
 
@@ -34,10 +36,10 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.changeUsable(true)}"
+                android:onClick="@{() -> buddyConViewModel.changeTabMode(TabMode.Usable)}"
                 android:paddingTop="2dp"
                 android:text="@string/usable_coupon"
-                android:textColor="@{viewModel.usableState == true ? @color/gray90 : @color/gray60}"
+                android:textColor="@{buddyConViewModel.tabModeState == TabMode.Usable ? @color/gray90 : @color/gray60}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="@color/gray90"
-                android:visibility="@{viewModel.usableState == true ? View.VISIBLE : View.GONE}"
+                android:visibility="@{buddyConViewModel.tabModeState == TabMode.Usable ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tv_usable"
                 app:layout_constraintStart_toStartOf="@id/tv_usable" />
@@ -58,10 +60,10 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="18dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.changeUsable(false)}"
+                android:onClick="@{() -> buddyConViewModel.changeTabMode(TabMode.Used)}"
                 android:paddingTop="2dp"
                 android:text="@string/used_coupon"
-                android:textColor="@{viewModel.usableState == false ? @color/gray90 : @color/gray60}"
+                android:textColor="@{buddyConViewModel.tabModeState == TabMode.Used ? @color/gray90 : @color/gray60}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_usable"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -70,7 +72,7 @@
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="@color/gray90"
-                android:visibility="@{viewModel.usableState == false ? View.VISIBLE : View.GONE}"
+                android:visibility="@{buddyConViewModel.tabModeState == TabMode.Used  ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tv_used"
                 app:layout_constraintStart_toStartOf="@id/tv_used" />
@@ -86,7 +88,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_filter"
+                android:id="@+id/tv_sort_mode"
                 style="@style/regular14"
                 android:layout_width="60dp"
                 android:layout_height="20dp"

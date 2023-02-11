@@ -7,10 +7,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.yapp.buddycon.domain.repository.SortMode
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseFragment
 import com.yapp.buddycon.presentation.databinding.FragmentCustomconBinding
-import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
 import com.yapp.buddycon.presentation.ui.main.BuddyConViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -31,16 +31,16 @@ class CustomConFragment : BaseFragment<FragmentCustomconBinding>(R.layout.fragme
     override fun onResume() {
         super.onResume()
 
-        buddyConViewModel.filterState
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.RESUMED)
+        buddyConViewModel.sortModeState
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                binding.tvFilter.text = when(it){
-                    0 -> "미공유순"
-                    1 -> "유효기간순"
-                    2 -> "등록순"
-                    else -> "이름순"
+                binding.tvSortMode.text = when (it) {
+                    SortMode.NoShared -> "미공유순"
+                    SortMode.ExpireDate -> "유효기간순"
+                    SortMode.CreatedAt -> "등록순"
+                    SortMode.Name -> "이름순"
                 }
             }
-            .launchIn(lifecycleScope)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 }

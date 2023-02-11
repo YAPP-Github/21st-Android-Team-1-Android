@@ -4,6 +4,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="com.yapp.buddycon.domain.repository.CouponType" />
+
+        <import type="com.yapp.buddycon.domain.repository.SortMode" />
+
         <variable
             name="buddyConViewModel"
             type="com.yapp.buddycon.presentation.ui.main.BuddyConViewModel" />
@@ -38,12 +44,13 @@
                 android:layout_width="0dp"
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
+                android:drawableEnd="@{buddyConViewModel.sortModeState == SortMode.NoShared ? @drawable/ic_filter_check : null}"
                 android:drawablePadding="0dp"
-                android:onClick="@{() -> buddyConViewModel.changeFilterList(0)}"
-                android:setStyle="@{buddyConViewModel.filterState}"
-                android:tag="not_share"
+                android:onClick="@{() -> buddyConViewModel.changeSortMode(SortMode.NoShared)}"
+                android:setStyle="@{buddyConViewModel.sortModeState}"
+                android:tag="@{SortMode.NoShared.value}"
                 android:text="@string/filter_not_share"
-                android:drawableEnd="@{buddyConViewModel.filterState == 0 ? @drawable/ic_filter_check : null}"
+                android:visibility="@{buddyConViewModel.couponTypeState == CouponType.Made ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -54,6 +61,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="12dp"
                 android:background="@color/gray30"
+                android:visibility="@{buddyConViewModel.couponTypeState == CouponType.Made ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_not_share" />
@@ -64,11 +72,11 @@
                 android:layout_width="0dp"
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
-                android:onClick="@{() -> buddyConViewModel.changeFilterList(1)}"
-                android:setStyle="@{buddyConViewModel.filterState}"
-                android:tag="expiration_date"
+                android:drawableEnd="@{buddyConViewModel.sortModeState == SortMode.ExpireDate ? @drawable/ic_filter_check : null}"
+                android:onClick="@{() -> buddyConViewModel.changeSortMode(SortMode.ExpireDate)}"
+                android:setStyle="@{buddyConViewModel.sortModeState}"
+                android:tag="@{SortMode.ExpireDate.value}"
                 android:text="@string/filter_expiration_date"
-                android:drawableEnd="@{buddyConViewModel.filterState == 1 ? @drawable/ic_filter_check : null}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_not_share" />
@@ -89,11 +97,11 @@
                 android:layout_width="0dp"
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
-                android:onClick="@{() -> buddyConViewModel.changeFilterList(2)}"
-                android:setStyle="@{buddyConViewModel.filterState}"
-                android:tag="upload"
+                android:drawableEnd="@{buddyConViewModel.sortModeState == SortMode.CreatedAt ? @drawable/ic_filter_check : null}"
+                android:onClick="@{() -> buddyConViewModel.changeSortMode(SortMode.CreatedAt)}"
+                android:setStyle="@{buddyConViewModel.sortModeState}"
+                android:tag="@{SortMode.CreatedAt.value}"
                 android:text="@string/filter_upload"
-                android:drawableEnd="@{buddyConViewModel.filterState == 2 ? @drawable/ic_filter_check : null}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_expiration_date" />
@@ -114,11 +122,11 @@
                 android:layout_width="0dp"
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
-                android:onClick="@{() -> buddyConViewModel.changeFilterList(3)}"
-                android:setStyle="@{buddyConViewModel.filterState}"
-                android:tag="name"
+                android:drawableEnd="@{buddyConViewModel.sortModeState == SortMode.Name ? @drawable/ic_filter_check : null}"
+                android:onClick="@{() -> buddyConViewModel.changeSortMode(SortMode.Name)}"
+                android:setStyle="@{buddyConViewModel.sortModeState}"
+                android:tag="@{SortMode.Name.value}"
                 android:text="@string/filter_name"
-                android:drawableEnd="@{buddyConViewModel.filterState == 3 ? @drawable/ic_filter_check : null}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_upload" />

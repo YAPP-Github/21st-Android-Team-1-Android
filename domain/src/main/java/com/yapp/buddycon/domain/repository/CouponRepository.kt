@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 enum class SortMode(val value: String) {
     NoShared("noshared"),
-    Expiredate("expireDate"),
+    ExpireDate("expireDate"),
     Name("name"),
     CreatedAt("createdAt")
 }
