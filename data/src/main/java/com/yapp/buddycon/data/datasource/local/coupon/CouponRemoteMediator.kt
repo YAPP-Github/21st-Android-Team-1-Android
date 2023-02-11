@@ -1,4 +1,4 @@
-package com.yapp.buddycon.data.datasource.local.giftcon
+package com.yapp.buddycon.data.datasource.local.coupon
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -52,6 +52,12 @@ class CouponRemoteMediator(
         try {
             val couponList = when (couponType) {
                 CouponType.GiftCon -> service.requestGiftConList(
+                    usable,
+                    page,
+                    state.config.pageSize,
+                    sort.value
+                )
+                CouponType.Custom -> service.requestCustomCouponList(
                     usable,
                     page,
                     state.config.pageSize,

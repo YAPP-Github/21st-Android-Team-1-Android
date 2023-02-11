@@ -1,10 +1,9 @@
 package com.yapp.buddycon.data.repository
 
 import androidx.paging.*
-import com.yapp.buddycon.data.datasource.local.giftcon.CouponRemoteMediator
+import com.yapp.buddycon.data.datasource.local.coupon.CouponRemoteMediator
 import com.yapp.buddycon.data.db.BuddyConDataBase
 import com.yapp.buddycon.data.network.api.CouponService
-import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.domain.repository.*
 import kotlinx.coroutines.flow.Flow

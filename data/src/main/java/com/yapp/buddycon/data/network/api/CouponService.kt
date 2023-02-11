@@ -13,4 +13,12 @@ interface CouponService {
         @Query("size") size: Int,
         @Query("sort") sort: String
     ): List<CouponResponse>
+
+    @GET("api/v1/coupon/custom-coupon")
+    suspend fun requestCustomCouponList(
+        @Query("usable") usable: Boolean,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String
+    ): List<CouponResponse>
 }

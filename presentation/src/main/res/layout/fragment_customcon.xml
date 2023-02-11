@@ -6,12 +6,14 @@
 
         <import type="android.view.View" />
 
+        <import type="com.yapp.buddycon.presentation.ui.main.TabMode" />
+
         <variable
             name="buddyConViewModel"
             type="com.yapp.buddycon.presentation.ui.main.BuddyConViewModel" />
 
         <variable
-            name="viewModel"
+            name="customConViewModel"
             type="com.yapp.buddycon.presentation.ui.customcon.CustomConViewModel" />
     </data>
 
@@ -30,14 +32,14 @@
             <TextView
                 android:id="@+id/tv_usable"
                 style="@style/bold16"
-                android:layout_width="55dp"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.changeTab(0)}"
+                android:onClick="@{() -> buddyConViewModel.changeTabMode(TabMode.Usable)}"
                 android:paddingTop="2dp"
                 android:text="@string/usable_coupon"
-                android:textColor="@{viewModel.tabState == 0 ? @color/gray90 : @color/gray60}"
+                android:textColor="@{buddyConViewModel.tabModeState == TabMode.Usable ? @color/gray90 : @color/gray60}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="@color/gray90"
-                android:visibility="@{viewModel.tabState == 0 ? View.VISIBLE : View.GONE}"
+                android:visibility="@{buddyConViewModel.tabModeState == TabMode.Usable ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tv_usable"
                 app:layout_constraintStart_toStartOf="@id/tv_usable" />
@@ -54,14 +56,14 @@
             <TextView
                 android:id="@+id/tv_used"
                 style="@style/bold16"
-                android:layout_width="55dp"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="18dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.changeTab(1)}"
+                android:onClick="@{() -> buddyConViewModel.changeTabMode(TabMode.Used)}"
                 android:paddingTop="2dp"
                 android:text="@string/used_coupon"
-                android:textColor="@{viewModel.tabState == 1 ? @color/gray90 : @color/gray60}"
+                android:textColor="@{buddyConViewModel.tabModeState == TabMode.Used ? @color/gray90 : @color/gray60}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_usable"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -69,24 +71,21 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="4dp"
-                android:layout_marginStart="18dp"
                 android:background="@color/gray90"
-                android:visibility="@{viewModel.tabState == 1 ? View.VISIBLE : View.GONE}"
+                android:visibility="@{buddyConViewModel.tabModeState == TabMode.Used  ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tv_used"
-                app:layout_constraintStart_toEndOf="@id/tv_usable" />
+                app:layout_constraintStart_toStartOf="@id/tv_used" />
 
             <TextView
                 android:id="@+id/tv_made"
                 style="@style/bold16"
-                android:layout_width="55dp"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="18dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.changeTab(2)}"
                 android:paddingTop="2dp"
                 android:text="@string/made_coupon"
-                android:textColor="@{viewModel.tabState == 2 ? @color/gray90 : @color/gray60}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_used"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -94,12 +93,10 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="4dp"
-                android:layout_marginStart="18dp"
                 android:background="@color/gray90"
-                android:visibility="@{viewModel.tabState == 2 ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tv_made"
-                app:layout_constraintStart_toEndOf="@id/tv_used" />
+                app:layout_constraintStart_toStartOf="@id/tv_made" />
 
             <ImageView
                 android:id="@+id/iv_filter"
@@ -114,7 +111,7 @@
             <TextView
                 android:id="@+id/tv_sort_mode"
                 style="@style/regular14"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:onClick="@{() -> buddyConViewModel.changeBottomSheet()}"
                 android:text="@string/validation_date_filter"
@@ -134,8 +131,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/customconRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="24dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

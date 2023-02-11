@@ -1,7 +1,6 @@
-package com.yapp.buddycon.domain.usecase.giftcon
+package com.yapp.buddycon.domain.usecase.coupon
 
 import androidx.paging.PagingData
-import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.domain.repository.CouponRepository
 import com.yapp.buddycon.domain.repository.CouponType

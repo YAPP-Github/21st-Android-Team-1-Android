@@ -10,6 +10,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import com.yapp.buddycon.domain.repository.CouponType
 import com.yapp.buddycon.domain.repository.SortMode
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseFragment
@@ -36,6 +37,7 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
 
         buddyConViewModel.changeTabMode(TabMode.Usable)
         buddyConViewModel.changeSortMode(SortMode.ExpireDate)
+        buddyConViewModel.changeCouponType(CouponType.GiftCon)
         initViews()
         observeSortMode()
         observeGiftcon()

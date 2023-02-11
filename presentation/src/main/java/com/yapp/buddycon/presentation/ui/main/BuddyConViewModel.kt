@@ -4,17 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.domain.repository.CouponType
 import com.yapp.buddycon.domain.repository.SortMode
-import com.yapp.buddycon.domain.usecase.giftcon.GetCouponInfoUseCase
+import com.yapp.buddycon.domain.usecase.coupon.GetCouponInfoUseCase
 import com.yapp.buddycon.domain.usecase.login.GetBootInfoUseCase
 import com.yapp.buddycon.domain.usecase.login.SaveBootInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 enum class TabMode {
@@ -111,5 +109,9 @@ class BuddyConViewModel @Inject constructor(
 
     fun changeTabMode(tabMode: TabMode) {
         _tabModeState.value = tabMode
+    }
+
+    fun changeCouponType(couponType: CouponType){
+        _couponTypeState.value = couponType
     }
 }
