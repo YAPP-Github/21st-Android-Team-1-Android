@@ -68,17 +68,7 @@ class CouponRemoteMediator(
                 val prevKey = if (page == COUPON_START_PAEGING_INDEX) null else page - 1
                 val nextKey = if (couponList.isEmpty()) null else page + 1
                 val keys = couponList.map { CouponRemoteKeysEntity(it.id, prevKey, nextKey) }
-                buddyConDataBase.couponDao().insertAll(couponList.map {
-                    CouponEntity(
-                        id = it.id,
-                        imageUrl = it.imageUrl,
-                        name = it.name,
-                        expireDate = it.expireDate,
-                        createdAt = it.createdAt,
-                        usable = usable,
-                        shared = it.shared
-                    )
-                })
+                buddyConDataBase.couponDao().insertAll(couponList.map { it.toEntity(usable) })
                 buddyConDataBase.couponRemoteKeysDao().insertAll(keys)
             }
             return MediatorResult.Success(couponList.isEmpty())

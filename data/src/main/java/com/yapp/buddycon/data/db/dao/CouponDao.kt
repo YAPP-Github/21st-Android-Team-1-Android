@@ -12,6 +12,9 @@ interface CouponDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(coupons: List<CouponEntity>)
 
+    @Query("SELECT * FROM coupon WHERE usable = :usable ORDER BY shared")
+    fun getCouponByShared(usable: Boolean): PagingSource<Int, CouponEntity>
+
     @Query("SELECT * FROM coupon WHERE usable = :usable ORDER BY expireDate")
     fun getCouponByExpireDate(usable: Boolean): PagingSource<Int, CouponEntity>
 

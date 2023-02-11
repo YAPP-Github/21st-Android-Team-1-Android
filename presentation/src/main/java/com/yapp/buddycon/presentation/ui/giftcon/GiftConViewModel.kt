@@ -4,14 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.yapp.buddycon.domain.model.GiftconInfo
+import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.repository.GIFTCON_PAGING_SORT
 import com.yapp.buddycon.domain.usecase.giftcon.GetGiftconInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,6 +30,6 @@ class GiftConViewModel @Inject constructor(
         _usableState.value = usable
     }
 
-    private fun requestGiftconList(): Flow<PagingData<GiftconInfo>> =
+    private fun requestGiftconList(): Flow<PagingData<CouponInfo>> =
         getGiftconInfoUseCase(usableState.value, sortState.value)
 }

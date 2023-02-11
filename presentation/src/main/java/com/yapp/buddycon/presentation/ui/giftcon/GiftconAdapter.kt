@@ -1,7 +1,6 @@
 package com.yapp.buddycon.presentation.ui.giftcon
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -9,16 +8,14 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.yapp.buddycon.domain.model.GiftconInfo
+import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.databinding.ItemCouponBinding
 import java.time.LocalDate
 import java.time.Period
-import java.util.Calendar
-import java.util.Date
 
 class GiftconAdapter :
-    PagingDataAdapter<GiftconInfo, GiftconAdapter.GiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
+    PagingDataAdapter<CouponInfo, GiftconAdapter.GiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
 
     override fun onBindViewHolder(holder: GiftconViewHoler, position: Int) {
         getItem(position)?.let {
@@ -38,7 +35,7 @@ class GiftconAdapter :
         private val binding: ItemCouponBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(info: GiftconInfo) {
+        fun bind(info: CouponInfo) {
             binding.itemCouponTvTitle.text = info.name
             binding.itemTvExpirationPeriod.text = "~${info.expireDate.replace("-", ".")}"
             if (info.usable) {
@@ -59,12 +56,12 @@ class GiftconAdapter :
 
 
     companion object {
-        private val GIFTCON_DIFF_CALLBACK = object : DiffUtil.ItemCallback<GiftconInfo>() {
-            override fun areItemsTheSame(oldItem: GiftconInfo, newItem: GiftconInfo): Boolean {
+        private val GIFTCON_DIFF_CALLBACK = object : DiffUtil.ItemCallback<CouponInfo>() {
+            override fun areItemsTheSame(oldItem: CouponInfo, newItem: CouponInfo): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: GiftconInfo, newItem: GiftconInfo): Boolean {
+            override fun areContentsTheSame(oldItem: CouponInfo, newItem: CouponInfo): Boolean {
                 return oldItem == newItem
             }
         }

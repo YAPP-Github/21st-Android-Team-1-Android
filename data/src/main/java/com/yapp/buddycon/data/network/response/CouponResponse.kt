@@ -2,6 +2,7 @@ package com.yapp.buddycon.data.network.response
 
 
 import com.google.gson.annotations.SerializedName
+import com.yapp.buddycon.data.db.entity.CouponEntity
 
 data class CouponResponse(
     @SerializedName("id")
@@ -16,4 +17,14 @@ data class CouponResponse(
     val createdAt: String,
     @SerializedName("shared")
     val shared: Boolean = false
-)
+) {
+    fun toEntity(usable: Boolean) = CouponEntity(
+        id = id,
+        imageUrl = imageUrl,
+        name = name,
+        expireDate = expireDate,
+        createdAt = createdAt,
+        usable = usable,
+        shared = shared
+    )
+}

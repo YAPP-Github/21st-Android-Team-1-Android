@@ -78,7 +78,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGiftconService(
+    fun provideCouponService(
         @BuddyConRetrofit retrofit: Retrofit
     ): CouponService =
         retrofit.create()
