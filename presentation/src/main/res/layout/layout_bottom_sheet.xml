@@ -27,8 +27,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="328dp"
-            android:layout_height="160dp"
-            android:layout_marginTop="36dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -37,10 +37,13 @@
                 android:id="@+id/tv_not_share"
                 android:layout_width="0dp"
                 android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:drawablePadding="0dp"
                 android:onClick="@{() -> buddyConViewModel.changeFilterList(0)}"
                 android:setStyle="@{buddyConViewModel.filterState}"
                 android:tag="not_share"
                 android:text="@string/filter_not_share"
+                android:drawableEnd="@{buddyConViewModel.filterState == 0 ? @drawable/ic_filter_check : null}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -65,6 +68,7 @@
                 android:setStyle="@{buddyConViewModel.filterState}"
                 android:tag="expiration_date"
                 android:text="@string/filter_expiration_date"
+                android:drawableEnd="@{buddyConViewModel.filterState == 1 ? @drawable/ic_filter_check : null}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_not_share" />
@@ -89,6 +93,7 @@
                 android:setStyle="@{buddyConViewModel.filterState}"
                 android:tag="upload"
                 android:text="@string/filter_upload"
+                android:drawableEnd="@{buddyConViewModel.filterState == 2 ? @drawable/ic_filter_check : null}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_expiration_date" />
@@ -113,6 +118,7 @@
                 android:setStyle="@{buddyConViewModel.filterState}"
                 android:tag="name"
                 android:text="@string/filter_name"
+                android:drawableEnd="@{buddyConViewModel.filterState == 3 ? @drawable/ic_filter_check : null}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_upload" />

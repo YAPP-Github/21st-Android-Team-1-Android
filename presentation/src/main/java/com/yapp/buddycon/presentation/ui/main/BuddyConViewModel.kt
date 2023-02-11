@@ -31,6 +31,7 @@ class BuddyConViewModel @Inject constructor(
     private val _isBottomSheetState: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isBottomSheetState: StateFlow<Boolean>  = _isBottomSheetState.asStateFlow()
 
+
     init {
         viewModelScope.launch {
             _isTooltipState.value = getBootInfoUseCase().first().not()
