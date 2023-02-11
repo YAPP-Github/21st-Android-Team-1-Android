@@ -4,9 +4,15 @@ import androidx.paging.PagingData
 import com.yapp.buddycon.domain.model.GiftconInfo
 import kotlinx.coroutines.flow.Flow
 
-enum class GIFTCON_PAGING_SORT(val value: String) {
-    EXPIREDATE("expireDate"), NAME("name")
-    //CREATEDAT("createdAt")
+enum class SortMode(val value: String){
+    NoShared("noshared"),
+    Expiredate("expireDate"),
+    Name("name"),
+    CreatedAt("createdAt")
+}
+
+enum class CouponType{
+    GiftCon, Custom, Made
 }
 
 interface GiftconRepository {

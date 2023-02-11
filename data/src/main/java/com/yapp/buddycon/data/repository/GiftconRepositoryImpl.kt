@@ -3,7 +3,7 @@ package com.yapp.buddycon.data.repository
 import androidx.paging.*
 import com.yapp.buddycon.data.datasource.local.giftcon.GiftconRemoteMediator
 import com.yapp.buddycon.data.db.BuddyConDataBase
-import com.yapp.buddycon.data.network.api.GiftconService
+import com.yapp.buddycon.data.network.api.CouponService
 import com.yapp.buddycon.domain.model.GiftconInfo
 import com.yapp.buddycon.domain.repository.GIFTCON_PAGING_SORT
 import com.yapp.buddycon.domain.repository.GiftconRepository
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GiftconRepositoryImpl @Inject constructor(
-    private val giftconService: GiftconService,
+    private val giftconService: CouponService,
     private val buddyConDataBase: BuddyConDataBase
 ) : GiftconRepository {
 

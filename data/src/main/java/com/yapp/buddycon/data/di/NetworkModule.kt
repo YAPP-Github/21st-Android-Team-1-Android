@@ -1,7 +1,7 @@
 package com.yapp.buddycon.data.di
 
 import com.yapp.buddycon.data.network.*
-import com.yapp.buddycon.data.network.api.GiftconService
+import com.yapp.buddycon.data.network.api.CouponService
 import com.yapp.buddycon.data.network.api.LoginService
 import com.yapp.buddycon.data.network.qualifiers.BuddyConRetrofit
 import com.yapp.buddycon.data.network.qualifiers.LoginRetrofit
@@ -80,7 +80,7 @@ object NetworkModule {
     @Singleton
     fun provideGiftconService(
         @BuddyConRetrofit retrofit: Retrofit
-    ): GiftconService =
+    ): CouponService =
         retrofit.create()
 
 }
