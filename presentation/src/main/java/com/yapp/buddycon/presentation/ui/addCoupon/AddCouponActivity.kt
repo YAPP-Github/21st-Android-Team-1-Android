@@ -27,6 +27,7 @@ import com.yapp.buddycon.presentation.utils.Logging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
@@ -183,11 +184,17 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
         datePicker.addOnPositiveButtonClickListener { longValue ->
             Logging.error("selected date's Long value : ${longValue}")
-            val calendar = Calendar.getInstance()
+            val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREAN)
             calendar.timeInMillis = longValue
-            val date = calendar.time
-            Logging.error("selected date : $date")
-            // 날짜 변환 수정 필요
+
+            val selectedDate = calendar.time
+            val simpleDateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
+            val selectedDateString = simpleDateFormat.format(selectedDate)
+
+            Logging.error("selected date string : $selectedDateString")
+
+            // viewmodel에 날짜 문자열 통째로 관리? 연, 월, 일 나눠서 관리?
+
         }
 
         datePicker.show(supportFragmentManager, "date_picker")
@@ -208,7 +215,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.checkTitle(s.toString())
+                addCouponViewModel.setTitle(s.toString())
             }
         })
     }
@@ -220,7 +227,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.checkStoreName(s.toString())
+                addCouponViewModel.setStoreName(s.toString())
             }
         })
     }
@@ -232,7 +239,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.checkSentMemberName(s.toString())
+                addCouponViewModel.setSentMemberName(s.toString())
             }
         })
     }
@@ -244,7 +251,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.checkMemo(s.toString())
+                addCouponViewModel.setMemo(s.toString())
             }
         })
     }

@@ -256,7 +256,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintWidth_percent="0.5"
-            tools:text="저장하기" />
+            tools:text="@string/add_coupon_accept"
+            android:onClick="@{() -> vm.addCoupon()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
