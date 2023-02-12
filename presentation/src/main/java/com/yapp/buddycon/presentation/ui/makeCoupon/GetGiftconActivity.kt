@@ -6,7 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityGetGiftconBinding
-import com.yapp.buddycon.presentation.ui.giftcon.GiftconAdapter
+import com.yapp.buddycon.presentation.ui.giftcon.GetGiftConAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class GetGiftConActivity : BaseActivity<ActivityGetGiftconBinding>(R.layout.activity_get_giftcon) {
 
     private val getGiftConVieModel: GetGiftConViewModel by viewModels()
-    private val giftConAdapter = GiftconAdapter()
+    private val giftConAdapter = GetGiftConAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
