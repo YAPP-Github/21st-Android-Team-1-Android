@@ -1,5 +1,6 @@
 package com.yapp.buddycon.presentation.ui.addCoupon.state
 
+
 import com.yapp.buddycon.domain.model.CouponInfo
 
 sealed class CouponInfoLoadState<out T> {
@@ -12,14 +13,14 @@ sealed class CouponInfoLoadState<out T> {
 }
 
 sealed class WhetherInputPossibleState {
-    object Possible: WhetherInputPossibleState()
-    object Impossible: WhetherInputPossibleState()
+    object Possible : WhetherInputPossibleState()
+    object Impossible : WhetherInputPossibleState()
 }
 
-data class ContentInputState(
-    var isTitleNormal: Boolean = false,
-    var isExipreDateNormal: Boolean = false,
-    var isStoreNameNormal: Boolean = false,
-    var isSentMemberNameNormal: Boolean = false,
-    var isMemoNormal: Boolean = false
-)
+sealed class ContentInputState {
+    object EmptyTitle : ContentInputState()
+    object OutOfRangeTitle : ContentInputState()
+    object EmptyExpireDate : ContentInputState()
+    object OutOfRangeStoreName : ContentInputState()
+    object OutOfRangeMemo : ContentInputState()
+}

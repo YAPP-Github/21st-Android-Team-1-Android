@@ -1,11 +1,8 @@
 package com.yapp.buddycon.domain.model
 
 data class CouponInfo(
-    val id: Int = -1,
-    val imageUrl: String = "",
-    val barcode: String = "",
-    val name: String = "",
-    val expireDate: String = "",
-    val storeName: String = "",
-    val memo: String = "",
+    val id : Int = -1,
+    val imgUrl : String = "",
+    val name : String = "",
+    val expireData : String= ""
 )

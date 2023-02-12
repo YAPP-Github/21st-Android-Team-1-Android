@@ -5,6 +5,8 @@ import com.yapp.buddycon.data.datasource.local.coupon.CouponRemoteMediator
 import com.yapp.buddycon.data.db.BuddyConDataBase
 import com.yapp.buddycon.data.network.api.CouponService
 import com.yapp.buddycon.domain.model.CouponItem
+import com.yapp.buddycon.domain.model.CouponType
+import com.yapp.buddycon.domain.model.SortMode
 import com.yapp.buddycon.domain.repository.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

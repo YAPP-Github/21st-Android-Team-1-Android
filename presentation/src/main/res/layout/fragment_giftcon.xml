@@ -6,7 +6,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.yapp.buddycon.presentation.ui.main.TabMode" />
+        <import type="com.yapp.buddycon.domain.model.TabMode" />
 
         <variable
             name="buddyConViewModel"

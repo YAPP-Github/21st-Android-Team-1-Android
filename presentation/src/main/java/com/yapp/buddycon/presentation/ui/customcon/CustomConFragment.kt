@@ -8,23 +8,19 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import com.yapp.buddycon.domain.repository.CouponType
-import com.yapp.buddycon.domain.repository.SortMode
+import com.yapp.buddycon.domain.model.CouponType
+import com.yapp.buddycon.domain.model.SortMode
+import com.yapp.buddycon.domain.model.TabMode
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseFragment
 import com.yapp.buddycon.presentation.databinding.FragmentCustomconBinding
 import com.yapp.buddycon.presentation.ui.main.BuddyConViewModel
-import com.yapp.buddycon.presentation.ui.main.TabMode
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class CustomConFragment : BaseFragment<FragmentCustomconBinding>(R.layout.fragment_customcon) {

@@ -9,8 +9,8 @@ import com.yapp.buddycon.data.db.BuddyConDataBase
 import com.yapp.buddycon.data.db.entity.CouponEntity
 import com.yapp.buddycon.data.db.entity.CouponRemoteKeysEntity
 import com.yapp.buddycon.data.network.api.CouponService
-import com.yapp.buddycon.domain.repository.CouponType
-import com.yapp.buddycon.domain.repository.SortMode
+import com.yapp.buddycon.domain.model.CouponType
+import com.yapp.buddycon.domain.model.SortMode
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException

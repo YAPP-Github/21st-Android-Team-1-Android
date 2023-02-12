@@ -21,7 +21,7 @@ import timber.log.Timber
 
 class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.activity_make_coupon) {
     private val couponViewModel: MakeCouponViewModel by viewModels()
-    private var imgURI : Uri = Uri.EMPTY
+    private var imgURI: Uri = Uri.EMPTY
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,6 +31,7 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
 
         themeCollect()
         openGallery()
+        getGiftCon()
     }
 
     private fun themeCollect() {
@@ -90,5 +91,18 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
             }
 
         binding.btnGetImg.setOnClickListener { requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }
+    }
+
+    private fun getGiftCon() {
+        val getGiftConLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == RESULT_OK) {
+                    // TODO :: 화면 셋팅
+                }
+            }
+
+        binding.btnGetGiftcon.setOnClickListener {
+            getGiftConLauncher.launch(Intent(this, GetGiftConActivity::class.java))
+        }
     }
 }
