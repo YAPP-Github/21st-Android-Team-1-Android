@@ -14,8 +14,10 @@ import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.databinding.ItemCouponBinding
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.Period
+import java.util.*
 
 class CustomConAdapter :
     PagingDataAdapter<CouponItem, CustomConAdapter.CustommConViewHoler>(CUSTOMCON_DIFF_CALLBACK) {
@@ -43,15 +45,43 @@ class CustomConAdapter :
             binding.itemTvExpirationPeriod.text = "~${info.expireDate.replace("-", ".")}"
             if (info.usable) {
                 val (year, month, day) = info.expireDate.split("-").map { it.toInt() }
-                binding.btnExpireDate.isVisible = true
-                binding.btnExpireDate.text = "D${Period.between(LocalDate.now(), LocalDate.of(year, month, day)).days}"
+                val today = Calendar.getInstance().apply {
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }.timeInMillis
+
+                val expireDate = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, year)
+                    set(Calendar.MONTH, month-1)
+                    set(Calendar.DAY_OF_MONTH, day)
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }.timeInMillis
+
+                val diff = (today - expireDate) / (24 * 60 * 60 * 1000)
+                if (diff in 0..14){
+                    binding.btnExpireDate.isVisible = true
+                    binding.btnExpireDate.text = "D-${diff}"
+                    binding.btnExpireDate.setBackgroundResource(
+                        if(diff<=7) R.drawable.bg_coupon_expire_date
+                        else R.drawable.bg_coupon_gray_expire_date
+                    )
+                }else{
+                    binding.btnExpireDate.isVisible = false
+                }
+
                 binding.ivCoupon.colorFilter = null
             } else {
                 binding.btnExpireDate.isVisible = false
-                if(info.couponType == CouponType.Made){
+                if (info.couponType == CouponType.Made) {
                     binding.ivCoupon.colorFilter = null
-                }else{
-                    binding.ivCoupon.colorFilter = ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0F) })
+                } else {
+                    binding.ivCoupon.colorFilter =
+                        ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0F) })
                 }
             }
 
