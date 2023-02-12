@@ -41,7 +41,10 @@
                     android:scheme="kakao${KAKAO_APP_KEY}" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.addCoupon.AddCouponActivity" />
+        <activity
+            android:name=".ui.addCoupon.AddCouponActivity"
+            android:theme="@style/Theme.AddCouponActivity">
+        </activity>
         <activity android:name=".ui.makeCoupon.MakeCouponActivity" />
         <activity android:name=".ui.makeCoupon.GetGiftConActivity"/>
     </application>

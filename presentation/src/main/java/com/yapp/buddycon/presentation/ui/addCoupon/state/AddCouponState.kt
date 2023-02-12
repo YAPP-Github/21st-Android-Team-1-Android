@@ -11,7 +11,15 @@ sealed class CouponInfoLoadState<out T> {
     data class ExistMakeCon<T>(val data: CouponDatailInfo) : CouponInfoLoadState<T>()
 }
 
-sealed class InputState {
-    object Possible: InputState()
-    object Impossible: InputState()
+sealed class WhetherInputPossibleState {
+    object Possible: WhetherInputPossibleState()
+    object Impossible: WhetherInputPossibleState()
 }
+
+data class ContentInputState(
+    var isTitleNormal: Boolean = false,
+    var isExipreDateNormal: Boolean = false,
+    var isStoreNameNormal: Boolean = false,
+    var isSentMemberNameNormal: Boolean = false,
+    var isMemoNormal: Boolean = false
+)

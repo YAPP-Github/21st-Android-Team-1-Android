@@ -72,6 +72,7 @@ object ModuleDependency {
         const val ROOM_RUNTIME = "androidx.room:room-runtime:${Versions.ROOM}"
         const val ROOM_KTX = "androidx.room:room-ktx:${Versions.ROOM}"
         const val ROOM_COMPILER = "androidx.room:room-compiler:${Versions.ROOM}"
+        const val ROOM_PAGING = "androidx.room:room-paging:${Versions.ROOM}"
     }
 
     object Glide {
@@ -81,6 +82,7 @@ object ModuleDependency {
 
     object Paging {
         const val PAGING_RUNTIME_KTX = "androidx.paging:paging-runtime-ktx:${Versions.PAGING}"
+        const val PAGING_COMMON = "androidx.paging:paging-common:${Versions.PAGING}"
     }
 
     object Timber{

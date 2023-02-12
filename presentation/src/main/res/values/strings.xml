@@ -48,7 +48,7 @@
     <string name="add_coupon_cancel">취소하기</string>
     <string name="add_coupon_hint_title">기프티콘 이름 (최대 16자) *</string>
     <string name="add_coupon_expire_date">유효기간</string>
-    <string name="add_coupon_expire_date_input">유효기간*</string>
+    <string name="add_coupon_expire_date_input">유효기간 *</string>
     <string name="add_coupon_hint_expire_date">유효기간 선택</string>
     <string name="add_coupon_store_name">사용처</string>
     <string name="add_coupon_hint_store_name">예) 버디편의점</string>

@@ -40,7 +40,8 @@ class SplashViewModel @Inject constructor(
                     val currentTime = System.currentTimeMillis()
                     val (accessToken, refreshToken, accessTokenExpiration) = tokenInfo
 
-                    if (accessToken.isEmpty() && refreshToken.isEmpty() && accessTokenExpiration == 0L) _splashResultState.value = SplashResultState.KaKaoLogin
+                    if (accessToken.isEmpty() && refreshToken.isEmpty() && accessTokenExpiration == 0L) _splashResultState.value =
+                        SplashResultState.KaKaoLogin
                     else if (accessTokenExpiration < currentTime) requestRefreshToken(
                         accessToken,
                         refreshToken
@@ -71,7 +72,11 @@ class SplashViewModel @Inject constructor(
             }
             .onEach {
                 Timber.d("requestRefreshToken ${it.accessToken}, ${it.accessTokenExpiresIn}, ${it.refreshToken}")
-                saveTokenUseCase(it.accessToken, it.accessTokenExpiresIn, it.refreshToken)
+                //saveTokenUseCase(it.accessToken, it.accessTokenExpiresIn, it.refreshToken)
+                saveTokenUseCase(
+                    "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiaWF0IjoxNjc0ODEyMjk5LCJleHAiOjE2ODA4MTcwOTl9.8buxTCLp_erwERq7d96AORKCyzbLNaqhg7ozNFKs0_M",
+                    Long.MAX_VALUE, ""
+                )
                 _splashResultState.value = SplashResultState.BuddyCon
             }
             .launchIn(viewModelScope)

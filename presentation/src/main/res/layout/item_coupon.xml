@@ -3,20 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:paddingBottom="28dp">
+        android:layout_marginBottom="28dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_coupon"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -24,23 +20,37 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/item_coupon_img"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/iv_coupon"
+                android:layout_width="156dp"
+                android:layout_height="156dp"
                 android:background="@color/white"
                 android:scaleType="fitCenter"
                 tools:src="@drawable/img_theme1" />
 
             <ImageView
-                android:id="@+id/item_coupon_iv_selected"
+                android:id="@+id/iv_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_margin="8dp"
                 android:background="@null"
                 android:src="@drawable/ic_checkbox"
-                android:visibility="gone" />
-            
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/btn_expire_date"
+                style="@style/bold14"
+                android:layout_width="47dp"
+                android:layout_height="28dp"
+                android:layout_gravity="end"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_coupon_expire_date"
+                android:src="@drawable/ic_checkbox"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                tools:text="D-1"
+                tools:visibility="visible" />
         </androidx.cardview.widget.CardView>
 
 
@@ -48,7 +58,7 @@
             android:id="@+id/item_coupon_tv_title"
             style="@style/regular14.gray.90"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginTop="12dp"
             android:ellipsize="end"
             android:maxLines="1"
@@ -61,7 +71,7 @@
             android:id="@+id/item_tv_expiration_period"
             style="@style/regular12"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="17dp"
             android:textColor="@color/gray60"
             app:layout_constraintEnd_toEndOf="@id/item_coupon_tv_title"
             app:layout_constraintStart_toStartOf="@id/item_coupon_tv_title"
