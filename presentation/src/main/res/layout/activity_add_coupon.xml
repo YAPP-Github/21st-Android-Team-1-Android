@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.yapp.buddycon.presentation.ui.addCoupon.AddCouponViewModel" />
@@ -88,10 +89,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:expireDateDescriptionByState="@{vm.couponInfoLoadState}"
                     app:layout_constraintStart_toStartOf="@id/gl_begin_16dp"
                     app:layout_constraintTop_toBottomOf="@id/et_title"
-                    tools:text="@string/add_coupon_expire_date_input"
-                    android:expireDateDescriptionByState="@{vm.couponInfoLoadState}"/>
+                    tools:text="@string/add_coupon_expire_date_input" />
 
                 <TextView
                     android:id="@+id/tv_expire_date"
@@ -251,22 +252,23 @@
             android:layout_height="wrap_content"
             android:background="@color/skyblue"
             android:gravity="center"
+            android:onClick="@{() -> vm.addCoupon()}"
             android:paddingVertical="16dp"
             android:text="@string/add_coupon_accept"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintWidth_percent="0.5"
-            tools:text="@string/add_coupon_accept"
-            android:onClick="@{() -> vm.addCoupon()}"/>
+            tools:text="@string/add_coupon_accept" />
 
         <ProgressBar
             android:id="@+id/pb_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_cancel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/shiv_coupon"
+            app:layout_constraintVertical_bias="0.2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
