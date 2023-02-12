@@ -109,6 +109,27 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ImageView
+            android:id="@+id/iv_empty"
+            android:layout_width="216dp"
+            android:layout_height="216dp"
+            android:layout_marginTop="110dp"
+            android:src="@drawable/img_empty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_tab" />
+
+        <TextView
+            style="@style/regular18"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="아래 + 버튼을 눌러\n가지고 있는 기프티콘을 등록해 주세요"
+            android:textColor="@color/gray60"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_empty" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/giftconRecyclerView"
             android:layout_width="0dp"
