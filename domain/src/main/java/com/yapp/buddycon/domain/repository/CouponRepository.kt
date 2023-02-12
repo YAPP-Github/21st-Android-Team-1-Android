@@ -1,7 +1,6 @@
 package com.yapp.buddycon.domain.repository
 
 import androidx.paging.PagingData
-import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.model.CouponItem
 import kotlinx.coroutines.flow.Flow
 

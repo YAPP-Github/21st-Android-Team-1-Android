@@ -17,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import com.yapp.buddycon.domain.model.CouponDatailInfo
+import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityAddCouponBinding
@@ -119,7 +119,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     // 세부기능 추가 예정 ex> loading progress bar
-    private fun handleCouponInfoLoadState(state: CouponInfoLoadState<CouponDatailInfo>) {
+    private fun handleCouponInfoLoadState(state: CouponInfoLoadState<CouponInfo>) {
         when (state) {
             is CouponInfoLoadState.Init -> {}
             is CouponInfoLoadState.Loading -> {}
@@ -197,11 +197,11 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     // 제작티콘의 경우에만 '보낸사람' 영역 보임
-    private fun setSentMemberVisibility(couponInfoState: CouponInfoLoadState<CouponDatailInfo>) {
+    private fun setSentMemberVisibility(couponInfoState: CouponInfoLoadState<CouponInfo>) {
         with(binding) {
-            etSentMember.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponDatailInfo>
-            tvSentMemberDescription.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponDatailInfo>
-            viewDivider3.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponDatailInfo>
+            etSentMember.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInfo>
+            tvSentMemberDescription.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInfo>
+            viewDivider3.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInfo>
         }
     }
 

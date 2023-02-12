@@ -43,6 +43,7 @@ class BuddyConViewModel @Inject constructor(
     private val _tabModeState: MutableStateFlow<TabMode> = MutableStateFlow(TabMode.Usable)
     val tabModeState = _tabModeState.asStateFlow()
 
+
     private val _sortModeState: MutableStateFlow<SortMode> = MutableStateFlow(SortMode.ExpireDate)
     val sortModeState = _sortModeState.asStateFlow()
 
