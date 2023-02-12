@@ -97,6 +97,8 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
             requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             if (binding.btnGetGiftcon.visibility != View.GONE){
                 couponViewModel.changeTheme(type = Theme.IMAGE)
+                val random = (0.. 999999999999).random().toString().padStart(12,'0')
+                binding.tvBarcodeNum.text = random
             }
         }
     }
