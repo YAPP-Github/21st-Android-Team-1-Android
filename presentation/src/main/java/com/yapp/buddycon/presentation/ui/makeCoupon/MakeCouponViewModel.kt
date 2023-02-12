@@ -1,14 +1,12 @@
 package com.yapp.buddycon.presentation.ui.makeCoupon
 
 import androidx.lifecycle.ViewModel
-import com.yapp.buddycon.domain.model.UserInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import timber.log.Timber
 
 class MakeCouponViewModel : ViewModel() {
 
-    enum class Theme {BASIC,CELEBRATE,FUN,IMAGE}
+    enum class Theme {BASIC,CELEBRATE,FUN,IMAGE,GIFTCON}
 
     private val _chooseMode : MutableStateFlow<Boolean> = MutableStateFlow(false)
     val chooseMode = _chooseMode.asStateFlow()

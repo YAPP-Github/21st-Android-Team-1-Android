@@ -2,7 +2,6 @@ package com.yapp.buddycon.presentation.ui.makeCoupon
 
 import android.Manifest
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,7 +20,6 @@ import timber.log.Timber
 
 class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.activity_make_coupon) {
     private val couponViewModel: MakeCouponViewModel by viewModels()
-    private var imgURI: Uri = Uri.EMPTY
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,37 +27,10 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
         binding.appbarMakeCoupon.tvAppbarRight.visibility = View.VISIBLE
         binding.appbarMakeCoupon.ibnAppbarBack.setOnClickListener { finish() }
 
-        themeCollect()
         openGallery()
         getGiftCon()
     }
 
-    private fun themeCollect() {
-        couponViewModel.nowTheme.flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED).onEach {
-            when (it) {
-                Theme.BASIC -> {
-                    binding.ivThumbnail.setImageResource(R.drawable.img_theme1)
-                    binding.cl.foreground = getDrawable(R.drawable.bg_theme1)
-                    binding.ivMain.setImageResource(R.drawable.img_theme1)
-                }
-                Theme.CELEBRATE -> {
-                    binding.ivThumbnail.setImageResource(R.drawable.img_theme2)
-                    binding.cl.foreground = getDrawable(R.drawable.bg_theme2)
-                    binding.ivMain.setImageResource(R.drawable.img_theme2)
-                }
-                Theme.FUN -> {
-                    binding.ivThumbnail.setImageResource(R.drawable.img_theme3)
-                    binding.cl.foreground = getDrawable(R.drawable.bg_theme3)
-                    binding.ivMain.setImageResource(R.drawable.img_theme3)
-                }
-                Theme.IMAGE -> {
-                    binding.ivMain.setImageURI(imgURI)
-                    binding.btnGetGiftcon.visibility = View.GONE
-                    binding.btnGetImg.text = getString(R.string.makecon_change_img)
-                }
-            }
-        }.launchIn(lifecycleScope)
-    }
 
     private fun openGallery() {
         val getImageContent =
@@ -67,8 +38,7 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
                 if (it.resultCode == RESULT_OK) {
                     it.data?.let { galleryIntent ->
                         galleryIntent.data?.let { uri ->
-                            Timber.tag("Image").d(uri.toString())
-                            imgURI = uri
+                            binding.ivMain.setImageURI(uri)
                             couponViewModel.changeTheme(type = Theme.IMAGE)
                         }
                     }
@@ -90,14 +60,20 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
                 }
             }
 
-        binding.btnGetImg.setOnClickListener { requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }
+        binding.btnGetImg.setOnClickListener {
+            requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (binding.btnGetGiftcon.visibility != View.GONE){
+                couponViewModel.changeTheme(type = Theme.IMAGE)
+            }
+        }
     }
 
     private fun getGiftCon() {
         val getGiftConLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == RESULT_OK) {
-                    // TODO :: 화면 셋팅
+                    couponViewModel.changeTheme(type = Theme.GIFTCON)
+                    // id 값으로 기프티콘 정보 불러오기.
                 }
             }
 
