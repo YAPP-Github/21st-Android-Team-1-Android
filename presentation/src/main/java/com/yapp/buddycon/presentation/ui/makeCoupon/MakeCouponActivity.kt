@@ -12,6 +12,8 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityMakeCouponBinding
@@ -46,10 +48,22 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
             binding.etUsePlace.text = it.storeName.toEditable()
             binding.etUsePlace.isEnabled = false
             binding.etValidity.isEnabled = false
-            
+
+            if (it.barcode != ""){
+                changeBarCodeImg(it.barcode)
+            }
         }.launchIn(lifecycleScope)
     }
 
+    private fun changeBarCodeImg(barcode: String){
+        try {
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.encodeBitmap(barcode,BarcodeFormat.CODE_128,800,200)
+            binding.ivBarcode.setImageBitmap(bitmap)
+        }catch (e : Error){
+            Timber.e("바코드 생성 실패 ${e.message}")
+        }
+    }
 
     private fun openGallery() {
         val getImageContent =
@@ -105,5 +119,5 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
         }
     }
 
-    fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+    private fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
 }

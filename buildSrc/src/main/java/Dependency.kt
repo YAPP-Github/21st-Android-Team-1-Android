@@ -26,7 +26,7 @@ object Versions {
     const val KAKAO_LOGIN = "2.12.0"
     const val SPLASH_SCREEN = "1.0.0-beta02"
     const val FIREBASE_BOM = "31.2.0"
-    const val ZXING = "3.5.0"
+    const val ZXING = "4.3.0"
 }
 
 object ModuleDependency {
