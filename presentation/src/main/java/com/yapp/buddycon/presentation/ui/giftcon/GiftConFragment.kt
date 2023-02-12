@@ -1,26 +1,24 @@
 package com.yapp.buddycon.presentation.ui.giftcon
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yapp.buddycon.domain.repository.SortMode
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseFragment
 import com.yapp.buddycon.presentation.databinding.FragmentGiftconBinding
-import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
 import com.yapp.buddycon.presentation.ui.main.BuddyConViewModel
 import com.yapp.buddycon.presentation.ui.main.TabMode
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_giftcon) {
