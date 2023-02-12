@@ -25,7 +25,7 @@ class CouponRepositoryImpl @Inject constructor(
     ): Flow<PagingData<CouponItem>> = Pager(
         config = PagingConfig(pageSize = COUPON_PAGE_SIZE, enablePlaceholders = false),
         remoteMediator = CouponRemoteMediator(
-            usable,
+            if(couponType == CouponType.Made) false else usable,
             sort,
             couponType,
             couponService,

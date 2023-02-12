@@ -1,6 +1,8 @@
 package com.yapp.buddycon.presentation.ui.giftcon
 
 import android.annotation.SuppressLint
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -9,12 +11,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.yapp.buddycon.domain.model.CouponItem
+import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.databinding.ItemCouponBinding
 import java.time.LocalDate
 import java.time.Period
 
-class GiftconAdapter : PagingDataAdapter<CouponItem, GiftconAdapter.GiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
+class GiftconAdapter :
+    PagingDataAdapter<CouponItem, GiftconAdapter.GiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
     override fun onBindViewHolder(holder: GiftconViewHoler, position: Int) {
         getItem(position)?.let {
             holder.bind(it)
@@ -40,8 +44,14 @@ class GiftconAdapter : PagingDataAdapter<CouponItem, GiftconAdapter.GiftconViewH
                 val (year, month, day) = info.expireDate.split("-").map { it.toInt() }
                 binding.btnExpireDate.isVisible = true
                 binding.btnExpireDate.text = "D${Period.between(LocalDate.now(), LocalDate.of(year, month, day)).days}"
+                binding.ivCoupon.colorFilter = null
             } else {
                 binding.btnExpireDate.isVisible = false
+                if(info.couponType == CouponType.Made){
+                    binding.ivCoupon.colorFilter = null
+                }else{
+                    binding.ivCoupon.colorFilter = ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0F) })
+                }
             }
 
             binding.tvNoshared.isVisible = info.shared.not()

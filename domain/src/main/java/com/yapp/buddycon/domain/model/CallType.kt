@@ -11,6 +11,6 @@ enum class SortMode(val value: String) {
     CreatedAt("createdAt")
 }
 
-enum class CouponType {
-    GiftCon, Custom, Made
+enum class CouponType(val value: Int) {
+    GiftCon(0), Custom(1), Made(2)
 }

@@ -82,7 +82,7 @@ class CouponRemoteMediator(
                 val nextKey = if (couponList.isEmpty()) null else page + 1
                 val keys = couponList.map { CouponRemoteKeysEntity(it.id, prevKey, nextKey) }
                 buddyConDataBase.couponDao().insertAll(couponList.map {
-                    it.toEntity(usable)
+                    it.toEntity(usable, couponType)
                 })
                 buddyConDataBase.couponRemoteKeysDao().insertAll(keys)
             }
