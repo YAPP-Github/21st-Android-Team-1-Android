@@ -4,22 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.model.CouponItem
-import com.yapp.buddycon.domain.repository.CouponType
-import com.yapp.buddycon.domain.repository.SortMode
+import com.yapp.buddycon.domain.model.CouponType
+import com.yapp.buddycon.domain.model.SortMode
+import com.yapp.buddycon.domain.model.TabMode
 import com.yapp.buddycon.domain.usecase.giftcon.GetCouponInfoUseCase
 import com.yapp.buddycon.domain.usecase.login.GetBootInfoUseCase
 import com.yapp.buddycon.domain.usecase.login.SaveBootInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
-enum class TabMode {
-    Usable, Used, Custom
-}
 
 @HiltViewModel
 class BuddyConViewModel @Inject constructor(
@@ -42,6 +38,7 @@ class BuddyConViewModel @Inject constructor(
 
     private val _tabModeState: MutableStateFlow<TabMode> = MutableStateFlow(TabMode.Usable)
     val tabModeState = _tabModeState.asStateFlow()
+
 
     private val _sortModeState: MutableStateFlow<SortMode> = MutableStateFlow(SortMode.ExpireDate)
     val sortModeState = _sortModeState.asStateFlow()

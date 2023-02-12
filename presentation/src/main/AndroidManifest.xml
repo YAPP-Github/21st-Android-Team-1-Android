@@ -46,6 +46,7 @@
             android:theme="@style/Theme.AddCouponActivity">
         </activity>
         <activity android:name=".ui.makeCoupon.MakeCouponActivity" />
+        <activity android:name=".ui.makeCoupon.GetGiftConActivity"/>
     </application>
 
 </manifest>

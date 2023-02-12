@@ -1,6 +1,7 @@
 package com.yapp.buddycon.presentation.ui.addCoupon
 
 import androidx.lifecycle.ViewModel
+
 import androidx.lifecycle.viewModelScope
 import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.model.CouponInputInfo
@@ -22,8 +23,8 @@ class AddCouponViewModel @Inject constructor(
     private val getGifticonInfoByBarcodeUseCase: GetGifticonInfoByBarcodeUseCase,
     private val getMakeconInfoByBarcodeUseCase: GetMakeconInfoByBarcodeUseCase
 ) : ViewModel() {
-    private val _couponInfoLoadState =
-        MutableStateFlow<CouponInfoLoadState<CouponInfo>>(CouponInfoLoadState.Init)
+
+    private val _couponInfoLoadState = MutableStateFlow<CouponInfoLoadState<CouponInfo>>(CouponInfoLoadState.Init)
     val couponInfoLoadState = _couponInfoLoadState.asStateFlow()
 
     private val couponInputInfo = CouponInputInfo()

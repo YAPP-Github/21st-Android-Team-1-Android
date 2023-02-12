@@ -1,5 +1,6 @@
 package com.yapp.buddycon.presentation.ui.addCoupon.state
 
+
 import com.yapp.buddycon.domain.model.CouponInfo
 
 sealed class CouponInfoLoadState<out T> {
