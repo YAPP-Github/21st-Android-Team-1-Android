@@ -26,6 +26,7 @@ object Versions {
     const val KAKAO_LOGIN = "2.12.0"
     const val SPLASH_SCREEN = "1.0.0-beta02"
     const val FIREBASE_BOM = "31.2.0"
+    const val ZXING = "3.5.0"
 }
 
 object ModuleDependency {
@@ -117,6 +118,10 @@ object ModuleDependency {
     object Firebase{
         const val FIREBASE_BOM = "com.google.firebase:firebase-bom:${Versions.FIREBASE_BOM}"
         const val FIREBASE_KTX = "com.google.firebase:firebase-analytics-ktx"
+    }
+
+    object Zxing{
+        const val ZXING = "com.journeyapps:zxing-android-embedded:${Versions.ZXING}"
     }
 }
 
