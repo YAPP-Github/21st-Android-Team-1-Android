@@ -27,6 +27,6 @@ interface CouponService {
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("sort") sort: String,
-        @Query("unshared") unshared: Boolean = true
+        @Query("unshared") unshared: Boolean
     ): List<CouponResponse>
 }

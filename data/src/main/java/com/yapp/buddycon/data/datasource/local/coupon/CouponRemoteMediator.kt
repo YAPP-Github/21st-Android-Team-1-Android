@@ -67,7 +67,8 @@ class CouponRemoteMediator(
                 CouponType.Made -> service.requestMadeCouponList(
                     page,
                     state.config.pageSize,
-                    SortMode.CreatedAt.value
+                    sort.value,
+                    sort == SortMode.NoShared
                 )
             }
 

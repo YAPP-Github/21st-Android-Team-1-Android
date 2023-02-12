@@ -6,7 +6,7 @@ import com.yapp.buddycon.domain.model.CouponItem
 import kotlinx.coroutines.flow.Flow
 
 enum class SortMode(val value: String) {
-    NoShared("noshared"),
+    NoShared("expireDate,DESC"),
     ExpireDate("expireDate"),
     Name("name"),
     CreatedAt("createdAt")

@@ -110,10 +110,12 @@ class BuddyConViewModel @Inject constructor(
     fun changeTabMode(tabMode: TabMode) {
         if(tabMode == TabMode.Made){
             changeCouponType(CouponType.Made)
+            changeSortMode(SortMode.NoShared)
         }
 
         if(tabModeState.value == TabMode.Made){
             changeCouponType(CouponType.Custom)
+            changeSortMode(SortMode.ExpireDate)
         }
         _tabModeState.value = tabMode
     }
