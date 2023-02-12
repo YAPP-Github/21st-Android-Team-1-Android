@@ -70,6 +70,7 @@ class CouponRemoteMediator(
                     SortMode.CreatedAt.value
                 )
             }
+
             buddyConDataBase.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     buddyConDataBase.couponDao().clearCoupon()
@@ -79,7 +80,9 @@ class CouponRemoteMediator(
                 val prevKey = if (page == COUPON_START_PAEGING_INDEX) null else page - 1
                 val nextKey = if (couponList.isEmpty()) null else page + 1
                 val keys = couponList.map { CouponRemoteKeysEntity(it.id, prevKey, nextKey) }
-                buddyConDataBase.couponDao().insertAll(couponList.map { it.toEntity(usable) })
+                buddyConDataBase.couponDao().insertAll(couponList.map {
+                    it.toEntity(usable)
+                })
                 buddyConDataBase.couponRemoteKeysDao().insertAll(keys)
             }
             return MediatorResult.Success(couponList.isEmpty())

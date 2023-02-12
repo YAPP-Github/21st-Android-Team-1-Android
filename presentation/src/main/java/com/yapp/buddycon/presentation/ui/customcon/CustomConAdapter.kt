@@ -14,23 +14,23 @@ import com.yapp.buddycon.presentation.databinding.ItemCouponBinding
 import java.time.LocalDate
 import java.time.Period
 
-class CustomConAdapter : PagingDataAdapter<CouponItem, CustomConAdapter.GiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
+class CustomConAdapter : PagingDataAdapter<CouponItem, CustomConAdapter.CustommConViewHoler>(CUSTOMCON_DIFF_CALLBACK) {
 
-    override fun onBindViewHolder(holder: GiftconViewHoler, position: Int) {
+    override fun onBindViewHolder(holder: CustommConViewHoler, position: Int) {
         getItem(position)?.let {
             holder.bind(it)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GiftconViewHoler {
-        return GiftconViewHoler(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustommConViewHoler {
+        return CustommConViewHoler(
             ItemCouponBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
     }
 
-    class GiftconViewHoler(
+    class CustommConViewHoler(
         private val binding: ItemCouponBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
@@ -40,11 +40,12 @@ class CustomConAdapter : PagingDataAdapter<CouponItem, CustomConAdapter.GiftconV
             if (info.usable) {
                 val (year, month, day) = info.expireDate.split("-").map { it.toInt() }
                 binding.btnExpireDate.isVisible = true
-                binding.btnExpireDate.text =
-                    "D${Period.between(LocalDate.now(), LocalDate.of(year, month, day)).days}"
+                binding.btnExpireDate.text = "D${Period.between(LocalDate.now(), LocalDate.of(year, month, day)).days}"
             } else {
                 binding.btnExpireDate.isVisible = false
             }
+
+            binding.tvNoshared.isVisible = info.shared.not()
 
             Glide.with(binding.ivCoupon.context)
                 .load(info.imageUrl)
@@ -55,7 +56,7 @@ class CustomConAdapter : PagingDataAdapter<CouponItem, CustomConAdapter.GiftconV
 
 
     companion object {
-        private val GIFTCON_DIFF_CALLBACK = object : DiffUtil.ItemCallback<CouponItem>() {
+        private val CUSTOMCON_DIFF_CALLBACK = object : DiffUtil.ItemCallback<CouponItem>() {
             override fun areItemsTheSame(oldItem: CouponItem, newItem: CouponItem): Boolean {
                 return oldItem.id == newItem.id
             }

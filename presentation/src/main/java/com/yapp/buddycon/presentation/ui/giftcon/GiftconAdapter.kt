@@ -45,6 +45,8 @@ class GiftconAdapter : PagingDataAdapter<CouponItem, GiftconAdapter.GiftconViewH
                 binding.btnExpireDate.isVisible = false
             }
 
+            binding.tvNoshared.isVisible = info.shared.not()
+
             Glide.with(binding.ivCoupon.context)
                 .load(info.imageUrl)
                 .placeholder(R.drawable.img_theme1)

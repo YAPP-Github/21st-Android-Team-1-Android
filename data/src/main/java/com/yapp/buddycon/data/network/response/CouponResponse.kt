@@ -6,17 +6,17 @@ import com.yapp.buddycon.data.db.entity.CouponEntity
 
 data class CouponResponse(
     @SerializedName("id")
-    val id: Int,
+    val id: Int = 0 ,
     @SerializedName("imageUrl")
-    val imageUrl: String,
+    val imageUrl: String = "",
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("expireDate")
-    val expireDate: String,
+    val expireDate: String = "",
     @SerializedName("createdAt")
-    val createdAt: String,
+    val createdAt: String = "",
     @SerializedName("shared")
-    val shared: Boolean = false
+    val shared: Boolean = true
 ) {
     fun toEntity(usable: Boolean) = CouponEntity(
         id = id,
