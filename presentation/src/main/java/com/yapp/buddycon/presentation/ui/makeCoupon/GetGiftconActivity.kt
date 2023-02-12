@@ -15,11 +15,12 @@ import kotlinx.coroutines.launch
 class GetGiftConActivity : BaseActivity<ActivityGetGiftconBinding>(R.layout.activity_get_giftcon) {
 
     private val getGiftConVieModel: GetGiftConViewModel by viewModels()
-    private val giftConAdapter = GetGiftConAdapter()
+    private val giftConAdapter = GetGiftConAdapter{getGiftConVieModel.changeItem(it)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.rvGiftcon.adapter = giftConAdapter
+        binding.viewModel = getGiftConVieModel
         initGiftConData()
     }
 
@@ -31,7 +32,4 @@ class GetGiftConActivity : BaseActivity<ActivityGetGiftconBinding>(R.layout.acti
             }
         }
     }
-
-
-
 }

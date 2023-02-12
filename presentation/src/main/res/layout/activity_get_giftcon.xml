@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.yapp.buddycon.presentation.ui.makeCoupon.GetGiftConViewModel" />
 
     </data>
 
@@ -47,6 +50,7 @@
             app:spanCount="2" />
 
         <TextView
+            setSelectedButton="@{viewModel.selectedItem}"
             android:id="@+id/btn_select"
             style="@style/bold16"
             android:layout_width="match_parent"

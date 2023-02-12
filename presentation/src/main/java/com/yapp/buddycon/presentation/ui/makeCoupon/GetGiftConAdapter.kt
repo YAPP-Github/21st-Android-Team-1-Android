@@ -10,9 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.presentation.R
-import com.yapp.buddycon.presentation.databinding.ItemCouponBinding
+import com.yapp.buddycon.presentation.databinding.ItemMakeCouponBinding
 
-class GetGiftConAdapter : PagingDataAdapter<CouponItem, GetGiftConAdapter.GetGiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
+class GetGiftConAdapter(private val itemClickListener : (CouponItem) -> (Unit)) :
+    PagingDataAdapter<CouponItem, GetGiftConAdapter.GetGiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
+    var selectedItem: CouponItem? = null
+
     override fun onBindViewHolder(holder: GetGiftconViewHoler, position: Int) {
         getItem(position)?.let {
             holder.bind(it)
@@ -21,28 +24,33 @@ class GetGiftConAdapter : PagingDataAdapter<CouponItem, GetGiftConAdapter.GetGif
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GetGiftconViewHoler {
         return GetGiftconViewHoler(
-            ItemCouponBinding.inflate(
+            ItemMakeCouponBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
     }
 
-    class GetGiftconViewHoler(
-        private val binding: ItemCouponBinding
+    inner class GetGiftconViewHoler(
+        private val binding: ItemMakeCouponBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(info: CouponItem) {
-            binding.ivCheckbox.visibility = View.VISIBLE
-            binding.itemCouponTvTitle.text = info.name
-            binding.itemTvExpirationPeriod.visibility = View.GONE
+            binding.ivCheckbox.visibility = if (info == selectedItem) { View.VISIBLE } else { View.GONE }
+            binding.ivCoupon.foreground =if (info == selectedItem) {binding.ivCoupon.context.getDrawable(R.color.skyblue_a20)} else null
 
+            binding.itemCouponTvTitle.text = info.name
             Glide.with(binding.ivCoupon.context)
                 .load(info.imageUrl)
                 .placeholder(R.drawable.img_theme1)
                 .into(binding.ivCoupon)
+
+            itemView.setOnClickListener {
+                selectedItem = info
+                notifyDataSetChanged()
+                itemClickListener(info)
+            }
         }
     }
-
 
     companion object {
         private val GIFTCON_DIFF_CALLBACK = object : DiffUtil.ItemCallback<CouponItem>() {
