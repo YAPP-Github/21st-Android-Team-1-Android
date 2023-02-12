@@ -115,6 +115,7 @@
             android:layout_height="216dp"
             android:layout_marginTop="246dp"
             android:src="@drawable/img_empty"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -128,6 +129,7 @@
             android:gravity="center"
             android:text="@string/giftcon_usable_empty_message"
             android:textColor="@color/gray60"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -137,7 +139,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="24dp"
-            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

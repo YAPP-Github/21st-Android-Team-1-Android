@@ -22,6 +22,7 @@ import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
 import com.yapp.buddycon.presentation.ui.main.BuddyConViewModel
 import com.yapp.buddycon.presentation.ui.main.TabMode
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -70,23 +71,35 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
     }
 
     private fun observeGiftcon() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             buddyConViewModel.couponPagingData.collectLatest {
                 giftconAdapter.submitData(it)
                 binding.giftconRecyclerView.scrollToPosition(0)
             }
         }
 
-        lifecycleScope.launch {
-            giftconAdapter.loadStateFlow.collect { loadState ->
-                val isListEmpty =
-                    loadState.refresh is LoadState.NotLoading && giftconAdapter.itemCount == 0
-                binding.ivEmpty.isVisible = isListEmpty
-                binding.tvEmpty.text = getString(
-                    if (buddyConViewModel.tabModeState.value == TabMode.Usable) R.string.giftcon_usable_empty_message
-                    else R.string.giftcon_used_empty_message
-                )
-                binding.giftconRecyclerView.isVisible = isListEmpty.not()
+        viewLifecycleOwner.lifecycleScope.launch {
+            giftconAdapter.loadStateFlow.collectLatest { loadState ->
+                if(loadState.append.endOfPaginationReached){
+                    val isListEmpty = giftconAdapter.itemCount == 0
+                    binding.ivEmpty.isVisible = isListEmpty
+                    binding.tvEmpty.isVisible = isListEmpty
+                    binding.tvEmpty.text = getString(
+                        if (buddyConViewModel.tabModeState.value == TabMode.Usable) R.string.giftcon_usable_empty_message
+                        else R.string.giftcon_used_empty_message
+                    )
+                    binding
+                    binding.giftconRecyclerView.isVisible = isListEmpty.not()
+                }
+//                val isListEmpty = loadState.refresh is LoadState.NotLoading && giftconAdapter.itemCount == 0
+//                delay(10)
+//                binding.ivEmpty.isVisible = isListEmpty
+//                binding.tvEmpty.isVisible = isListEmpty
+//                binding.tvEmpty.text = getString(
+//                    if (buddyConViewModel.tabModeState.value == TabMode.Usable) R.string.giftcon_usable_empty_message
+//                    else R.string.giftcon_used_empty_message
+//                )
+//                binding.giftconRecyclerView.isVisible = isListEmpty.not()
             }
         }
     }

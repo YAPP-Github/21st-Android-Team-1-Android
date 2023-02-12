@@ -18,10 +18,13 @@ import com.yapp.buddycon.presentation.databinding.FragmentCustomconBinding
 import com.yapp.buddycon.presentation.ui.main.BuddyConViewModel
 import com.yapp.buddycon.presentation.ui.main.TabMode
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class CustomConFragment : BaseFragment<FragmentCustomconBinding>(R.layout.fragment_customcon) {
@@ -74,17 +77,32 @@ class CustomConFragment : BaseFragment<FragmentCustomconBinding>(R.layout.fragme
         }
 
         lifecycleScope.launch {
-            customConAdapter.loadStateFlow.collect { loadState ->
-                val isListEmpty = loadState.refresh is LoadState.NotLoading && customConAdapter.itemCount == 0
-                binding.ivEmpty.isVisible = isListEmpty
-                binding.tvEmpty.text = getString(
-                    when(buddyConViewModel.tabModeState.value){
-                        TabMode.Usable -> R.string.customcon_usable_empty_message
-                        TabMode.Used -> R.string.customcon_used_empty_message
-                        TabMode.Made -> R.string.made_coupon_empty_message
-                    }
-                )
-                binding.customconRecyclerView.isVisible = isListEmpty.not()
+            customConAdapter.loadStateFlow.collectLatest { loadState ->
+                if(loadState.append.endOfPaginationReached){
+                    val isListEmpty = customConAdapter.itemCount == 0
+                    binding.ivEmpty.isVisible = isListEmpty
+                    binding.tvEmpty.isVisible = isListEmpty
+                    binding.tvEmpty.text = getString(
+                        when(buddyConViewModel.tabModeState.value){
+                            TabMode.Usable -> R.string.customcon_usable_empty_message
+                            TabMode.Used -> R.string.customcon_used_empty_message
+                            TabMode.Made -> R.string.made_coupon_empty_message
+                        }
+                    )
+                    binding.customconRecyclerView.isVisible = isListEmpty.not()
+                }
+//                val isListEmpty = loadState.refresh is LoadState.NotLoading && customConAdapter.itemCount == 0
+//                delay(10)
+//                binding.ivEmpty.isVisible = isListEmpty
+//                binding.tvEmpty.isVisible = isListEmpty
+//                binding.tvEmpty.text = getString(
+//                    when(buddyConViewModel.tabModeState.value){
+//                        TabMode.Usable -> R.string.customcon_usable_empty_message
+//                        TabMode.Used -> R.string.customcon_used_empty_message
+//                        TabMode.Made -> R.string.made_coupon_empty_message
+//                    }
+//                )
+//                binding.customconRecyclerView.isVisible = isListEmpty.not()
             }
         }
     }
