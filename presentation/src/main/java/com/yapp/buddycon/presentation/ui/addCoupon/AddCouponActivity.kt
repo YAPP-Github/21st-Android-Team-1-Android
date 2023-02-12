@@ -21,6 +21,7 @@ import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityAddCouponBinding
+import com.yapp.buddycon.presentation.ui.addCoupon.state.ContentInputState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.CouponInfoLoadState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.WhetherInputPossibleState
 import com.yapp.buddycon.presentation.utils.Logging
@@ -42,6 +43,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
         init()
         observeCouponInfoState()
+        observeCouponInputState()
     }
 
     private fun init() {
@@ -73,16 +75,12 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
                             barcodeNumber?.let {
                                 addCouponViewModel.checkBarcodeInfo(it)
                             }
-
                         }
                     } else {
                         Logging.error("read image success but no barcode")
                         MessageDialogFragment("바코드 인식 오류 \n이미지를 다시 선택해주세요") {
                             finish()
-                        }.show(
-                            supportFragmentManager,
-                            null
-                        )
+                        }.show(supportFragmentManager, null)
                     }
                 }.addOnFailureListener {
                     Logging.error("read image fail")
@@ -144,6 +142,39 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         }
     }
 
+    private fun observeCouponInputState() {
+        addCouponViewModel.contentInputState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                handleCouponInputState(it)
+            }.launchIn(lifecycleScope)
+    }
+
+    // string resource 수정 예정
+    private fun handleCouponInputState(contentInputState: ContentInputState) {
+        when(contentInputState) {
+            is ContentInputState.EmptyTitle -> {
+                MessageDialogFragment("쿠폰 이름을 입력해 주세요") {}
+                    .show(supportFragmentManager, null)
+            }
+            is ContentInputState.OutOfRangeTitle -> {
+                MessageDialogFragment("쿠폰 이름은 최대 16자로\n입력할 수 있어요") {}
+                    .show(supportFragmentManager, null)
+            }
+            is ContentInputState.EmptyExpireDate -> {
+                MessageDialogFragment("유효기간을 선택해 주세요") {}
+                    .show(supportFragmentManager, null)
+            }
+            is ContentInputState.OutOfRangeStoreName -> {
+                MessageDialogFragment("사용처는 최대 16자로\n입력할 수 있어요") {}
+                    .show(supportFragmentManager, null)
+            }
+            is ContentInputState.OutOfRangeMemo -> {
+                MessageDialogFragment("메모는 최대 50자로\n입력할 수 있어요") {}
+                    .show(supportFragmentManager, null)
+            }
+        }
+    }
+
     // 세부 수정 및 바인딩어댑터로 전환 예정
     // 새로 등록하는 기프티콘의 경우 사용자가 직접 입력을 할 수 있어야 함
     private fun setContentInputType(whetherInputPossibleState: WhetherInputPossibleState) {
@@ -188,13 +219,20 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             calendar.timeInMillis = longValue
 
             val selectedDate = calendar.time
-            val simpleDateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
-            val selectedDateString = simpleDateFormat.format(selectedDate)
+            val dateFormatForUser = SimpleDateFormat("yyyy년 MM월 dd일")
+            val dateFormatForServer = SimpleDateFormat("yyyy-MM-dd")
 
-            Logging.error("selected date string : $selectedDateString")
+            val selectedDateStringForUser = dateFormatForUser.format(selectedDate)
+            val selectedDateStringForServer = dateFormatForServer.format(selectedDate)
 
-            // viewmodel에 날짜 문자열 통째로 관리? 연, 월, 일 나눠서 관리?
+            Logging.error("selected date string : $selectedDateStringForUser")
+            Logging.error("selected date string for server : $selectedDateStringForServer")
 
+            addCouponViewModel.setExipireDate(selectedDateStringForServer)
+            with(binding.tvExpireDate) {
+                text = selectedDateStringForUser
+                setTextColor(ContextCompat.getColor(this@AddCouponActivity, R.color.gray90))
+            } // 수정 하기
         }
 
         datePicker.show(supportFragmentManager, "date_picker")

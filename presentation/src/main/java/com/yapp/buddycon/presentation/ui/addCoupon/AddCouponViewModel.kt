@@ -1,6 +1,7 @@
 package com.yapp.buddycon.presentation.ui.addCoupon
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.model.CouponInputInfo
 import com.yapp.buddycon.domain.usecase.addcoupon.GetGifticonInfoByBarcodeUseCase
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,7 +64,24 @@ class AddCouponViewModel @Inject constructor(
     fun addCoupon() {
         Logging.error("add coupon clicked")
 
+        viewModelScope.launch {
+            with(couponInputInfo) {
+                if (title.isEmpty()) {
+                    _contentInputState.emit(ContentInputState.EmptyTitle)
+                } else if (title.length > 16) {
+                    _contentInputState.emit(ContentInputState.OutOfRangeTitle)
+                } else if (expireDate.isEmpty()) {
+                    _contentInputState.emit(ContentInputState.EmptyExpireDate)
+                } else if (storeName.length > 16) {
+                    _contentInputState.emit(ContentInputState.OutOfRangeStoreName)
+                } else if (memo.length > 50) {
+                    _contentInputState.emit(ContentInputState.OutOfRangeMemo)
+                } else {
+                    // 입력 정보로 기프티콘 등록
 
+                }
+            }
+        }
     }
 
     // temp
