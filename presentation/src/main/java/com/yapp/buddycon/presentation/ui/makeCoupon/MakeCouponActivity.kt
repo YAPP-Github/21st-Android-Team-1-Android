@@ -14,10 +14,12 @@ import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityMakeCouponBinding
 import com.yapp.buddycon.presentation.ui.makeCoupon.MakeCouponViewModel.Theme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
+@AndroidEntryPoint
 class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.activity_make_coupon) {
     private val couponViewModel: MakeCouponViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +75,10 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == RESULT_OK) {
                     couponViewModel.changeTheme(type = Theme.GIFTCON)
-                    // id 값으로 기프티콘 정보 불러오기.
+                    it.data?.run {
+                        couponViewModel.getGiftCon(this.getIntExtra("id",0))
+                    }
+
                 }
             }
 
