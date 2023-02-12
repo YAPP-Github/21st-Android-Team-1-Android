@@ -133,11 +133,35 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ImageView
+            android:id="@+id/iv_empty"
+            android:layout_width="216dp"
+            android:layout_height="216dp"
+            android:layout_marginTop="246dp"
+            android:src="@drawable/img_empty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_empty"
+            style="@style/regular18"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="462dp"
+            android:gravity="center"
+            android:text="@string/giftcon_usable_empty_message"
+            android:textColor="@color/gray60"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/customconRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="24dp"
+            android:visibility="invisible"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

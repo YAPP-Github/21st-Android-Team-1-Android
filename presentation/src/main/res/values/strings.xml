@@ -70,4 +70,9 @@
     <string name="filter_expiration_date">유효기간순</string>
     <string name="filter_upload">등록순</string>
     <string name="filter_name">이름순</string>
+    <string name="giftcon_usable_empty_message">아래 + 버튼을 눌러\n가지고 있는 기프티콘을 등록해 주세요</string>
+    <string name="giftcon_used_empty_message">사용한 기프티콘이 없어요</string>
+    <string name="customcon_usable_empty_message">아래 + 버튼을 눌러\n가지고 있는 제작티콘을 등록해 주세요</string>
+    <string name="customcon_used_empty_message">사용한 제작티콘이 없어요</string>
+    <string name="made_coupon_empty_message">아래 + 버튼을 눌러\n가지고 있는 제작티콘을 만들어 보세요</string>
 </resources>

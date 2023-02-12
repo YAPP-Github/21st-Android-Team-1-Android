@@ -3,12 +3,15 @@ package com.yapp.buddycon.presentation.ui.giftcon
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yapp.buddycon.domain.repository.CouponType
 import com.yapp.buddycon.domain.repository.SortMode
@@ -71,6 +74,19 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
             buddyConViewModel.couponPagingData.collectLatest {
                 giftconAdapter.submitData(it)
                 binding.giftconRecyclerView.scrollToPosition(0)
+            }
+        }
+
+        lifecycleScope.launch {
+            giftconAdapter.loadStateFlow.collect { loadState ->
+                val isListEmpty =
+                    loadState.refresh is LoadState.NotLoading && giftconAdapter.itemCount == 0
+                binding.ivEmpty.isVisible = isListEmpty
+                binding.tvEmpty.text = getString(
+                    if (buddyConViewModel.tabModeState.value == TabMode.Usable) R.string.giftcon_usable_empty_message
+                    else R.string.giftcon_used_empty_message
+                )
+                binding.giftconRecyclerView.isVisible = isListEmpty.not()
             }
         }
     }

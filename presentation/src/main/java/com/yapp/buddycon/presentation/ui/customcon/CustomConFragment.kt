@@ -2,11 +2,13 @@ package com.yapp.buddycon.presentation.ui.customcon
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yapp.buddycon.domain.repository.CouponType
 import com.yapp.buddycon.domain.repository.SortMode
@@ -68,6 +70,21 @@ class CustomConFragment : BaseFragment<FragmentCustomconBinding>(R.layout.fragme
             buddyConViewModel.couponPagingData.collectLatest {
                 customConAdapter.submitData(it)
                 binding.customconRecyclerView.scrollToPosition(0)
+            }
+        }
+
+        lifecycleScope.launch {
+            customConAdapter.loadStateFlow.collect { loadState ->
+                val isListEmpty = loadState.refresh is LoadState.NotLoading && customConAdapter.itemCount == 0
+                binding.ivEmpty.isVisible = isListEmpty
+                binding.tvEmpty.text = getString(
+                    when(buddyConViewModel.tabModeState.value){
+                        TabMode.Usable -> R.string.customcon_usable_empty_message
+                        TabMode.Used -> R.string.customcon_used_empty_message
+                        TabMode.Made -> R.string.made_coupon_empty_message
+                    }
+                )
+                binding.customconRecyclerView.isVisible = isListEmpty.not()
             }
         }
     }
