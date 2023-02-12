@@ -1,5 +1,6 @@
 package com.yapp.buddycon.presentation.ui.makeCoupon
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,7 @@ import com.yapp.buddycon.presentation.ui.giftcon.GetGiftConAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class GetGiftConActivity : BaseActivity<ActivityGetGiftconBinding>(R.layout.activity_get_giftcon) {
@@ -21,6 +23,8 @@ class GetGiftConActivity : BaseActivity<ActivityGetGiftconBinding>(R.layout.acti
         super.onCreate(savedInstanceState)
         binding.rvGiftcon.adapter = giftConAdapter
         binding.viewModel = getGiftConVieModel
+        binding.activity = this
+
         initGiftConData()
     }
 
@@ -31,5 +35,12 @@ class GetGiftConActivity : BaseActivity<ActivityGetGiftconBinding>(R.layout.acti
                 binding.rvGiftcon.scrollToPosition(0)
             }
         }
+    }
+
+    fun finishSelect(){
+        val intent = Intent()
+        intent.putExtra("id",getGiftConVieModel.selectedItem.value.id)
+        setResult(RESULT_OK,intent)
+        finish()
     }
 }

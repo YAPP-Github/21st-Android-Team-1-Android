@@ -8,6 +8,9 @@
             name="viewModel"
             type="com.yapp.buddycon.presentation.ui.makeCoupon.GetGiftConViewModel" />
 
+        <variable
+            name="activity"
+            type="com.yapp.buddycon.presentation.ui.makeCoupon.GetGiftConActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,6 +53,7 @@
             app:spanCount="2" />
 
         <TextView
+            android:onClick="@{() -> activity.finishSelect()}"
             setSelectedButton="@{viewModel.selectedItem}"
             android:id="@+id/btn_select"
             style="@style/bold16"
