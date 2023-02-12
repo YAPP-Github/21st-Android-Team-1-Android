@@ -21,12 +21,14 @@ import com.yapp.buddycon.domain.model.CouponDatailInfo
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityAddCouponBinding
+import com.yapp.buddycon.presentation.ui.addCoupon.state.ContentInputState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.CouponInfoLoadState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.WhetherInputPossibleState
 import com.yapp.buddycon.presentation.utils.Logging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
@@ -41,6 +43,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
         init()
         observeCouponInfoState()
+        observeCouponInputState()
     }
 
     private fun init() {
@@ -72,16 +75,12 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
                             barcodeNumber?.let {
                                 addCouponViewModel.checkBarcodeInfo(it)
                             }
-
                         }
                     } else {
                         Logging.error("read image success but no barcode")
                         MessageDialogFragment("바코드 인식 오류 \n이미지를 다시 선택해주세요") {
                             finish()
-                        }.show(
-                            supportFragmentManager,
-                            null
-                        )
+                        }.show(supportFragmentManager, null)
                     }
                 }.addOnFailureListener {
                     Logging.error("read image fail")
@@ -143,6 +142,39 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         }
     }
 
+    private fun observeCouponInputState() {
+        addCouponViewModel.contentInputState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                handleCouponInputState(it)
+            }.launchIn(lifecycleScope)
+    }
+
+    // string resource 수정 예정
+    private fun handleCouponInputState(contentInputState: ContentInputState) {
+        when(contentInputState) {
+            is ContentInputState.EmptyTitle -> {
+                MessageDialogFragment("쿠폰 이름을 입력해 주세요") {}
+                    .show(supportFragmentManager, null)
+            }
+            is ContentInputState.OutOfRangeTitle -> {
+                MessageDialogFragment("쿠폰 이름은 최대 16자로\n입력할 수 있어요") {}
+                    .show(supportFragmentManager, null)
+            }
+            is ContentInputState.EmptyExpireDate -> {
+                MessageDialogFragment("유효기간을 선택해 주세요") {}
+                    .show(supportFragmentManager, null)
+            }
+            is ContentInputState.OutOfRangeStoreName -> {
+                MessageDialogFragment("사용처는 최대 16자로\n입력할 수 있어요") {}
+                    .show(supportFragmentManager, null)
+            }
+            is ContentInputState.OutOfRangeMemo -> {
+                MessageDialogFragment("메모는 최대 50자로\n입력할 수 있어요") {}
+                    .show(supportFragmentManager, null)
+            }
+        }
+    }
+
     // 세부 수정 및 바인딩어댑터로 전환 예정
     // 새로 등록하는 기프티콘의 경우 사용자가 직접 입력을 할 수 있어야 함
     private fun setContentInputType(whetherInputPossibleState: WhetherInputPossibleState) {
@@ -183,11 +215,24 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
         datePicker.addOnPositiveButtonClickListener { longValue ->
             Logging.error("selected date's Long value : ${longValue}")
-            val calendar = Calendar.getInstance()
+            val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREAN)
             calendar.timeInMillis = longValue
-            val date = calendar.time
-            Logging.error("selected date : $date")
-            // 날짜 변환 수정 필요
+
+            val selectedDate = calendar.time
+            val dateFormatForUser = SimpleDateFormat("yyyy년 MM월 dd일")
+            val dateFormatForServer = SimpleDateFormat("yyyy-MM-dd")
+
+            val selectedDateStringForUser = dateFormatForUser.format(selectedDate)
+            val selectedDateStringForServer = dateFormatForServer.format(selectedDate)
+
+            Logging.error("selected date string : $selectedDateStringForUser")
+            Logging.error("selected date string for server : $selectedDateStringForServer")
+
+            addCouponViewModel.setExipireDate(selectedDateStringForServer)
+            with(binding.tvExpireDate) {
+                text = selectedDateStringForUser
+                setTextColor(ContextCompat.getColor(this@AddCouponActivity, R.color.gray90))
+            } // 수정 하기
         }
 
         datePicker.show(supportFragmentManager, "date_picker")
@@ -208,7 +253,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.checkTitle(s.toString())
+                addCouponViewModel.setTitle(s.toString())
             }
         })
     }
@@ -220,7 +265,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.checkStoreName(s.toString())
+                addCouponViewModel.setStoreName(s.toString())
             }
         })
     }
@@ -232,7 +277,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.checkSentMemberName(s.toString())
+                addCouponViewModel.setSentMemberName(s.toString())
             }
         })
     }
@@ -244,7 +289,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.checkMemo(s.toString())
+                addCouponViewModel.setMemo(s.toString())
             }
         })
     }
