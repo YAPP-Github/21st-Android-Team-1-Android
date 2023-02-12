@@ -62,7 +62,7 @@
             android:background="@drawable/bg_item_coupon"
             android:elevation="2dp"
             android:gravity="center"
-            android:text="아직 공유하지 않은\n쿠폰입니다"
+            android:text="@string/coupon_not_share_message"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/cv_coupon"
             app:layout_constraintEnd_toEndOf="@id/cv_coupon"
