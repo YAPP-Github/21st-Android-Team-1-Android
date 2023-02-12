@@ -14,6 +14,9 @@ import com.yapp.buddycon.presentation.databinding.ItemCouponBinding
 import java.time.LocalDate
 import java.time.Period
 
+
+enum class uiType {Home, MakeCon}
+
 class GiftconAdapter : PagingDataAdapter<CouponItem, GiftconAdapter.GiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
 
     override fun onBindViewHolder(holder: GiftconViewHoler, position: Int) {

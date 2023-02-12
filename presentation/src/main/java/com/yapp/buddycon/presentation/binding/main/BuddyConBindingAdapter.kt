@@ -2,7 +2,7 @@ package com.yapp.buddycon.presentation.binding.main
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.yapp.buddycon.domain.repository.SortMode
+import com.yapp.buddycon.domain.model.SortMode
 import com.yapp.buddycon.presentation.R
 import kotlinx.coroutines.flow.StateFlow
 

@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.yapp.buddycon.domain.repository.SortMode
+import com.yapp.buddycon.domain.model.SortMode
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseFragment
 import com.yapp.buddycon.presentation.databinding.FragmentCustomconBinding

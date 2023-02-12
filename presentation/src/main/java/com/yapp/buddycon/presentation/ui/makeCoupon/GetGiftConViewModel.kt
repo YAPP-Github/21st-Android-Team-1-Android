@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.yapp.buddycon.domain.model.CouponItem
-import com.yapp.buddycon.domain.repository.CouponType
-import com.yapp.buddycon.domain.repository.SortMode
+import com.yapp.buddycon.domain.model.CouponType
+import com.yapp.buddycon.domain.model.SortMode
 import com.yapp.buddycon.domain.usecase.giftcon.GetCouponInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel

@@ -6,9 +6,9 @@
 
         <import type="android.view.View" />
 
-        <import type="com.yapp.buddycon.domain.repository.CouponType" />
+        <import type="com.yapp.buddycon.domain.model.CouponType" />
 
-        <import type="com.yapp.buddycon.domain.repository.SortMode" />
+        <import type="com.yapp.buddycon.domain.model.SortMode" />
 
         <variable
             name="buddyConViewModel"
