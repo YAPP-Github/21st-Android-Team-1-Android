@@ -91,18 +91,6 @@ class CustomConFragment : BaseFragment<FragmentCustomconBinding>(R.layout.fragme
                     )
                     binding.customconRecyclerView.isVisible = isListEmpty.not()
                 }
-//                val isListEmpty = loadState.refresh is LoadState.NotLoading && customConAdapter.itemCount == 0
-//                delay(10)
-//                binding.ivEmpty.isVisible = isListEmpty
-//                binding.tvEmpty.isVisible = isListEmpty
-//                binding.tvEmpty.text = getString(
-//                    when(buddyConViewModel.tabModeState.value){
-//                        TabMode.Usable -> R.string.customcon_usable_empty_message
-//                        TabMode.Used -> R.string.customcon_used_empty_message
-//                        TabMode.Made -> R.string.made_coupon_empty_message
-//                    }
-//                )
-//                binding.customconRecyclerView.isVisible = isListEmpty.not()
             }
         }
     }

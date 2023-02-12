@@ -32,7 +32,7 @@ class CouponRepositoryImpl @Inject constructor(
         pagingSourceFactory = {
             when (sort) {
                 SortMode.NoShared -> {
-                    buddyConDataBase.couponDao().getCouponByShared(true)
+                    buddyConDataBase.couponDao().getCouponByShared()
                 }
                 SortMode.ExpireDate -> {
                     buddyConDataBase.couponDao().getCouponByExpireDate(usable)

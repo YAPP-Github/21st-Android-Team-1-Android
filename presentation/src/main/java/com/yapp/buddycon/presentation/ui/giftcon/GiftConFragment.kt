@@ -91,15 +91,6 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
                     binding
                     binding.giftconRecyclerView.isVisible = isListEmpty.not()
                 }
-//                val isListEmpty = loadState.refresh is LoadState.NotLoading && giftconAdapter.itemCount == 0
-//                delay(10)
-//                binding.ivEmpty.isVisible = isListEmpty
-//                binding.tvEmpty.isVisible = isListEmpty
-//                binding.tvEmpty.text = getString(
-//                    if (buddyConViewModel.tabModeState.value == TabMode.Usable) R.string.giftcon_usable_empty_message
-//                    else R.string.giftcon_used_empty_message
-//                )
-//                binding.giftconRecyclerView.isVisible = isListEmpty.not()
             }
         }
     }
