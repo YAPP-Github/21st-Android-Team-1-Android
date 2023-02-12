@@ -112,7 +112,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_filter"
+                android:id="@+id/tv_sort_mode"
                 style="@style/regular14"
                 android:layout_width="60dp"
                 android:layout_height="20dp"

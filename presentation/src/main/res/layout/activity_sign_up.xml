@@ -83,7 +83,7 @@
             <TextView
                 android:id="@+id/tv_all_complete_terms"
                 style="@style/regular16"
-                android:layout_width="86dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/signup_all_complete_terms"
@@ -115,7 +115,7 @@
             <TextView
                 android:id="@+id/tv_use_terms"
                 style="@style/regular16"
-                android:layout_width="127dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/signup_use_terms"
@@ -148,7 +148,7 @@
             <TextView
                 android:id="@+id/tv_privacy_info_terms"
                 style="@style/regular16"
-                android:layout_width="184dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/signup_privacy_info_terms"

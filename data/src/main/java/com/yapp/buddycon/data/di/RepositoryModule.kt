@@ -1,13 +1,7 @@
 package com.yapp.buddycon.data.di
 
-import com.yapp.buddycon.data.repository.AddCouponRepositoryImpl
-import com.yapp.buddycon.data.repository.BootRepositoryImpl
-import com.yapp.buddycon.data.repository.UserRepositoryImpl
-import com.yapp.buddycon.data.repository.TokenRepositoryImpl
-import com.yapp.buddycon.domain.repository.AddCouponRepository
-import com.yapp.buddycon.domain.repository.BootRepository
-import com.yapp.buddycon.domain.repository.UserRepository
-import com.yapp.buddycon.domain.repository.TokenRepository
+import com.yapp.buddycon.data.repository.*
+import com.yapp.buddycon.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -35,6 +29,12 @@ interface RepositoryModule {
     fun bindsBootRepository(
         bootRepositoryImpl: BootRepositoryImpl
     ): BootRepository
+
+    @Binds
+    @Singleton
+    fun bindsCouponRepository(
+        couponRepositoryImpl: CouponRepositoryImpl
+    ): CouponRepository
 
     @Binds
     @Singleton
