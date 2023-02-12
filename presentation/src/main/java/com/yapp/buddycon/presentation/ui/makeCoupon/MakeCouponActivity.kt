@@ -3,12 +3,14 @@ package com.yapp.buddycon.presentation.ui.makeCoupon
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
@@ -31,6 +33,21 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
 
         openGallery()
         getGiftCon()
+    }
+
+    private fun collectGiftCon() {
+        couponViewModel.couponInfo.flowWithLifecycle(lifecycle,Lifecycle.State.CREATED).onEach {
+            Glide.with(this)
+                .load(it.imageUrl)
+                .into(binding.ivMain)
+
+            binding.tvBarcodeNum.text = it.barcode
+            binding.etValidity.text = it.expireDate.toEditable()
+            binding.etUsePlace.text = it.storeName.toEditable()
+            binding.etUsePlace.isEnabled = false
+            binding.etValidity.isEnabled = false
+            
+        }.launchIn(lifecycleScope)
     }
 
 
@@ -77,6 +94,7 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
                     couponViewModel.changeTheme(type = Theme.GIFTCON)
                     it.data?.run {
                         couponViewModel.getGiftCon(this.getIntExtra("id",0))
+                        collectGiftCon()
                     }
 
                 }
@@ -86,4 +104,6 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
             getGiftConLauncher.launch(Intent(this, GetGiftConActivity::class.java))
         }
     }
+
+    fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
 }
