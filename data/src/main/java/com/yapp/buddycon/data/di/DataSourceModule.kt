@@ -4,6 +4,8 @@ import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSou
 import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSourceImpl
 import com.yapp.buddycon.data.datasource.remote.login.LoginRemoteDataSource
 import com.yapp.buddycon.data.datasource.remote.login.LoginRemoteDataSourceImpl
+import com.yapp.buddycon.data.datasource.remote.makecon.GetGiftConDetailRemoteDataSource
+import com.yapp.buddycon.data.datasource.remote.makecon.GetGiftConDetailRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -22,4 +24,9 @@ interface DataSourceModule {
     fun bindsAddCouponRemoteDataSource(
         addCouponRemoteDataSourceImpl: AddCouponRemoteDataSourceImpl
     ): AddCouponRemoteDataSource
+
+    @Binds
+    fun bindsGiftConDetailRemoteDataSource(
+        getGiftConDetailRemoteDataSourceImpl: GetGiftConDetailRemoteDataSourceImpl
+    ):GetGiftConDetailRemoteDataSource
 }

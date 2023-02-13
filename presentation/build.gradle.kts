@@ -70,4 +70,5 @@ dependencies {
     implementation(ModuleDependency.MLkit.ML_Kit)
     implementation(ModuleDependency.SplashScreen.SPLASH_SCREEN)
     implementation(ModuleDependency.Paging.PAGING_RUNTIME_KTX)
+    implementation(ModuleDependency.Zxing.ZXING)
 }
