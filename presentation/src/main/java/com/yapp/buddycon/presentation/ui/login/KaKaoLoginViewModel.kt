@@ -20,11 +20,7 @@ class KaKaoLoginViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            saveTokenUseCase(
-                "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiaWF0IjoxNjc0ODEyMjk5LCJleHAiOjE2ODA4MTcwOTl9.8buxTCLp_erwERq7d96AORKCyzbLNaqhg7ozNFKs0_M",
-                Long.MAX_VALUE, ""
-            )
-            _loginState.emit(KaKaoLoginState.Login(null))
+            _loginState.emit(KaKaoLoginState.LogOut)
         }
     }
 

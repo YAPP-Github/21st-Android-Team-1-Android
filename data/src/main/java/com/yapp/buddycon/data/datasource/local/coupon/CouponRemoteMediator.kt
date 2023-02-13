@@ -1,4 +1,4 @@
-package com.yapp.buddycon.data.datasource.local.giftcon
+package com.yapp.buddycon.data.datasource.local.coupon
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -12,6 +12,7 @@ import com.yapp.buddycon.data.network.api.CouponService
 import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.domain.model.SortMode
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 
 const val COUPON_START_PAEGING_INDEX = 0
@@ -57,8 +58,20 @@ class CouponRemoteMediator(
                     state.config.pageSize,
                     sort.value
                 )
-                else -> listOf()    // TODO
+                CouponType.Custom -> service.requestCustomCouponList(
+                    usable,
+                    page,
+                    state.config.pageSize,
+                    sort.value
+                )
+                CouponType.Made -> service.requestMadeCouponList(
+                    page,
+                    state.config.pageSize,
+                    sort.value,
+                    sort == SortMode.NoShared
+                )
             }
+
             buddyConDataBase.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     buddyConDataBase.couponDao().clearCoupon()
@@ -68,7 +81,9 @@ class CouponRemoteMediator(
                 val prevKey = if (page == COUPON_START_PAEGING_INDEX) null else page - 1
                 val nextKey = if (couponList.isEmpty()) null else page + 1
                 val keys = couponList.map { CouponRemoteKeysEntity(it.id, prevKey, nextKey) }
-                buddyConDataBase.couponDao().insertAll(couponList.map { it.toEntity(usable) })
+                buddyConDataBase.couponDao().insertAll(couponList.map {
+                    it.toEntity(usable, couponType)
+                })
                 buddyConDataBase.couponRemoteKeysDao().insertAll(keys)
             }
             return MediatorResult.Success(couponList.isEmpty())
