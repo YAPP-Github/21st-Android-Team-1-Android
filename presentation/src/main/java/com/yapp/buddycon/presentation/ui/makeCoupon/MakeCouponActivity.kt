@@ -2,26 +2,30 @@ package com.yapp.buddycon.presentation.ui.makeCoupon
 
 import android.Manifest
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityMakeCouponBinding
 import com.yapp.buddycon.presentation.ui.makeCoupon.MakeCouponViewModel.Theme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
+@AndroidEntryPoint
 class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.activity_make_coupon) {
     private val couponViewModel: MakeCouponViewModel by viewModels()
-    private var imgURI : Uri = Uri.EMPTY
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,35 +33,36 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
         binding.appbarMakeCoupon.tvAppbarRight.visibility = View.VISIBLE
         binding.appbarMakeCoupon.ibnAppbarBack.setOnClickListener { finish() }
 
-        themeCollect()
         openGallery()
+        getGiftCon()
     }
 
-    private fun themeCollect() {
-        couponViewModel.nowTheme.flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED).onEach {
-            when (it) {
-                Theme.BASIC -> {
-                    binding.ivThumbnail.setImageResource(R.drawable.img_theme1)
-                    binding.cl.foreground = getDrawable(R.drawable.bg_theme1)
-                    binding.ivMain.setImageResource(R.drawable.img_theme1)
-                }
-                Theme.CELEBRATE -> {
-                    binding.ivThumbnail.setImageResource(R.drawable.img_theme2)
-                    binding.cl.foreground = getDrawable(R.drawable.bg_theme2)
-                    binding.ivMain.setImageResource(R.drawable.img_theme2)
-                }
-                Theme.FUN -> {
-                    binding.ivThumbnail.setImageResource(R.drawable.img_theme3)
-                    binding.cl.foreground = getDrawable(R.drawable.bg_theme3)
-                    binding.ivMain.setImageResource(R.drawable.img_theme3)
-                }
-                Theme.IMAGE -> {
-                    binding.ivMain.setImageURI(imgURI)
-                    binding.btnGetGiftcon.visibility = View.GONE
-                    binding.btnGetImg.text = getString(R.string.makecon_change_img)
-                }
+    private fun collectGiftCon() {
+        couponViewModel.couponInfo.flowWithLifecycle(lifecycle,Lifecycle.State.CREATED).onEach {
+            Glide.with(this)
+                .load(it.imageUrl)
+                .into(binding.ivMain)
+
+            binding.tvBarcodeNum.text = it.barcode
+            binding.etValidity.text = it.expireDate.toEditable()
+            binding.etUsePlace.text = it.storeName.toEditable()
+            binding.etUsePlace.isEnabled = false
+            binding.etValidity.isEnabled = false
+
+            if (it.barcode != ""){
+                changeBarCodeImg(it.barcode)
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun changeBarCodeImg(barcode: String){
+        try {
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.encodeBitmap(barcode,BarcodeFormat.CODE_128,800,200)
+            binding.ivBarcode.setImageBitmap(bitmap)
+        }catch (e : Error){
+            Timber.e("바코드 생성 실패 ${e.message}")
+        }
     }
 
     private fun openGallery() {
@@ -66,8 +71,7 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
                 if (it.resultCode == RESULT_OK) {
                     it.data?.let { galleryIntent ->
                         galleryIntent.data?.let { uri ->
-                            Timber.tag("Image").d(uri.toString())
-                            imgURI = uri
+                            binding.ivMain.setImageURI(uri)
                             couponViewModel.changeTheme(type = Theme.IMAGE)
                         }
                     }
@@ -89,6 +93,33 @@ class MakeCouponActivity : BaseActivity<ActivityMakeCouponBinding>(R.layout.acti
                 }
             }
 
-        binding.btnGetImg.setOnClickListener { requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }
+        binding.btnGetImg.setOnClickListener {
+            requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (binding.btnGetGiftcon.visibility != View.GONE){
+                couponViewModel.changeTheme(type = Theme.IMAGE)
+                val random = (0.. 999999999999).random().toString().padStart(12,'0')
+                binding.tvBarcodeNum.text = random
+            }
+        }
     }
+
+    private fun getGiftCon() {
+        val getGiftConLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == RESULT_OK) {
+                    couponViewModel.changeTheme(type = Theme.GIFTCON)
+                    it.data?.run {
+                        couponViewModel.getGiftCon(this.getIntExtra("id",0))
+                        collectGiftCon()
+                    }
+
+                }
+            }
+
+        binding.btnGetGiftcon.setOnClickListener {
+            getGiftConLauncher.launch(Intent(this, GetGiftConActivity::class.java))
+        }
+    }
+
+    private fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
 }

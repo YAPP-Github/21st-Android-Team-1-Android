@@ -49,6 +49,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    imageThemeMode="@{couponViewModel.nowTheme}"
                     android:id="@+id/iv_thumbnail"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
@@ -162,6 +163,7 @@
             android:id="@+id/cl"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            bgThemeMode="@{couponViewModel.nowTheme}"
             android:background="@color/white"
             android:foreground="@drawable/bg_theme1"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -175,6 +177,7 @@
                 android:id="@+id/iv_main"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                imageThemeMode="@{couponViewModel.nowTheme}"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="24dp"
                 android:scaleType="centerCrop"
@@ -186,6 +189,7 @@
                 app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize.20"/>
 
             <Button
+                getGiftConBtn="@{couponViewModel.nowTheme}"
                 app:layout_constraintVertical_chainStyle="packed"
                 android:id="@+id/btn_get_img"
                 style="@style/bold16"
@@ -203,6 +207,7 @@
                 app:layout_constraintStart_toStartOf="@id/iv_main" />
 
             <Button
+                getGiftConBtn="@{couponViewModel.nowTheme}"
                 android:id="@+id/btn_get_giftcon"
                 style="@style/bold16"
                 android:layout_width="wrap_content"
@@ -255,12 +260,14 @@
 
             <ImageView
                 android:id="@+id/iv_barcode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="18dp"
                 android:src="@drawable/img_barcode"
-                app:layout_constraintEnd_toEndOf="@id/et_explanation"
-                app:layout_constraintStart_toStartOf="@id/et_explanation"
+                android:layout_marginHorizontal="72dp"
+                android:scaleType="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_explanation" />
 
             <TextView

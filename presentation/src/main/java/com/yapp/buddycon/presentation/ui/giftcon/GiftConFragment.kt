@@ -1,26 +1,24 @@
 package com.yapp.buddycon.presentation.ui.giftcon
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import com.yapp.buddycon.domain.repository.SortMode
+import com.yapp.buddycon.domain.model.CouponType
+import com.yapp.buddycon.domain.model.SortMode
+import com.yapp.buddycon.domain.model.TabMode
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseFragment
 import com.yapp.buddycon.presentation.databinding.FragmentGiftconBinding
-import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
 import com.yapp.buddycon.presentation.ui.main.BuddyConViewModel
-import com.yapp.buddycon.presentation.ui.main.TabMode
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_giftcon) {
@@ -36,6 +34,7 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
 
         buddyConViewModel.changeTabMode(TabMode.Usable)
         buddyConViewModel.changeSortMode(SortMode.ExpireDate)
+        buddyConViewModel.changeCouponType(CouponType.GiftCon)
         initViews()
         observeSortMode()
         observeGiftcon()
@@ -65,10 +64,26 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
     }
 
     private fun observeGiftcon() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             buddyConViewModel.couponPagingData.collectLatest {
                 giftconAdapter.submitData(it)
                 binding.giftconRecyclerView.scrollToPosition(0)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            giftconAdapter.loadStateFlow.collectLatest { loadState ->
+                if(loadState.append.endOfPaginationReached){
+                    val isListEmpty = giftconAdapter.itemCount == 0
+                    binding.ivEmpty.isVisible = isListEmpty
+                    binding.tvEmpty.isVisible = isListEmpty
+                    binding.tvEmpty.text = getString(
+                        if (buddyConViewModel.tabModeState.value == TabMode.Usable) R.string.giftcon_usable_empty_message
+                        else R.string.giftcon_used_empty_message
+                    )
+                    binding
+                    binding.giftconRecyclerView.isVisible = isListEmpty.not()
+                }
             }
         }
     }
