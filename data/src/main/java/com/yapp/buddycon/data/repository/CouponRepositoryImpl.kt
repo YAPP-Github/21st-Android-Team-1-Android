@@ -1,7 +1,7 @@
 package com.yapp.buddycon.data.repository
 
 import androidx.paging.*
-import com.yapp.buddycon.data.datasource.local.giftcon.CouponRemoteMediator
+import com.yapp.buddycon.data.datasource.local.coupon.CouponRemoteMediator
 import com.yapp.buddycon.data.db.BuddyConDataBase
 import com.yapp.buddycon.data.network.api.CouponService
 import com.yapp.buddycon.domain.model.CouponItem
@@ -25,7 +25,7 @@ class CouponRepositoryImpl @Inject constructor(
     ): Flow<PagingData<CouponItem>> = Pager(
         config = PagingConfig(pageSize = COUPON_PAGE_SIZE, enablePlaceholders = false),
         remoteMediator = CouponRemoteMediator(
-            usable,
+            if(couponType == CouponType.Made) false else usable,
             sort,
             couponType,
             couponService,
@@ -34,7 +34,7 @@ class CouponRepositoryImpl @Inject constructor(
         pagingSourceFactory = {
             when (sort) {
                 SortMode.NoShared -> {
-                    buddyConDataBase.couponDao().getCouponByShared(usable)
+                    buddyConDataBase.couponDao().getCouponByShared()
                 }
                 SortMode.ExpireDate -> {
                     buddyConDataBase.couponDao().getCouponByExpireDate(usable)

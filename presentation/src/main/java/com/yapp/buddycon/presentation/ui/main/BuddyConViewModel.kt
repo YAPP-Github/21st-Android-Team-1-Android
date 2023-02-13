@@ -8,7 +8,7 @@ import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.domain.model.SortMode
 import com.yapp.buddycon.domain.model.TabMode
-import com.yapp.buddycon.domain.usecase.giftcon.GetCouponInfoUseCase
+import com.yapp.buddycon.domain.usecase.coupon.GetCouponInfoUseCase
 import com.yapp.buddycon.domain.usecase.login.GetBootInfoUseCase
 import com.yapp.buddycon.domain.usecase.login.SaveBootInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -67,8 +67,8 @@ class BuddyConViewModel @Inject constructor(
     private fun requestCouponList(): Flow<PagingData<CouponItem>> =
         getCouponInfoUseCase(
             usable = when (tabModeState.value) {
-                TabMode.Used -> false
-                else -> true
+                TabMode.Usable -> true
+                else -> false
             },
             sort = sortModeState.value,
             couponType = couponTypeState.value
@@ -107,6 +107,19 @@ class BuddyConViewModel @Inject constructor(
     }
 
     fun changeTabMode(tabMode: TabMode) {
+        if(tabMode == TabMode.Made){
+            changeCouponType(CouponType.Made)
+            changeSortMode(SortMode.NoShared)
+        }
+
+        if(tabModeState.value == TabMode.Made){
+            changeCouponType(CouponType.Custom)
+            changeSortMode(SortMode.ExpireDate)
+        }
         _tabModeState.value = tabMode
+    }
+
+    fun changeCouponType(couponType: CouponType){
+        _couponTypeState.value = couponType
     }
 }

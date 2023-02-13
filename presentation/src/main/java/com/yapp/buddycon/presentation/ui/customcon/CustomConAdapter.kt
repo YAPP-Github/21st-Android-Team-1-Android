@@ -1,4 +1,4 @@
-package com.yapp.buddycon.presentation.ui.giftcon
+package com.yapp.buddycon.presentation.ui.customcon
 
 import android.annotation.SuppressLint
 import android.graphics.ColorMatrix
@@ -17,25 +17,26 @@ import com.yapp.buddycon.presentation.databinding.ItemCouponBinding
 import timber.log.Timber
 import java.time.LocalDate
 import java.time.Period
-import java.util.Calendar
+import java.util.*
 
-class GiftconAdapter :
-    PagingDataAdapter<CouponItem, GiftconAdapter.GiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
-    override fun onBindViewHolder(holder: GiftconViewHoler, position: Int) {
+class CustomConAdapter :
+    PagingDataAdapter<CouponItem, CustomConAdapter.CustommConViewHoler>(CUSTOMCON_DIFF_CALLBACK) {
+
+    override fun onBindViewHolder(holder: CustommConViewHoler, position: Int) {
         getItem(position)?.let {
             holder.bind(it)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GiftconViewHoler {
-        return GiftconViewHoler(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustommConViewHoler {
+        return CustommConViewHoler(
             ItemCouponBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
     }
 
-    class GiftconViewHoler(
+    class CustommConViewHoler(
         private val binding: ItemCouponBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
@@ -95,7 +96,7 @@ class GiftconAdapter :
 
 
     companion object {
-        private val GIFTCON_DIFF_CALLBACK = object : DiffUtil.ItemCallback<CouponItem>() {
+        private val CUSTOMCON_DIFF_CALLBACK = object : DiffUtil.ItemCallback<CouponItem>() {
             override fun areItemsTheSame(oldItem: CouponItem, newItem: CouponItem): Boolean {
                 return oldItem.id == newItem.id
             }

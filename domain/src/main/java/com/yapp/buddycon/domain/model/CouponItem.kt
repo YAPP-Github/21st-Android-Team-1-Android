@@ -7,5 +7,6 @@ data class CouponItem(
     val expireDate: String,
     val createdAt: String,
     val usable: Boolean = false,
-    val shared: Boolean = false
+    val shared: Boolean = true,
+    val couponType: CouponType = CouponType.GiftCon
 )
