@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -127,10 +128,12 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             is CouponInfoLoadState.ShowLoading -> {
                 Logging.error("AddCouponActivity : show loading")
                 binding.pbLoading.isVisible = true
+                this.getWindow()?.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             }
             is CouponInfoLoadState.HideLoading -> {
                 Logging.error("AddCouponActivity : hide loading")
                 binding.pbLoading.isVisible = false
+                this.getWindow()?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             }
             is CouponInfoLoadState.LoadError -> {
                 Toast.makeText(this, "서버에서 정보를 불러오는 과정에서 오류가 발생했습니다", Toast.LENGTH_SHORT).show()
