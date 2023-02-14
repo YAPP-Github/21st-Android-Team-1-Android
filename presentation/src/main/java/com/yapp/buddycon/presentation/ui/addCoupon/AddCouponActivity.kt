@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -269,50 +270,27 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     private fun initTitleTextWatcher() {
-        binding.etTitle.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.setTitle(s.toString())
-            }
-        })
+        binding.etTitle.addTextChangedListener {
+            addCouponViewModel.setTitle(it.toString())
+        }
     }
 
     private fun initStoreNameTextWatcher() {
-        binding.etStoreName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.setStoreName(s.toString())
-            }
-        })
+        binding.etStoreName.addTextChangedListener {
+            addCouponViewModel.setStoreName(it.toString())
+        }
     }
 
     private fun initSentMemberTextWatcher() {
-        binding.etSentMember.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.setSentMemberName(s.toString())
-            }
-        })
+        binding.etSentMember.addTextChangedListener {
+            addCouponViewModel.setSentMemberName(it.toString())
+        }
     }
 
     private fun initMemoTextWatcher() {
-        binding.etMemo.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.setMemo(s.toString())
-            }
-        })
+        binding.etMemo.addTextChangedListener {
+            addCouponViewModel.setMemo(it.toString())
+        }
+        // 람다 활용 <- afterTextChanged 가 가장 마지막이므로 가능
     }
 }
