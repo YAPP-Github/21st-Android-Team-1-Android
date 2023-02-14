@@ -16,7 +16,7 @@
 
     <style name="Theme.BuddyCon.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/skb_blue</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_buddycon_title</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app_icon_30</item>
         <item name="postSplashScreenTheme">@style/Theme.BuddyCon</item>
     </style>
 
