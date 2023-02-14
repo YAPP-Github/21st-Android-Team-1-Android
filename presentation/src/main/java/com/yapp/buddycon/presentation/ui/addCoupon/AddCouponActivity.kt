@@ -8,6 +8,8 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -18,6 +20,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.yapp.buddycon.domain.model.CouponInfo
+import com.yapp.buddycon.domain.model.CouponInputInfo
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityAddCouponBinding
@@ -119,22 +122,38 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     // 세부기능 추가 예정 ex> loading progress bar
-    private fun handleCouponInfoLoadState(state: CouponInfoLoadState<CouponInfo>) {
+    private fun handleCouponInfoLoadState(state: CouponInfoLoadState<CouponInputInfo>) {
         when (state) {
             is CouponInfoLoadState.Init -> {}
-            is CouponInfoLoadState.Loading -> {}
-            is CouponInfoLoadState.LoadError -> {}
+            is CouponInfoLoadState.ShowLoading -> {
+                Logging.error("AddCouponActivity : show loading")
+                binding.pbLoading.isVisible = true
+                this.getWindow()?.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            }
+            is CouponInfoLoadState.HideLoading -> {
+                Logging.error("AddCouponActivity : hide loading")
+                binding.pbLoading.isVisible = false
+                this.getWindow()?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            }
+            is CouponInfoLoadState.LoadError -> {
+                Toast.makeText(this, "서버에서 정보를 불러오는 과정에서 오류가 발생했습니다", Toast.LENGTH_SHORT).show()
+                finish()
+                // 에러 처리 수정하기
+            }
             is CouponInfoLoadState.NewGifticon -> {
+                Logging.error("AddCouponActivity : 최초 등록")
                 setAppbarTitle(getString(R.string.add_coupon_app_bar_title_gifticon))
                 setContentInputType(WhetherInputPossibleState.Possible)
                 setSentMemberVisibility(state)
             }
             is CouponInfoLoadState.ExistGifticon -> {
+                Logging.error("AddCouponActivity : 존재하는 기프티콘")
                 setAppbarTitle(getString(R.string.add_coupon_app_bar_title_gifticon))
                 setContentInputType(WhetherInputPossibleState.Impossible)
                 setSentMemberVisibility(state)
             }
             is CouponInfoLoadState.ExistMakeCon -> {
+                Logging.error("AddCouponActivity : 존재하는 제작티콘")
                 setAppbarTitle(getString(R.string.add_coupon_app_bar_title_makecon))
                 setContentInputType(WhetherInputPossibleState.Impossible)
                 setSentMemberVisibility(state)
@@ -151,7 +170,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
     // string resource 수정 예정
     private fun handleCouponInputState(contentInputState: ContentInputState) {
-        when(contentInputState) {
+        when (contentInputState) {
             is ContentInputState.EmptyTitle -> {
                 MessageDialogFragment("쿠폰 이름을 입력해 주세요") {}
                     .show(supportFragmentManager, null)
@@ -197,11 +216,14 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     // 제작티콘의 경우에만 '보낸사람' 영역 보임
-    private fun setSentMemberVisibility(couponInfoState: CouponInfoLoadState<CouponInfo>) {
+    private fun setSentMemberVisibility(couponInfoState: CouponInfoLoadState<CouponInputInfo>) {
         with(binding) {
-            etSentMember.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInfo>
-            tvSentMemberDescription.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInfo>
-            viewDivider3.isVisible = couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInfo>
+            etSentMember.isVisible =
+                couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInputInfo>
+            tvSentMemberDescription.isVisible =
+                couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInputInfo>
+            viewDivider3.isVisible =
+                couponInfoState is CouponInfoLoadState.ExistMakeCon<CouponInputInfo>
         }
     }
 
@@ -247,7 +269,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     private fun initTitleTextWatcher() {
-        binding.etTitle.addTextChangedListener( object: TextWatcher {
+        binding.etTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -259,7 +281,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     private fun initStoreNameTextWatcher() {
-        binding.etStoreName.addTextChangedListener( object: TextWatcher {
+        binding.etStoreName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -271,7 +293,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     private fun initSentMemberTextWatcher() {
-        binding.etSentMember.addTextChangedListener( object: TextWatcher {
+        binding.etSentMember.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -283,7 +305,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     private fun initMemoTextWatcher() {
-        binding.etMemo.addTextChangedListener( object: TextWatcher {
+        binding.etMemo.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}

@@ -8,12 +8,13 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.yapp.buddycon.domain.model.CouponInfo
+import com.yapp.buddycon.domain.model.CouponInputInfo
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.ui.addCoupon.state.CouponInfoLoadState
 import kotlinx.coroutines.flow.StateFlow
 
 @BindingAdapter("android:expireDateDescriptionByState")
-fun setSelected(view: TextView, couponInfoLoadState: CouponInfoLoadState<CouponInfo>?){
+fun setSelected(view: TextView, couponInfoLoadState: CouponInfoLoadState<CouponInputInfo>?){
     couponInfoLoadState?.let {
         when(couponInfoLoadState) {
             is CouponInfoLoadState.NewGifticon -> {

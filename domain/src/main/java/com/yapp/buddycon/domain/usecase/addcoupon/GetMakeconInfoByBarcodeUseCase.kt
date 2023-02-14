@@ -6,7 +6,6 @@ import javax.inject.Inject
 class GetMakeconInfoByBarcodeUseCase @Inject constructor(
     private val addCouponRepository: AddCouponRepository
 ) {
-    operator fun invoke(barcodeNumber: String) {
-
-    }
+    operator fun invoke(barcodeNumber: String) =
+        addCouponRepository.getCustomCouponInfo(barcodeNumber)
 }
