@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.model.ApiError
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
@@ -71,6 +72,10 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
             UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                 error?.let { e ->
                     Timber.e(getString(R.string.kakao_login_error, e))
+
+                    if(e is ApiError && e.statusCode == KAKAO_SERVER_ERROR){
+                        KaKaoDialogFragment().show(supportFragmentManager, null)
+                    }
 
                     // 카카오톡 설치 이후 취소한 경우
                     if (e is ClientError && e.reason == ClientErrorCause.Cancelled) {
@@ -153,6 +158,7 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
 
     companion object {
         const val FIRST_LOGIN = "FIRST_JOIN"
+        const val KAKAO_SERVER_ERROR = 500
 
         fun newIntent(context: Context, isFirst: Boolean = false) =
             Intent(context, KakaoLoginActivity::class.java).apply {

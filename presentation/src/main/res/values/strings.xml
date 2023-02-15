@@ -25,6 +25,7 @@
     <string name="make_con_valid_date_hint">유효기간 선택</string>
 
     <string name="confirm_dialog">확인</string>
+    <string name="cancel_dialog">취소</string>
     <string name="makecon_open_theme">테마</string>
     <string name="makecon_close_choose_mode">접기</string>
     <string name="kakao_signup_title">회원가입 완료!\n버디콘에 오신 것을 환영해요 :)</string>
@@ -78,5 +79,7 @@
     <string name="get_giftcon_guide_message">제작티콘으로 만드실\n기프티콘을 선택해주세요</string>
     <string name="all_select">선택하기</string>
     <string name="coupon_not_share_message">아직 선물하지 않은\n쿠폰입니다</string>
+    <string name="kakao_error_dialog_message">다시 한 번 시도해주세요\n이 내용은 카카오톡 서버에서 발송되었어요</string>
+    <string name="kakao_error_dialog_title">카카오톡으로 시작할 수 없어요</string>
 
 </resources>
