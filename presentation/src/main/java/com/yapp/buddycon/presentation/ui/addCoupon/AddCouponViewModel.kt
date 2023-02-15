@@ -1,9 +1,8 @@
 package com.yapp.buddycon.presentation.ui.addCoupon
 
-import android.util.Log
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.model.CouponInputInfo
 import com.yapp.buddycon.domain.usecase.addcoupon.GetGifticonInfoByBarcodeUseCase
 import com.yapp.buddycon.domain.usecase.addcoupon.GetMakeconInfoByBarcodeUseCase
@@ -26,6 +25,7 @@ class AddCouponViewModel @Inject constructor(
     val couponInfoLoadState = _couponInfoLoadState.asStateFlow()
 
     private val couponInputInfo = CouponInputInfo()
+    private var imageUri: Uri? = null
 
     private val _contentInputState = MutableSharedFlow<ContentInputState>()
     val contentInputState = _contentInputState.asSharedFlow()
@@ -89,7 +89,7 @@ class AddCouponViewModel @Inject constructor(
         couponInputInfo.memo = memo
     }
 
-    fun setExipireDate(date: String) {
+    fun setExpireDate(date: String) {
         couponInputInfo.expireDate = date
     }
 
@@ -114,6 +114,10 @@ class AddCouponViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setImageUri(uri: Uri) {
+        imageUri = uri
     }
 
     // temp

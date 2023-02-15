@@ -2,10 +2,8 @@ package com.yapp.buddycon.presentation.ui.addCoupon
 
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
-import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.WindowManager
@@ -20,7 +18,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.model.CouponInputInfo
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
@@ -65,6 +62,8 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         imageUri?.let { uri ->
             val barcodeScanner = BarcodeScanning.getClient()
             val inputImage = InputImage.fromFilePath(this, uri)
+
+            addCouponViewModel.setImageUri(uri) // image uri 쿠폰 등록 시 필요
 
             barcodeScanner.process(inputImage)
                 .addOnSuccessListener { barcodes ->
@@ -251,7 +250,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             Logging.error("selected date string : $selectedDateStringForUser")
             Logging.error("selected date string for server : $selectedDateStringForServer")
 
-            addCouponViewModel.setExipireDate(selectedDateStringForServer)
+            addCouponViewModel.setExpireDate(selectedDateStringForServer)
             with(binding.tvExpireDate) {
                 text = selectedDateStringForUser
                 setTextColor(ContextCompat.getColor(this@AddCouponActivity, R.color.gray90))

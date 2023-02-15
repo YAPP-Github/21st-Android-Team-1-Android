@@ -1,7 +1,7 @@
 package com.yapp.buddycon.domain.model
 
 data class CouponInputInfo(
-    var id: Int = -1,
+    var id: Long = -1,
     var imageUrl: String = "",
     var title: String = "",
     var barcode: String = "",
