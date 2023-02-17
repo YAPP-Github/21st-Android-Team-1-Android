@@ -25,6 +25,7 @@
     <string name="make_con_valid_date_hint">유효기간 선택</string>
 
     <string name="confirm_dialog">확인</string>
+    <string name="cancel_dialog">취소</string>
     <string name="makecon_open_theme">테마</string>
     <string name="makecon_close_choose_mode">접기</string>
     <string name="kakao_signup_title">회원가입 완료!\n버디콘에 오신 것을 환영해요 :)</string>
@@ -33,7 +34,7 @@
     <string name="walk_through_first_title">기프티콘을 한곳에서 관리해요</string>
     <string name="walk_through_first_subtitle">흩어져 있는 기프티콘을 한곳에서 확인하고\n만료 전 알림으로 유효기간을 관리해요</string>
     <string name="walk_through_second_title">기프티콘을 꾸며서 선물해요</string>
-    <string name="walk_through_second_subtitle">갖고 있는 기프티콘을\n나만의 제작티콘으로 꾸며서 선물해요</string>
+    <string name="walk_through_second_subtitle">가지고 있는 기프티콘을\n나만의 제작티콘으로 꾸며서 선물해요</string>
     <string name="walk_through_third_title">제작티콘을 통해 마음을 전해요</string>
     <string name="walk_through_third_subtitle">어릴 적 부모님께 드렸던 안마 쿠폰처럼\n직접 쿠폰을 만들어 마음을 전해요</string>
     <string name="walk_through_start">시작하기</string>
@@ -77,5 +78,8 @@
     <string name="made_coupon_empty_message">아래 + 버튼을 눌러\n가지고 있는 제작티콘을 만들어 보세요</string>
     <string name="get_giftcon_guide_message">제작티콘으로 만드실\n기프티콘을 선택해주세요</string>
     <string name="all_select">선택하기</string>
+    <string name="coupon_not_share_message">아직 선물하지 않은\n쿠폰입니다</string>
+    <string name="kakao_error_dialog_message">다시 한 번 시도해주세요\n이 내용은 카카오톡 서버에서 발송되었어요</string>
+    <string name="kakao_error_dialog_title">카카오톡으로 시작할 수 없어요</string>
 
 </resources>

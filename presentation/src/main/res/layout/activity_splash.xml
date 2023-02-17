@@ -17,15 +17,6 @@
         tools:context=".ui.splash.SplashActivity">
 
         <androidx.constraintlayout.widget.Group
-            android:id="@+id/splashGrop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="
-            iv_splash_bg,
-            iv_splash_icon" />
-
-        <androidx.constraintlayout.widget.Group
             android:id="@+id/walkThroughGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,26 +27,6 @@
             tv_walk_through_title,
             tv_walk_through_subtitle,
             ll_indicator" />
-
-        <ImageView
-            android:id="@+id/iv_splash_bg"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/skyblue"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/iv_splash_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_buddycon_title"
-            app:layout_constraintBottom_toBottomOf="@id/iv_splash_bg"
-            app:layout_constraintEnd_toEndOf="@id/iv_splash_bg"
-            app:layout_constraintStart_toStartOf="@id/iv_splash_bg"
-            app:layout_constraintTop_toTopOf="@id/iv_splash_bg" />
 
         <include
             android:id="@+id/appbar_splash"

@@ -95,7 +95,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     private fun finishSplash() {
         when (splashViewModel.splashResultState.value) {
             SplashResultState.WalkThrough -> {
-                binding.splashGrop.isVisible = false
                 binding.walkThroughGroup.isVisible = true
             }
             SplashResultState.KaKaoLogin -> {

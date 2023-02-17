@@ -53,7 +53,7 @@ class GiftconAdapter :
 
                 val expireDate = Calendar.getInstance().apply {
                     set(Calendar.YEAR, year)
-                    set(Calendar.MONTH, month-1)
+                    set(Calendar.MONTH, month - 1)
                     set(Calendar.DAY_OF_MONTH, day)
                     set(Calendar.HOUR_OF_DAY, 0)
                     set(Calendar.MINUTE, 0)
@@ -62,14 +62,16 @@ class GiftconAdapter :
                 }.timeInMillis
 
                 val diff = (today - expireDate) / (24 * 60 * 60 * 1000)
-                if (diff in 0..14){
+                if (diff in 0..14) {
+                    binding.ivAlert.isVisible = false
                     binding.btnExpireDate.isVisible = true
                     binding.btnExpireDate.text = "D-${diff}"
                     binding.btnExpireDate.setBackgroundResource(
-                        if(diff<=7) R.drawable.bg_coupon_expire_date
+                        if (diff <= 7) R.drawable.bg_coupon_expire_date
                         else R.drawable.bg_coupon_gray_expire_date
                     )
-                }else{
+                } else {
+                    binding.ivAlert.isVisible = true
                     binding.btnExpireDate.isVisible = false
                 }
 
