@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,12 +23,10 @@ import kotlinx.coroutines.launch
 class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_giftcon) {
 
     private val buddyConViewModel: BuddyConViewModel by activityViewModels()
-    private val giftConViewMoel: GiftConViewModel by viewModels()
-    private lateinit var giftconAdapter: GiftconAdapter
+    private lateinit var giftconAdapter: GiftConAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.giftConViewModel = giftConViewMoel
         binding.buddyConViewModel = buddyConViewModel
 
         buddyConViewModel.changeTabMode(TabMode.Usable)
@@ -43,7 +40,9 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
 
     private fun initViews() {
         if (::giftconAdapter.isInitialized.not()) {
-            giftconAdapter = GiftconAdapter()
+            giftconAdapter = GiftConAdapter{
+
+            }
         }
         binding.giftconRecyclerView.layoutManager = GridLayoutManager(activity, 2)
         binding.giftconRecyclerView.adapter = giftconAdapter

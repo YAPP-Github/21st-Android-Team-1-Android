@@ -14,13 +14,11 @@ import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.databinding.ItemCouponBinding
-import timber.log.Timber
-import java.time.LocalDate
-import java.time.Period
 import java.util.Calendar
 
-class GiftconAdapter :
-    PagingDataAdapter<CouponItem, GiftconAdapter.GiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
+class GiftConAdapter(
+    private val onClickListener: ((CouponItem) -> Unit)? = null
+) : PagingDataAdapter<CouponItem, GiftConAdapter.GiftconViewHoler>(GIFTCON_DIFF_CALLBACK) {
     override fun onBindViewHolder(holder: GiftconViewHoler, position: Int) {
         getItem(position)?.let {
             holder.bind(it)
@@ -35,11 +33,12 @@ class GiftconAdapter :
         )
     }
 
-    class GiftconViewHoler(
+    inner class GiftconViewHoler(
         private val binding: ItemCouponBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(info: CouponItem) {
+            binding.root.setOnClickListener { onClickListener?.invoke(info) }
             binding.itemCouponTvTitle.text = info.name
             binding.itemTvExpirationPeriod.text = "~${info.expireDate.replace("-", ".")}"
             if (info.usable) {

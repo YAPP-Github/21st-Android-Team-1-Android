@@ -3,6 +3,13 @@
 
     <application android:theme="@style/Theme.BuddyCon">
         <activity
+            android:name=".ui.giftcon.GiftConDetailActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.signup.SignUpActivity"
             android:exported="false">
             <meta-data
@@ -43,10 +50,9 @@
         </activity>
         <activity
             android:name=".ui.addCoupon.AddCouponActivity"
-            android:theme="@style/Theme.AddCouponActivity">
-        </activity>
+            android:theme="@style/Theme.AddCouponActivity"></activity>
         <activity android:name=".ui.makeCoupon.MakeCouponActivity" />
-        <activity android:name=".ui.makeCoupon.GetGiftConActivity"/>
+        <activity android:name=".ui.makeCoupon.GetGiftConActivity" />
     </application>
 
 </manifest>
