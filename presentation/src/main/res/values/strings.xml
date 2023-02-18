@@ -86,5 +86,8 @@
     <string name="check_price_coupon">금액권인가요?</string>
     <string name="coupon_spare_price">잔여금액</string>
     <string name="coupon_spare_price_himt">남은 금액을 입력하세요</string>
+    <string name="coupon_used_badge">사용\n완료</string>
+    <string name="coupon_update">수정하기</string>
+    <string name="coupon_rollback">사용완료 되돌리기</string>
 
 </resources>
