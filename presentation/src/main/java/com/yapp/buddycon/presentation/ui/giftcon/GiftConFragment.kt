@@ -40,8 +40,12 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
 
     private fun initViews() {
         if (::giftconAdapter.isInitialized.not()) {
-            giftconAdapter = GiftConAdapter{
-
+            giftconAdapter = GiftConAdapter { item ->
+                activity?.let {
+                    startActivity(
+                        GiftConDetailActivity.newIntent(it, item.id)
+                    )
+                }
             }
         }
         binding.giftconRecyclerView.layoutManager = GridLayoutManager(activity, 2)
@@ -72,7 +76,7 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
 
         viewLifecycleOwner.lifecycleScope.launch {
             giftconAdapter.loadStateFlow.collectLatest { loadState ->
-                if(loadState.append.endOfPaginationReached){
+                if (loadState.append.endOfPaginationReached) {
                     val isListEmpty = giftconAdapter.itemCount == 0
                     binding.ivEmpty.isVisible = isListEmpty
                     binding.tvEmpty.isVisible = isListEmpty

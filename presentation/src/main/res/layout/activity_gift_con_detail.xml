@@ -3,13 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".ui.giftcon.GiftConDetailActivity">
 
         <include
@@ -18,7 +15,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/usable_detail_coupon" />
+            app:title="@{@string/usable_detail_coupon}" />
+
+        <View
+            android:id="@+id/v_appbar_border"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/gray30"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
 
         <androidx.cardview.widget.CardView
@@ -31,7 +37,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_bar">
+            app:layout_constraintTop_toBottomOf="@id/v_appbar_border">
 
             <ImageView
                 android:id="@+id/iv_coupon"
@@ -208,6 +214,7 @@
                     app:layout_constraintTop_toBottomOf="@id/v_border3" />
 
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_price_coupone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:thumb="@drawable/bg_switch_thumb_price_coupon"
@@ -232,6 +239,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/bg_price_layout"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_price_coupon">
@@ -266,8 +274,8 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                 <Button
+                    android:id="@+id/btn_coupon_delete"
                     android:layout_width="78dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="16dp"
