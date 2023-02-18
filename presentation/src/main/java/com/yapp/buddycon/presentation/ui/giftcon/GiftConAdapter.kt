@@ -77,6 +77,7 @@ class GiftConAdapter(
                 binding.ivCoupon.colorFilter = null
             } else {
                 binding.btnExpireDate.isVisible = false
+                binding.ivAlert.isVisible = false
                 if (info.couponType == CouponType.Made) {
                     binding.ivCoupon.colorFilter = null
                 } else {
