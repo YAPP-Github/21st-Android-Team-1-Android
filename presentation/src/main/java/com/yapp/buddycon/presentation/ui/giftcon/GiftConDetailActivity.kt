@@ -22,7 +22,8 @@ import kotlinx.coroutines.flow.onEach
 import java.util.*
 
 @AndroidEntryPoint
-class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layout.activity_gift_con_detail) {
+class GiftConDetailActivity :
+    BaseActivity<ActivityGiftConDetailBinding>(R.layout.activity_gift_con_detail) {
 
     private val giftConDetailViewModel: GiftConDetailViewModel by viewModels()
     private val giftId by lazy { intent?.getIntExtra(GIFTCON_ID, 0) ?: 0 }
@@ -34,14 +35,14 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
         observeGiftConDetail()
     }
 
-    private fun observeGiftConDetail(){
+    private fun observeGiftConDetail() {
         giftConDetailViewModel.couponDetailState
-            .flowWithLifecycle(lifecycle,Lifecycle.State.STARTED)
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { showCouponInfo(it) }
             .launchIn(lifecycleScope)
     }
 
-    private fun showCouponInfo(giftConDetail: GiftConDetail) = with(binding){
+    private fun showCouponInfo(giftConDetail: GiftConDetail) = with(binding) {
         Glide.with(ivCoupon.context)
             .load(giftConDetail.imageUrl)
             .into(ivCoupon)
@@ -85,16 +86,20 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
         clSparePrice.isVisible = giftConDetail.isMoneyCoupon
         vBorder4.isVisible = giftConDetail.isMoneyCoupon.not()
 
-        if(giftConDetail.isMoneyCoupon.not()){
+        if (giftConDetail.isMoneyCoupon.not()) {
             val layoutParam = (btnCouponDelete.layoutParams as ConstraintLayout.LayoutParams)
             layoutParam.apply {
                 topToBottom = vBorder4.id
                 topMargin = 10.toPx(this@GiftConDetailActivity).toInt()
             }
         }
+
+        binding.btnVolumeUp.setOnClickListener {
+            GiftConImageDialogFragment(giftConDetail.imageUrl).show(supportFragmentManager, null)
+        }
     }
 
-    companion object{
+    companion object {
         const val GIFTCON_ID = "GIFTCON_ID"
 
         fun newIntent(context: Context, giftId: Int) =
