@@ -82,6 +82,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
 
                             // 바코드 정보로 서버에 데이터 요청하기
                             barcodeNumber?.let {
+                                addCouponViewModel.setBarcode(it)
                                 addCouponViewModel.checkBarcodeInfo(it)
                             }
                         }

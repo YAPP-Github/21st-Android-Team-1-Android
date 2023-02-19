@@ -1,6 +1,7 @@
 package com.yapp.buddycon.data.datasource.remote.addcoupon
 
 import android.net.Uri
+import android.util.Log
 import com.google.gson.Gson
 import com.yapp.buddycon.data.network.api.AddCouponService
 import com.yapp.buddycon.data.network.request.GifticonAddRequest
@@ -44,7 +45,9 @@ class AddCouponRemoteDataSourceImpl @Inject constructor(
             val imageReuestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
             val imageMultipartBody = MultipartBody.Part.createFormData("image", imageFile.name, imageReuestBody)
 
+            Log.e("AppTest", "request data : ${addGifticonAddRequest}")
             val json = Gson().toJson(addGifticonAddRequest)
+            Log.e("AppTest", "json : ${json}")
             val infoRequestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
             val infoMultipartBody = MultipartBody.Part.createFormData("gifticonCreationRequestDto", null, infoRequestBody)
 

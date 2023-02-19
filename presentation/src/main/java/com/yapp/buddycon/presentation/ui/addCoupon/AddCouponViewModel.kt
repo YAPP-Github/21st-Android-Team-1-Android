@@ -80,7 +80,11 @@ class AddCouponViewModel @Inject constructor(
     }
 
     fun setTitle(title: String) {
-        couponInputInfo.title = title
+        couponInputInfo.name = title
+    }
+
+    fun setBarcode(barcode: String) {
+        couponInputInfo.barcode = barcode
     }
 
     fun setStoreName(storeName: String) {
@@ -104,9 +108,9 @@ class AddCouponViewModel @Inject constructor(
 
         viewModelScope.launch {
             with(couponInputInfo) {
-                if (title.isEmpty()) {
+                if (name.isEmpty()) {
                     _contentInputState.emit(ContentInputState.EmptyTitle)
-                } else if (title.length > 16) {
+                } else if (name.length > 16) {
                     _contentInputState.emit(ContentInputState.OutOfRangeTitle)
                 } else if (expireDate.isEmpty()) {
                     _contentInputState.emit(ContentInputState.EmptyExpireDate)
