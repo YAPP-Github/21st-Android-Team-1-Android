@@ -5,7 +5,7 @@ import com.yapp.buddycon.domain.model.CouponInputInfo
 
 data class CustomCouponInfoResponse(
     @SerializedName("id")
-    val id: Int = -1,
+    val id: Long = -1,
     @SerializedName("imageUrl")
     val imageUrl: String = "",
     @SerializedName("barcode")
