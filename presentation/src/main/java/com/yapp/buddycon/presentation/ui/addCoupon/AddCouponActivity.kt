@@ -1,7 +1,10 @@
 package com.yapp.buddycon.presentation.ui.addCoupon
 
+import android.content.Context
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
@@ -18,10 +21,12 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import com.yapp.buddycon.domain.model.AddCouponResult
 import com.yapp.buddycon.domain.model.CouponInputInfo
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityAddCouponBinding
+import com.yapp.buddycon.presentation.ui.addCoupon.state.AddCouponResultState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.ContentInputState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.CouponInfoLoadState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.WhetherInputPossibleState
@@ -45,6 +50,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         init()
         observeCouponInfoState()
         observeCouponInputState()
+        observeAddCouponResultState()
     }
 
     private fun init() {
@@ -63,7 +69,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             val barcodeScanner = BarcodeScanning.getClient()
             val inputImage = InputImage.fromFilePath(this, uri)
 
-            addCouponViewModel.setImageUri(uri) // image uri 쿠폰 등록 시 필요
+            addCouponViewModel.setImageUri(absolutelyPath(uri, this)) // image uri 쿠폰 등록 시 필요
 
             barcodeScanner.process(inputImage)
                 .addOnSuccessListener { barcodes ->
@@ -74,7 +80,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
                             val barcodeNumber = barcode.rawValue
                             Logging.error("barcode number : $barcodeNumber")
 
-                            // 바코드 정보로 서버에 데이터 요청하기\
+                            // 바코드 정보로 서버에 데이터 요청하기
                             barcodeNumber?.let {
                                 addCouponViewModel.checkBarcodeInfo(it)
                             }
@@ -194,8 +200,37 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         }
     }
 
+    private fun observeAddCouponResultState() {
+        addCouponViewModel.addCouponState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                handleAddCouponResultState(it)
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun handleAddCouponResultState(resultState: AddCouponResultState<AddCouponResult>) {
+        when(resultState) {
+            is AddCouponResultState.Init -> {}
+            is AddCouponResultState.ShowLoading -> {
+                Logging.error("AddCouponActivity : show loading")
+                binding.pbLoading.isVisible = true
+                this.getWindow()?.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            }
+            is AddCouponResultState.HideLoading -> {
+                Logging.error("AddCouponActivity : hide loading")
+                binding.pbLoading.isVisible = false
+                this.getWindow()?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            }
+            is AddCouponResultState.Success -> {
+                Logging.error("AddCouponActivity : add coupon Success")
+            }
+            is AddCouponResultState.Error -> {
+                Logging.error("AddCouponActivity : add coupon Error")
+            }
+        }
+    }
+
     // 세부 수정 및 바인딩어댑터로 전환 예정
-    // 새로 등록하는 기프티콘의 경우 사용자가 직접 입력을 할 수 있어야 함
+    // 새로 등록하는 기프티콘의 경우 사용자가 직접 입력을 할 수 있어야 함H
     private fun setContentInputType(whetherInputPossibleState: WhetherInputPossibleState) {
         when (whetherInputPossibleState) {
             is WhetherInputPossibleState.Possible -> {
@@ -291,5 +326,18 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             addCouponViewModel.setMemo(it.toString())
         }
         // 람다 활용 <- afterTextChanged 가 가장 마지막이므로 가능
+    }
+
+    // 절대경로 변환
+    fun absolutelyPath(path: Uri?, context : Context): String? {
+        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+        val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c?.moveToFirst()
+
+        val resultPath = c?.getString(index!!)
+        c?.close()
+
+        return resultPath
     }
 }

@@ -252,7 +252,7 @@
             android:layout_height="wrap_content"
             android:background="@color/skyblue"
             android:gravity="center"
-            android:onClick="@{() -> vm.addCoupon()}"
+            android:onClick="@{() -> vm.checkInputInfo()}"
             android:paddingVertical="16dp"
             android:text="@string/add_coupon_accept"
             app:layout_constraintBottom_toBottomOf="parent"
