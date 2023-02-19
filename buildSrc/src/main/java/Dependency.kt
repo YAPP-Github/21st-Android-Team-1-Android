@@ -118,6 +118,7 @@ object ModuleDependency {
     object Firebase{
         const val FIREBASE_BOM = "com.google.firebase:firebase-bom:${Versions.FIREBASE_BOM}"
         const val FIREBASE_KTX = "com.google.firebase:firebase-analytics-ktx"
+        const val FIREBASE_REMOTE_CONFIG = "com.google.firebase:firebase-config-ktx"
     }
 
     object Zxing{

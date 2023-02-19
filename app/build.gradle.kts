@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -59,4 +60,5 @@ dependencies {
     implementation(ModuleDependency.KaKao.LOGIN)
     implementation(platform(ModuleDependency.Firebase.FIREBASE_BOM))
     implementation(ModuleDependency.Firebase.FIREBASE_KTX)
+    implementation(ModuleDependency.Firebase.FIREBASE_REMOTE_CONFIG)
 }
