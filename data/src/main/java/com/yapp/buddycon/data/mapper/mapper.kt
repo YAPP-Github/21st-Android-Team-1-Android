@@ -28,7 +28,7 @@ fun mapCouponInputInfoToGifticonAddRequest(couponInputInfo: CouponInputInfo): Gi
         sharedCouponId = if (couponInputInfo.id >= 1) couponInputInfo.id else null,
         barcode = couponInputInfo.barcode,
         name = couponInputInfo.name,
-        expireDate = LocalDate.of(dateList[0], dateList[1], dateList[2]),
+        expireDate = couponInputInfo.expireDate,
         storeName = couponInputInfo.storeName,
         memo = couponInputInfo.memo,
     )
