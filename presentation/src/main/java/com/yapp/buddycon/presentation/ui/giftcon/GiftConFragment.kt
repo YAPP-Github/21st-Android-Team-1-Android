@@ -43,7 +43,7 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
             giftconAdapter = GiftConAdapter { item ->
                 activity?.let {
                     startActivity(
-                        GiftConDetailActivity.newIntent(it, item.id)
+                        GiftConDetailActivity.newIntent(it, item.id, item.usable)
                     )
                 }
             }

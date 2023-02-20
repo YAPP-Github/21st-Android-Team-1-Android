@@ -14,6 +14,8 @@ import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.databinding.ItemCouponBinding
+import com.yapp.buddycon.presentation.utils.getDday
+import timber.log.Timber
 import java.util.Calendar
 
 class GiftConAdapter(
@@ -43,24 +45,8 @@ class GiftConAdapter(
             binding.itemTvExpirationPeriod.text = "~${info.expireDate.replace("-", ".")}"
             if (info.usable) {
                 val (year, month, day) = info.expireDate.split("-").map { it.toInt() }
-                val today = Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }.timeInMillis
-
-                val expireDate = Calendar.getInstance().apply {
-                    set(Calendar.YEAR, year)
-                    set(Calendar.MONTH, month - 1)
-                    set(Calendar.DAY_OF_MONTH, day)
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }.timeInMillis
-
-                val diff = (today - expireDate) / (24 * 60 * 60 * 1000)
+                val diff = Calendar.getInstance().getDday(year, month, day)
+                Timber.d("dday diff $diff")
                 if (diff in 0..14) {
                     binding.ivAlert.isVisible = false
                     binding.btnExpireDate.isVisible = true
@@ -69,8 +55,11 @@ class GiftConAdapter(
                         if (diff <= 7) R.drawable.bg_coupon_expire_date
                         else R.drawable.bg_coupon_gray_expire_date
                     )
-                } else {
+                }  else if(diff < 0) {
                     binding.ivAlert.isVisible = true
+                    binding.btnExpireDate.isVisible = false
+                }else{
+                    binding.ivAlert.isVisible = false
                     binding.btnExpireDate.isVisible = false
                 }
 
