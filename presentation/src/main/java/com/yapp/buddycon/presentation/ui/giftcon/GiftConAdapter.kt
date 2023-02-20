@@ -46,7 +46,6 @@ class GiftConAdapter(
             if (info.usable) {
                 val (year, month, day) = info.expireDate.split("-").map { it.toInt() }
                 val diff = Calendar.getInstance().getDday(year, month, day)
-                Timber.d("dday diff $diff")
                 if (diff in 0..14) {
                     binding.ivAlert.isVisible = false
                     binding.btnExpireDate.isVisible = true

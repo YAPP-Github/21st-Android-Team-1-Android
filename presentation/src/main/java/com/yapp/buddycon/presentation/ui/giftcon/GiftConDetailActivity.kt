@@ -19,6 +19,7 @@ import com.yapp.buddycon.domain.model.GiftConDetail
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityGiftConDetailBinding
+import com.yapp.buddycon.presentation.ui.common.dialog.CouponMessageDialogFragment
 import com.yapp.buddycon.presentation.utils.getDday
 import com.yapp.buddycon.presentation.utils.toPx
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,8 @@ import kotlinx.coroutines.flow.onEach
 import java.util.*
 
 @AndroidEntryPoint
-class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layout.activity_gift_con_detail) {
+class GiftConDetailActivity :
+    BaseActivity<ActivityGiftConDetailBinding>(R.layout.activity_gift_con_detail) {
     private val giftConDetailViewModel: GiftConDetailViewModel by viewModels()
     private val giftId by lazy { intent?.getIntExtra(GIFTCON_ID, 0) ?: 0 }
     private val giftUsable by lazy { intent?.getBooleanExtra(GIFTCON_USABLE, false) ?: false }
@@ -55,7 +57,7 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
         }
     }
 
-    private fun initCouponeImage(giftConDetail: GiftConDetail) = with(binding){
+    private fun initCouponeImage(giftConDetail: GiftConDetail) = with(binding) {
         Glide.with(ivCoupon.context)
             .load(giftConDetail.imageUrl)
             .into(ivCoupon)
@@ -76,8 +78,11 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
                     else R.drawable.bg_coupon_gray_expire_date
                 )
             } else {
-                if(diff < 0){
-                    // TODO 토스트 메세지 노출
+                if (diff < 0) {
+                    CouponMessageDialogFragment(
+                        title = getString(R.string.giftcon_expire_date_message_title),
+                        description = getString(R.string.giftcon_expire_date_message_description)
+                    ).show(supportFragmentManager, null)
                 }
                 binding.btnExpireDate.isVisible = false
             }
@@ -91,11 +96,12 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
             binding.btnUsedBadge.isVisible = true
             binding.btnVolumeUp.isVisible = false
             binding.vDim.isVisible = true
-            binding.ivCoupon.colorFilter = ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0F) })
+            binding.ivCoupon.colorFilter =
+                ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0F) })
         }
     }
 
-    private fun initCouponDescription(giftConDetail: GiftConDetail) = with(binding){
+    private fun initCouponDescription(giftConDetail: GiftConDetail) = with(binding) {
         val (year, month, day) = giftConDetail.expireDate.split("-").map { it.toInt() }
 
         tvCouponTitle.setText(giftConDetail.name)
@@ -104,7 +110,7 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
         tvMemoInfo.setText(giftConDetail.memo)
     }
 
-    private fun checkMoneyCoupon(giftConDetail: GiftConDetail) = with(binding){
+    private fun checkMoneyCoupon(giftConDetail: GiftConDetail) = with(binding) {
         switchPriceCoupone.isChecked = giftConDetail.isMoneyCoupon
         clSparePrice.isVisible = giftConDetail.isMoneyCoupon
         vBorder4.isVisible = giftConDetail.isMoneyCoupon.not()
@@ -118,14 +124,14 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
         }
     }
 
-    private fun initEventButton(giftConDetail: GiftConDetail) = with(binding){
+    private fun initEventButton(giftConDetail: GiftConDetail) = with(binding) {
         val (year, month, day) = giftConDetail.expireDate.split("-").map { it.toInt() }
         val diff = Calendar.getInstance().getDday(year, month, day)
 
         binding.btnUseComplete.isVisible = giftUsable
         binding.btnMake.isVisible = giftUsable
         binding.btnMake.setBackgroundColor(
-            if(diff >= 0) getColor(R.color.skb_blue)
+            if (diff >= 0) getColor(R.color.skb_blue)
             else getColor(R.color.gray40)
         )
         binding.btnRollback.isVisible = giftUsable.not()

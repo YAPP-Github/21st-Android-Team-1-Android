@@ -90,4 +90,7 @@
     <string name="coupon_update">수정하기</string>
     <string name="coupon_rollback">사용완료 되돌리기</string>
 
+    <string name="giftcon_expire_date_message_title">기프티콘의 기한이 만료되었어요</string>
+    <string name="giftcon_expire_date_message_description">아래의 사용완료 버튼을 눌러주세요</string>
+
 </resources>
