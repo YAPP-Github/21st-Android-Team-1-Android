@@ -13,10 +13,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivitySplashBinding
 import com.yapp.buddycon.presentation.ui.login.KakaoLoginActivity
+import com.yapp.buddycon.presentation.ui.login.KakaoLoginActivity.Companion.IS_TEST_STATE
 import com.yapp.buddycon.presentation.ui.main.BuddyConActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -36,6 +40,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         binding.viewModel = splashViewModel
         initSplash()
         bindViews()
+        checkRemoteConfig()
 
         splashViewModel.walkThroughState
             .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
@@ -73,6 +78,23 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
             startActivity(KakaoLoginActivity.newIntent(this, true))
             finish()
         }
+    }
+
+    private fun checkRemoteConfig(){
+        val remoteConfig = Firebase.remoteConfig
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 0
+            mapOf(
+                IS_TEST_STATE to false
+            )
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        remoteConfig.fetchAndActivate()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Timber.d("Remote Config updated: ${task.result}")
+                }
+            }
     }
 
     private fun invalidateView(state: WalkThroughState) {
