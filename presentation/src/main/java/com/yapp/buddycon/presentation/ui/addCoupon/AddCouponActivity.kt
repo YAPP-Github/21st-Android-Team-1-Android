@@ -19,6 +19,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.yapp.buddycon.domain.model.AddCouponResult
@@ -223,9 +224,14 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             }
             is AddCouponResultState.Success -> {
                 Logging.error("AddCouponActivity : add coupon Success")
+                MessageDialogFragment(getString(R.string.add_coupon_success_message)) { finish() }
+                    .show(supportFragmentManager, null)
             }
             is AddCouponResultState.Error -> {
                 Logging.error("AddCouponActivity : add coupon Error")
+                Snackbar.make(binding.rootCl, getString(R.string.add_coupon_fail_message), Snackbar.LENGTH_SHORT).apply {
+                    anchorView = binding.tvCancel
+                }.show()
             }
         }
     }
