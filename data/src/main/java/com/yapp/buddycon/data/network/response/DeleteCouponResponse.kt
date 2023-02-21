@@ -1,0 +1,17 @@
+package com.yapp.buddycon.data.network.response
+
+
+import com.google.gson.annotations.SerializedName
+import com.yapp.buddycon.domain.model.DeleteCouponResult
+
+data class DeleteCouponResponse(
+    @SerializedName("message")
+    val message: String = "",
+    @SerializedName("success")
+    val success: Boolean = false
+){
+    fun toModel() = DeleteCouponResult(
+        message = message,
+        success = success
+    )
+}
