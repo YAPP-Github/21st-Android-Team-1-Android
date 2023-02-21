@@ -245,7 +245,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent="0.5"
-            tools:text="취소하기" />
+            tools:text="취소하기"
+            android:onClick="onClickAddCouponCanel"/>
 
         <TextView
             android:id="@+id/tv_save"

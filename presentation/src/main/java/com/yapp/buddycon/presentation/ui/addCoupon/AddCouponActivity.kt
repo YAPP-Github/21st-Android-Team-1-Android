@@ -136,7 +136,10 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             is CouponInfoLoadState.ShowLoading -> {
                 Logging.error("AddCouponActivity : show loading")
                 binding.pbLoading.isVisible = true
-                this.getWindow()?.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                this.getWindow()?.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                )
             }
             is CouponInfoLoadState.HideLoading -> {
                 Logging.error("AddCouponActivity : hide loading")
@@ -210,12 +213,15 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     private fun handleAddCouponResultState(resultState: AddCouponResultState<AddCouponResult>) {
-        when(resultState) {
+        when (resultState) {
             is AddCouponResultState.Init -> {}
             is AddCouponResultState.ShowLoading -> {
                 Logging.error("AddCouponActivity : show loading")
                 binding.pbLoading.isVisible = true
-                this.getWindow()?.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                this.getWindow()?.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                )
             }
             is AddCouponResultState.HideLoading -> {
                 Logging.error("AddCouponActivity : hide loading")
@@ -229,7 +235,11 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             }
             is AddCouponResultState.Error -> {
                 Logging.error("AddCouponActivity : add coupon Error")
-                Snackbar.make(binding.rootCl, getString(R.string.add_coupon_fail_message), Snackbar.LENGTH_SHORT).apply {
+                Snackbar.make(
+                    binding.rootCl,
+                    getString(R.string.add_coupon_fail_message),
+                    Snackbar.LENGTH_SHORT
+                ).apply {
                     anchorView = binding.tvCancel
                 }.show()
             }
@@ -303,6 +313,16 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         // Activity 의 theme이 MaterialComponent 이어야 정상 작동 >> Manifest 에서 설정해주기!!
     }
 
+    fun onClickAddCouponCanel(view: View) {
+        TwoOptionTypeDialogFragment(
+            getString(R.string.add_coupon_cancel_message),
+            "계속작성",
+            "나가기",
+            {},
+            { finish() }
+        ).show(supportFragmentManager, null)
+    }
+
     private fun initTextWatcher() {
         initTitleTextWatcher()
         initStoreNameTextWatcher()
@@ -336,7 +356,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     // 절대경로 변환
-    fun absolutelyPath(path: Uri?, context : Context): String? {
+    fun absolutelyPath(path: Uri?, context: Context): String? {
         val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
         val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
         val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
@@ -346,5 +366,9 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         c?.close()
 
         return resultPath
+    }
+
+    override fun onBackPressed() {
+        onClickAddCouponCanel(binding.root)
     }
 }
