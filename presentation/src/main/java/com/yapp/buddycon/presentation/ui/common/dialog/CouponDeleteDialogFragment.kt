@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.View
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseDialogFragment
-import com.yapp.buddycon.presentation.databinding.DialogMessageBinding
-import com.yapp.buddycon.presentation.databinding.LayoutCouponDialogMessageBinding
+import com.yapp.buddycon.presentation.databinding.LayoutCouponDeleteDialogBinding
 
-class CouponMessageDialogFragment(
+class CouponDeleteDialogFragment(
     private val title: String,
-    private val description: String
-) : BaseDialogFragment<LayoutCouponDialogMessageBinding>(R.layout.layout_coupon_dialog_message) {
+    private val description: String,
+    private val deleteListener: () -> Unit
+) : BaseDialogFragment<LayoutCouponDeleteDialogBinding>(R.layout.layout_coupon_delete_dialog) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -20,9 +20,7 @@ class CouponMessageDialogFragment(
 
     override fun setEvent() {
         super.setEvent()
-
-        binding.tvConfirm.setOnClickListener {
-            dismiss()
-        }
+        binding.tvDelete.setOnClickListener { deleteListener() }
+        binding.tvCancel.setOnClickListener { dismiss() }
     }
 }

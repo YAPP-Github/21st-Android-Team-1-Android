@@ -1,11 +1,9 @@
 package com.yapp.buddycon.presentation.ui.giftcon
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -14,12 +12,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.domain.model.GiftConDetail
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityGiftConDetailBinding
-import com.yapp.buddycon.presentation.ui.common.dialog.CouponMessageDialogFragment
+import com.yapp.buddycon.presentation.ui.common.dialog.CouponDeleteDialogFragment
+import com.yapp.buddycon.presentation.ui.common.dialog.CouponExpireDialogFragment
 import com.yapp.buddycon.presentation.utils.getDday
 import com.yapp.buddycon.presentation.utils.toPx
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,17 +26,25 @@ import kotlinx.coroutines.flow.onEach
 import java.util.*
 
 @AndroidEntryPoint
-class GiftConDetailActivity :
-    BaseActivity<ActivityGiftConDetailBinding>(R.layout.activity_gift_con_detail) {
+class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layout.activity_gift_con_detail) {
     private val giftConDetailViewModel: GiftConDetailViewModel by viewModels()
-    private val giftId by lazy { intent?.getIntExtra(GIFTCON_ID, 0) ?: 0 }
+    private val giftconId by lazy { intent?.getIntExtra(GIFTCON_ID, 0) ?: 0 }
     private val giftUsable by lazy { intent?.getBooleanExtra(GIFTCON_USABLE, false) ?: false }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        giftConDetailViewModel.getGiftconDetailInfo(giftId)
         binding.appBar.ibnAppbarBack.setOnClickListener { finish() }
+        binding.btnCouponDelete.setOnClickListener {
+            CouponDeleteDialogFragment(
+                title = "쿠폰을 삭제할까요?",
+                description = "삭제하면 앱에서 완전히 사라져요"
+            ) { giftConDetailViewModel.deleteCoupon(giftconId) }
+                .show(supportFragmentManager, null)
+        }
+
+        giftConDetailViewModel.getGiftconDetailInfo(giftconId)
         observeGiftConDetail()
+        observeGiftConUserEvent()
     }
 
     private fun observeGiftConDetail() {
@@ -46,6 +52,20 @@ class GiftConDetailActivity :
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { showCouponInfo(it) }
             .launchIn(lifecycleScope)
+    }
+
+    private fun observeGiftConUserEvent() {
+        giftConDetailViewModel.giftConUserEvent
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { event ->
+                when (event) {
+                    GiftConUserEvent.Delete -> {
+                        // TODO : 삭제 이후 UI 처리
+                        finish()
+                    }
+                    else -> Unit
+                }
+            }.launchIn(lifecycleScope)
     }
 
     private fun showCouponInfo(giftConDetail: GiftConDetail) {
@@ -80,7 +100,7 @@ class GiftConDetailActivity :
                 )
             } else {
                 if (diff < 0) {
-                    CouponMessageDialogFragment(
+                    CouponExpireDialogFragment(
                         title = getString(R.string.giftcon_expire_date_message_title),
                         description = getString(R.string.giftcon_expire_date_message_description)
                     ).show(supportFragmentManager, null)
@@ -138,7 +158,7 @@ class GiftConDetailActivity :
         binding.btnRollback.isVisible = giftUsable.not()
     }
 
-    private fun checkCouponUsable() = with(binding){
+    private fun checkCouponUsable() = with(binding) {
         tvCouponTitle.isEnabled = giftUsable
         tvExpirationDateInfo.isEnabled = giftUsable
         tvUsePlaceInfo.isEnabled = giftUsable
@@ -150,9 +170,9 @@ class GiftConDetailActivity :
         const val GIFTCON_ID = "GIFTCON_ID"
         const val GIFTCON_USABLE = "GIFTCON_USABLE"
 
-        fun newIntent(context: Context, giftId: Int, usable: Boolean) =
+        fun newIntent(context: Context, giftconId: Int, usable: Boolean) =
             Intent(context, GiftConDetailActivity::class.java).apply {
-                putExtra(GIFTCON_ID, giftId)
+                putExtra(GIFTCON_ID, giftconId)
                 putExtra(GIFTCON_USABLE, usable)
             }
     }

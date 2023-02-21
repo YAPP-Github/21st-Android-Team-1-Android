@@ -7,6 +7,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.domain.model.SortMode
@@ -35,6 +36,11 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
         initViews()
         observeSortMode()
         observeGiftcon()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        giftconAdapter.refresh()
     }
 
 
@@ -68,24 +74,27 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
 
     private fun observeGiftcon() {
         viewLifecycleOwner.lifecycleScope.launch {
-            buddyConViewModel.couponPagingData.collectLatest {
-                giftconAdapter.submitData(it)
-                binding.giftconRecyclerView.scrollToPosition(0)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                buddyConViewModel.couponPagingData.collectLatest {
+                    giftconAdapter.submitData(it)
+                    binding.giftconRecyclerView.scrollToPosition(0)
+                }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            giftconAdapter.loadStateFlow.collectLatest { loadState ->
-                if (loadState.append.endOfPaginationReached) {
-                    val isListEmpty = giftconAdapter.itemCount == 0
-                    binding.ivEmpty.isVisible = isListEmpty
-                    binding.tvEmpty.isVisible = isListEmpty
-                    binding.tvEmpty.text = getString(
-                        if (buddyConViewModel.tabModeState.value == TabMode.Usable) R.string.giftcon_usable_empty_message
-                        else R.string.giftcon_used_empty_message
-                    )
-                    binding
-                    binding.giftconRecyclerView.isVisible = isListEmpty.not()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                giftconAdapter.loadStateFlow.collectLatest { loadState ->
+                    if (loadState.append.endOfPaginationReached) {
+                        val isListEmpty = giftconAdapter.itemCount == 0
+                        binding.ivEmpty.isVisible = isListEmpty
+                        binding.tvEmpty.isVisible = isListEmpty
+                        binding.tvEmpty.text = getString(
+                            if (buddyConViewModel.tabModeState.value == TabMode.Usable) R.string.giftcon_usable_empty_message
+                            else R.string.giftcon_used_empty_message
+                        )
+                        binding.giftconRecyclerView.isVisible = isListEmpty.not()
+                    }
                 }
             }
         }
