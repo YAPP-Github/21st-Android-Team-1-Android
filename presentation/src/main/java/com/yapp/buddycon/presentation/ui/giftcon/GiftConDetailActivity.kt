@@ -54,6 +54,7 @@ class GiftConDetailActivity :
             initCouponDescription(it)
             checkMoneyCoupon(it)
             initEventButton(it)
+            checkCouponUsable()
         }
     }
 
@@ -135,6 +136,14 @@ class GiftConDetailActivity :
             else getColor(R.color.gray40)
         )
         binding.btnRollback.isVisible = giftUsable.not()
+    }
+
+    private fun checkCouponUsable() = with(binding){
+        tvCouponTitle.isEnabled = giftUsable
+        tvExpirationDateInfo.isEnabled = giftUsable
+        tvUsePlaceInfo.isEnabled = giftUsable
+        tvMemoInfo.isEnabled = giftUsable
+        switchPriceCoupone.isEnabled = giftUsable
     }
 
     companion object {
