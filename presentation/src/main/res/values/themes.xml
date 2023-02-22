@@ -38,6 +38,20 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.DetailCouponTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/skb_blue</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Customize your theme here. -->
+    </style>
+
     <style name="custom_date_picker_style" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
         <item name="materialCalendarHeaderLayout">
             @style/Widget.AppTheme.MaterialCalendar.HeaderToggleButton

@@ -22,6 +22,9 @@ class GiftConDetailViewModel @Inject constructor(
     private val _giftconUserEvent = MutableSharedFlow<GiftConUserEvent>()
     val giftConUserEvent = _giftconUserEvent.asSharedFlow()
 
+    private val _couponExpireDateState = MutableStateFlow("")
+    val couponExpireDateState = _couponExpireDateState.asStateFlow()
+
     fun getGiftconDetailInfo(giftId: Int) {
         getCouponDetailUseCase(giftId)
             .catch { e -> Timber.e("getGiftconDetailInfo error ${e.localizedMessage}") }
@@ -34,5 +37,9 @@ class GiftConDetailViewModel @Inject constructor(
             .catch { e -> Timber.e("deleteCoupon error ${e.localizedMessage}") }
             .onEach { _giftconUserEvent.emit(GiftConUserEvent.Delete) }
             .launchIn(viewModelScope)
+    }
+
+    fun changeExpireDate(date: String){
+        _couponExpireDateState.value = date
     }
 }

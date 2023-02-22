@@ -4,7 +4,8 @@
     <application android:theme="@style/Theme.BuddyCon">
         <activity
             android:name=".ui.giftcon.GiftConDetailActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.DetailCouponTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

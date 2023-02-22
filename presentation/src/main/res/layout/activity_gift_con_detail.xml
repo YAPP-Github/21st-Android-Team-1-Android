@@ -3,6 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="giftUsable"
+            type="Boolean" />
+
+        <variable
+            name="gitconDetailViewModel"
+            type="com.yapp.buddycon.presentation.ui.giftcon.GiftConDetailViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -108,6 +121,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:enabled="@{giftUsable}"
                     android:gravity="center_vertical"
                     android:textColor="@color/gray90"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -133,8 +147,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:enabled="@{giftUsable}"
                     android:gravity="center_vertical"
                     android:maxLines="1"
+                    android:text="@{gitconDetailViewModel.couponExpireDateState}"
                     android:textColor="@color/gray90"
                     app:layout_constraintStart_toEndOf="@id/tv_expiration_date"
                     app:layout_constraintTop_toTopOf="@id/tv_expiration_date"
@@ -169,6 +185,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:ellipsize="end"
+                    android:enabled="@{giftUsable}"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:textColor="@color/gray90"
@@ -204,6 +221,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:enabled="@{giftUsable}"
                     android:gravity="center_vertical"
                     android:hint="@string/add_coupon_hint_memo"
                     android:textColor="@color/gray90"
@@ -236,6 +254,7 @@
                     android:id="@+id/switch_price_coupone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:enabled="@{giftUsable}"
                     android:thumb="@drawable/bg_switch_thumb_price_coupon"
                     app:layout_constraintBottom_toBottomOf="@id/tv_price_coupon"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -314,6 +333,7 @@
             android:background="@color/gray80"
             android:text="@string/used_coupon"
             android:textColor="@color/white"
+            android:visibility="@{giftUsable ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_make"
             app:layout_constraintStart_toStartOf="parent"
@@ -327,23 +347,10 @@
             android:background="@color/skb_blue"
             android:text="@string/all_make_coupon"
             android:textColor="@color/white"
+            android:visibility="@{giftUsable ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_use_complete"
-            app:layout_constraintTop_toBottomOf="@id/sv_coupon_info" />
-
-        <Button
-            android:id="@+id/btn_update"
-            style="@style/bold16"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:background="@color/skb_blue"
-            android:text="@string/coupon_update"
-            android:textColor="@color/white"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sv_coupon_info" />
 
         <Button
@@ -353,6 +360,21 @@
             android:layout_height="54dp"
             android:background="@color/gray80"
             android:text="@string/coupon_rollback"
+            android:textColor="@color/white"
+            android:visibility="@{giftUsable ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sv_coupon_info"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_update"
+            style="@style/bold16"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/skb_blue"
+            android:text="@string/coupon_update"
             android:textColor="@color/white"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
