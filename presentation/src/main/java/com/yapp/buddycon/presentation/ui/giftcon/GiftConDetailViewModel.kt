@@ -24,6 +24,11 @@ class GiftConDetailViewModel @Inject constructor(
 
     private val _couponExpireDateState = MutableStateFlow("")
     val couponExpireDateState = _couponExpireDateState.asStateFlow()
+    val couponTitleState =  MutableStateFlow("")
+    val usePlaceState = MutableStateFlow("")
+    val couponMemoState = MutableStateFlow("")
+    val checkPriceCouponState = MutableStateFlow(false)
+    val leftMoneyCouponState = MutableStateFlow("")
 
     fun getGiftconDetailInfo(giftId: Int) {
         getCouponDetailUseCase(giftId)
@@ -41,5 +46,17 @@ class GiftConDetailViewModel @Inject constructor(
 
     fun changeExpireDate(date: String){
         _couponExpireDateState.value = date
+    }
+
+    fun setPricesCoupon(isMoneyCoupon: Boolean){
+        checkPriceCouponState.value = isMoneyCoupon
+    }
+
+    fun changePricesCoupon(){
+        checkPriceCouponState.value = checkPriceCouponState.value.not()
+    }
+
+    fun setLeftMonyCoupon(leftMoney: Int){
+        leftMoneyCouponState.value = leftMoney.toString()
     }
 }

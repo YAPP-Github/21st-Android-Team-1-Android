@@ -31,7 +31,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
-class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layout.activity_gift_con_detail) {
+class GiftConDetailActivity :
+    BaseActivity<ActivityGiftConDetailBinding>(R.layout.activity_gift_con_detail) {
     private val giftConDetailViewModel: GiftConDetailViewModel by viewModels()
     private val giftconId by lazy { intent?.getIntExtra(GIFTCON_ID, 0) ?: 0 }
     private val giftUsable by lazy { intent?.getBooleanExtra(GIFTCON_USABLE, false) ?: false }
@@ -42,6 +43,7 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
         binding.gitconDetailViewModel = giftConDetailViewModel
         observeGiftConDetail()
         observeGiftConUserEvent()
+        observeCheckPricesCoupon()
 
         giftConDetailViewModel.getGiftconDetailInfo(giftconId)
         bindViews()
@@ -60,7 +62,7 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
             .onEach { event ->
                 when (event) {
                     GiftConUserEvent.Delete -> {
-                        // TODO : 삭제 이후 UI 처리
+                        // TODO : 삭제 이후 토스트 여부 문의
                         finish()
                     }
                     else -> Unit
@@ -68,7 +70,14 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
             }.launchIn(lifecycleScope)
     }
 
-    private fun bindViews(){
+    private fun observeCheckPricesCoupon(){
+        giftConDetailViewModel.checkPriceCouponState
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { invalidateMoneyCoupon(it) }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun bindViews() {
         binding.appBar.ibnAppbarBack.setOnClickListener { finish() }
         binding.btnCouponDelete.setOnClickListener {
             CouponDeleteDialogFragment(
@@ -87,7 +96,8 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
         giftConDetail.also {
             initCouponInfo(it)
             bindCouponInfo(it)
-            checkMoneyCoupon(it)
+            giftConDetailViewModel.setPricesCoupon(it.isMoneyCoupon)
+            giftConDetailViewModel.setLeftMonyCoupon(it.leftMoney)
         }
     }
 
@@ -131,6 +141,13 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
                         title = getString(R.string.giftcon_expire_date_message_title),
                         description = getString(R.string.giftcon_expire_date_message_description)
                     ).show(supportFragmentManager, null)
+
+                    // TODO 기프티콘 만료 시에 수정 가능 여부 파악
+                    binding.tvCouponTitle.isEnabled = false
+                    binding.tvExpirationDateInfo.isEnabled = false
+                    binding.tvUsePlaceInfo.isEnabled = false
+                    binding.tvMemoInfo.isEnabled = false
+                    binding.switchPriceCoupone.isEnabled = false
                 }
                 binding.btnExpireDate.isVisible = false
             }
@@ -144,17 +161,19 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
             binding.btnUsedBadge.isVisible = true
             binding.btnVolumeUp.isVisible = false
             binding.vDim.isVisible = true
-            binding.ivCoupon.colorFilter = ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0F) })
+            binding.ivCoupon.colorFilter =
+                ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0F) })
         }
     }
 
-    private fun checkMoneyCoupon(giftConDetail: GiftConDetail) {
-        binding.switchPriceCoupone.isChecked = giftConDetail.isMoneyCoupon
-        binding.clSparePrice.isVisible = giftConDetail.isMoneyCoupon
-        binding.vBorder4.isVisible = giftConDetail.isMoneyCoupon.not()
-
-        if (giftConDetail.isMoneyCoupon.not()) {
-            val layoutParam = (binding.btnCouponDelete.layoutParams as ConstraintLayout.LayoutParams)
+    private fun invalidateMoneyCoupon(isMoneyCoupon: Boolean) {
+        val layoutParam = (binding.btnCouponDelete.layoutParams as ConstraintLayout.LayoutParams)
+        if (isMoneyCoupon) {
+            layoutParam.apply {
+                topToBottom = binding.clSparePrice.id
+                topMargin = 16.toPx(this@GiftConDetailActivity).toInt()
+            }
+        }else{
             layoutParam.apply {
                 topToBottom = binding.vBorder4.id
                 topMargin = 10.toPx(this@GiftConDetailActivity).toInt()
@@ -162,7 +181,7 @@ class GiftConDetailActivity : BaseActivity<ActivityGiftConDetailBinding>(R.layou
         }
     }
 
-    private fun changeCouponExpireDate(){
+    private fun changeCouponExpireDate() {
         val datePicker = MaterialDatePicker.Builder.datePicker()
             .setTheme(R.style.custom_date_picker_style)
             .build()
