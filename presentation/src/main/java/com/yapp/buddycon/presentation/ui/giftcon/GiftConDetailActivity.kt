@@ -9,12 +9,14 @@ import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.yapp.buddycon.domain.model.GiftConDetail
+import com.yapp.buddycon.domain.model.checkUpdateCoupon
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityGiftConDetailBinding
@@ -36,6 +38,7 @@ class GiftConDetailActivity :
     private val giftConDetailViewModel: GiftConDetailViewModel by viewModels()
     private val giftconId by lazy { intent?.getIntExtra(GIFTCON_ID, 0) ?: 0 }
     private val giftUsable by lazy { intent?.getBooleanExtra(GIFTCON_USABLE, false) ?: false }
+    private lateinit var giftConDetail: GiftConDetail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +47,7 @@ class GiftConDetailActivity :
         observeGiftConDetail()
         observeGiftConUserEvent()
         observeCheckPricesCoupon()
+        observceUpdateCoupon()
 
         giftConDetailViewModel.getGiftconDetailInfo(giftconId)
         bindViews()
@@ -51,14 +55,14 @@ class GiftConDetailActivity :
 
     private fun observeGiftConDetail() {
         giftConDetailViewModel.couponDetailState
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
             .onEach { showCouponInfo(it) }
             .launchIn(lifecycleScope)
     }
 
     private fun observeGiftConUserEvent() {
         giftConDetailViewModel.giftConUserEvent
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
             .onEach { event ->
                 when (event) {
                     GiftConUserEvent.Delete -> {
@@ -72,9 +76,36 @@ class GiftConDetailActivity :
 
     private fun observeCheckPricesCoupon(){
         giftConDetailViewModel.checkPriceCouponState
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
             .onEach { invalidateMoneyCoupon(it) }
             .launchIn(lifecycleScope)
+    }
+
+    private fun observceUpdateCoupon(){
+        giftConDetailViewModel.updateCoupon
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                if(::giftConDetail.isInitialized.not()) return@onEach
+
+                if(checkUpdateCoupon(giftConDetail, it)){
+                    if(giftUsable){
+                        binding.btnUseComplete.isVisible = true
+                        binding.btnMake.isVisible = true
+                        binding.btnUpdate.isVisible = false
+                        binding.btnRollback.isVisible = false
+                    }else{
+                        binding.btnUseComplete.isVisible = false
+                        binding.btnMake.isVisible = false
+                        binding.btnUpdate.isVisible = false
+                        binding.btnRollback.isVisible = true
+                    }
+                }else{
+                    binding.btnUseComplete.isVisible = false
+                    binding.btnMake.isVisible = false
+                    binding.btnUpdate.isVisible = true
+                    binding.btnRollback.isVisible = false
+                }
+            }.launchIn(lifecycleScope)
     }
 
     private fun bindViews() {
@@ -90,10 +121,23 @@ class GiftConDetailActivity :
         binding.tvExpirationDateInfo.setOnClickListener {
             changeCouponExpireDate()
         }
+
+        binding.tvCouponTitle.addTextChangedListener {
+            giftConDetailViewModel.setCouponTitle(it.toString())
+        }
+
+        binding.tvUsePlaceInfo.addTextChangedListener {
+            giftConDetailViewModel.setUsePlace(it.toString())
+        }
+
+        binding.tvMemoInfo.addTextChangedListener {
+            giftConDetailViewModel.setCouponMemo(it.toString())
+        }
     }
 
     private fun showCouponInfo(giftConDetail: GiftConDetail) {
         giftConDetail.also {
+            this.giftConDetail = it
             initCouponInfo(it)
             bindCouponInfo(it)
             giftConDetailViewModel.setPricesCoupon(it.isMoneyCoupon)
@@ -103,11 +147,22 @@ class GiftConDetailActivity :
 
     private fun initCouponInfo(giftConDetail: GiftConDetail) {
         val (year, month, day) = giftConDetail.expireDate.split("-").map { it.toInt() }
-
-        binding.tvCouponTitle.setText(giftConDetail.name)
+        giftConDetailViewModel.setCouponTitle(giftConDetail.name)
         giftConDetailViewModel.changeExpireDate("${year}년 ${month}월 ${day}일")
-        binding.tvUsePlaceInfo.setText(giftConDetail.storeName)
-        binding.tvMemoInfo.setText(giftConDetail.memo)
+
+        val date = Calendar.getInstance().apply {
+            set(Calendar.YEAR, year)
+            set(Calendar.MONTH, month-1)
+            set(Calendar.DAY_OF_MONTH, day)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd").format(date)
+        giftConDetailViewModel.changeExpireDateOtherForm(dateFormat)
+        giftConDetailViewModel.setUsePlace(giftConDetail.storeName)
+        giftConDetailViewModel.setCouponMemo(giftConDetail.memo)
     }
 
     private fun bindCouponInfo(giftConDetail: GiftConDetail) {
@@ -192,8 +247,11 @@ class GiftConDetailActivity :
 
             val selectedDate = calendar.time
             val dateFormatForUser = SimpleDateFormat("yyyy년 MM월 dd일")
+            val dateFormatForSave = SimpleDateFormat("yyyy-MM-dd")
             val selectedDateStringForUser = dateFormatForUser.format(selectedDate)
+            val selectedDateStringForSave = dateFormatForSave.format(selectedDate)
             giftConDetailViewModel.changeExpireDate(selectedDateStringForUser)
+            giftConDetailViewModel.changeExpireDateOtherForm(selectedDateStringForSave)
         }
 
         datePicker.show(supportFragmentManager, "date_picker")

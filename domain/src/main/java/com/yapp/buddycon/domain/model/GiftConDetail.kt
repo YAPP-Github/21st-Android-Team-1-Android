@@ -11,3 +11,12 @@ data class GiftConDetail(
     var isMoneyCoupon : Boolean = false,
     var leftMoney: Int =  -1
 )
+
+fun checkUpdateCoupon(coupon1: GiftConDetail, coupon2 : GiftConDetail): Boolean{
+    return coupon1.name == coupon2.name &&
+            coupon1.expireDate == coupon2.expireDate &&
+            coupon1.storeName == coupon2.storeName &&
+            coupon1.memo == coupon2.memo &&
+            coupon1.isMoneyCoupon == coupon2.isMoneyCoupon &&
+            coupon1.leftMoney == coupon2.leftMoney
+}

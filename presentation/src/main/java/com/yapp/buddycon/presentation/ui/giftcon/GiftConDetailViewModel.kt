@@ -22,13 +22,34 @@ class GiftConDetailViewModel @Inject constructor(
     private val _giftconUserEvent = MutableSharedFlow<GiftConUserEvent>()
     val giftConUserEvent = _giftconUserEvent.asSharedFlow()
 
+    private val couponExpireDateOtherForm = MutableStateFlow("")
     private val _couponExpireDateState = MutableStateFlow("")
     val couponExpireDateState = _couponExpireDateState.asStateFlow()
+
     val couponTitleState =  MutableStateFlow("")
     val usePlaceState = MutableStateFlow("")
     val couponMemoState = MutableStateFlow("")
     val checkPriceCouponState = MutableStateFlow(false)
     val leftMoneyCouponState = MutableStateFlow("")
+
+    val updateCoupon = combine(
+        couponExpireDateOtherForm,
+        couponTitleState,
+        usePlaceState,
+        couponMemoState,
+        checkPriceCouponState.combine(leftMoneyCouponState){ isMoneyCoupon, leftMoney ->
+            isMoneyCoupon to leftMoney
+        }
+    ){ expireDate, title, usePlace, memo, priceCoupon ->
+        GiftConDetail(
+            name = title,
+            storeName = usePlace,
+            memo = memo,
+            isMoneyCoupon = priceCoupon.first,
+            leftMoney = if(priceCoupon.second.isNotBlank()) priceCoupon.second.toInt() else 0,
+            expireDate = expireDate.replace("월","-")
+        )
+    }
 
     fun getGiftconDetailInfo(giftId: Int) {
         getCouponDetailUseCase(giftId)
@@ -44,6 +65,10 @@ class GiftConDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun changeExpireDateOtherForm(date: String){
+        couponExpireDateOtherForm.value = date
+    }
+
     fun changeExpireDate(date: String){
         _couponExpireDateState.value = date
     }
@@ -54,9 +79,24 @@ class GiftConDetailViewModel @Inject constructor(
 
     fun changePricesCoupon(){
         checkPriceCouponState.value = checkPriceCouponState.value.not()
+        if(checkPriceCouponState.value.not()){
+            leftMoneyCouponState.value = ""
+        }
     }
 
     fun setLeftMonyCoupon(leftMoney: Int){
-        leftMoneyCouponState.value = leftMoney.toString()
+        leftMoneyCouponState.value = if(leftMoney > 0 ) leftMoney.toString() else ""
+    }
+
+    fun setCouponTitle(name: String){
+        couponTitleState.value = name
+    }
+
+    fun setUsePlace(storeName: String){
+        usePlaceState.value = storeName
+    }
+
+    fun setCouponMemo(memo: String){
+        couponMemoState.value = memo
     }
 }
