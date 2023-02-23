@@ -3,9 +3,10 @@ package com.yapp.buddycon.presentation.ui.giftcon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yapp.buddycon.domain.model.GiftConDetail
-import com.yapp.buddycon.domain.usecase.coupon.delete.DeleteCouponUseCase
-import com.yapp.buddycon.domain.usecase.coupon.get.GetCouponDetailUseCase
-import com.yapp.buddycon.domain.usecase.coupon.update.UpdateCouponUseCase
+import com.yapp.buddycon.domain.usecase.coupon.ChangeCouponUseCase
+import com.yapp.buddycon.domain.usecase.coupon.DeleteCouponUseCase
+import com.yapp.buddycon.domain.usecase.coupon.GetCouponDetailUseCase
+import com.yapp.buddycon.domain.usecase.coupon.UpdateCouponUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -15,7 +16,8 @@ import javax.inject.Inject
 class GiftConDetailViewModel @Inject constructor(
     private val getCouponDetailUseCase: GetCouponDetailUseCase,
     private val deleteCouponUseCase: DeleteCouponUseCase,
-    private val updateCouponUseCase: UpdateCouponUseCase
+    private val updateCouponUseCase: UpdateCouponUseCase,
+    private val changeCouponUseCase: ChangeCouponUseCase
 ) : ViewModel() {
 
     private val _couponDetailState = MutableSharedFlow<GiftConDetail>(replay = 1)
@@ -55,14 +57,20 @@ class GiftConDetailViewModel @Inject constructor(
 
     fun getGiftconDetailInfo(giftId: Int) {
         getCouponDetailUseCase(giftId)
-            .catch { e -> Timber.e("getGiftconDetailInfo error ${e.localizedMessage}") }
+            .catch { e ->
+                Timber.e("getGiftconDetailInfo error ${e.localizedMessage}")
+                _giftconUserEvent.emit(GiftConUserEvent.Error)
+            }
             .onEach { _couponDetailState.emit(it) }
             .launchIn(viewModelScope)
     }
 
     fun deleteCoupon(giftId: Int) {
         deleteCouponUseCase(giftId)
-            .catch { e -> Timber.e("deleteCoupon error ${e.localizedMessage}") }
+            .catch { e ->
+                Timber.e("deleteCoupon error ${e.localizedMessage}")
+                _giftconUserEvent.emit(GiftConUserEvent.Error)
+            }
             .onEach { result ->
                 _giftconUserEvent.emit(
                     if (result.success) GiftConUserEvent.Delete
@@ -77,19 +85,34 @@ class GiftConDetailViewModel @Inject constructor(
             id = giftId,
             expireDate = couponExpireDateOtherForm.value,
             isMoneyCoupon = checkPriceCouponState.value,
-            leftMoney = if (leftMoneyCouponState.value.isNotEmpty()) leftMoneyCouponState.value.toInt() else null,
+            leftMoney = if (leftMoneyCouponState.value.isNotEmpty()) leftMoneyCouponState.value.toInt() else 0,
             memo = couponMemoState.value,
             name = couponTitleState.value,
             storeName = usePlaceState.value
-        )
-            .catch { e -> Timber.e("updateCoupon error ${e.localizedMessage}") }
-            .onEach { result ->
-                _giftconUserEvent.emit(
-                    if (result.success) GiftConUserEvent.Update
-                    else GiftConUserEvent.UpdateFail
-                )
-            }
-            .launchIn(viewModelScope)
+        ).catch { e ->
+            Timber.e("updateCoupon error ${e.localizedMessage}")
+            _giftconUserEvent.emit(GiftConUserEvent.Error)
+        }.onEach { result ->
+            _giftconUserEvent.emit(
+                if (result.success) GiftConUserEvent.Update
+                else GiftConUserEvent.UpdateFail
+            )
+        }.launchIn(viewModelScope)
+    }
+
+    fun changeCoupon(giftId: Int, giftUsable: Boolean) {
+        changeCouponUseCase(
+            id = giftId,
+            state = if (giftUsable) "USED" else "USABLE"
+        ).catch { e ->
+            Timber.e("changeCoupon error ${e.localizedMessage}")
+            _giftconUserEvent.emit(GiftConUserEvent.Error)
+        }.onEach { result ->
+            _giftconUserEvent.emit(
+                if (result.success) GiftConUserEvent.CompleteUse
+                else GiftConUserEvent.CompleteUseFail
+            )
+        }.launchIn(viewModelScope)
     }
 
     fun changeExpireDateOtherForm(date: String) {

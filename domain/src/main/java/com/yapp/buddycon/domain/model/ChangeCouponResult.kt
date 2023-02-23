@@ -1,6 +1,6 @@
 package com.yapp.buddycon.domain.model
 
-data class DeleteCouponResult(
+data class ChangeCouponResult(
     val message: String,
     val success: Boolean
 )

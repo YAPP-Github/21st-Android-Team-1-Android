@@ -92,20 +92,12 @@ object NetworkModule {
     @Singleton
     fun provideRequestGiftConDetail(
         @BuddyConRetrofit retrofit: Retrofit
-    ) : GiftConDetailService = retrofit.create()
+    ): GiftConDetailService = retrofit.create()
 
     @Provides
     @Singleton
-    fun provideDeleteCouponService(
+    fun provideChangeCouponService(
         @BuddyConRetrofit retrofit: Retrofit
-    ): DeleteCouponService =
+    ): ChangeCouponService =
         retrofit.create()
-
-    @Provides
-    @Singleton
-    fun provideUpdateCouponService(
-        @BuddyConRetrofit retrofit: Retrofit
-    ): UpdateCouponService =
-        retrofit.create()
-
 }

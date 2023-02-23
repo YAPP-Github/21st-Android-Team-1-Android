@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.domain.model.SortMode
-import com.yapp.buddycon.domain.usecase.coupon.get.GetCouponInfoUseCase
+import com.yapp.buddycon.domain.usecase.coupon.GetCouponInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

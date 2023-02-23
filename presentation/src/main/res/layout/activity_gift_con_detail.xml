@@ -346,6 +346,7 @@
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:background="@color/gray80"
+            android:onClick="@{() -> gitconDetailViewModel.changeCoupon(giftconId, giftUsable)}"
             android:text="@string/used_coupon"
             android:textColor="@color/white"
             android:visibility="@{giftUsable ? View.VISIBLE : View.GONE}"

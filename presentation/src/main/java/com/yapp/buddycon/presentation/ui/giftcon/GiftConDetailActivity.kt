@@ -31,27 +31,29 @@ import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class GiftConDetailActivity :
     BaseActivity<ActivityGiftConDetailBinding>(R.layout.activity_gift_con_detail) {
     private val giftConDetailViewModel: GiftConDetailViewModel by viewModels()
     private val giftconId by lazy { intent?.getIntExtra(GIFTCON_ID, 0) ?: 0 }
-    private val giftUsable by lazy { intent?.getBooleanExtra(GIFTCON_USABLE, false) ?: false }
+    private var giftUsable by Delegates.notNull<Boolean>()
     private lateinit var giftConDetail: GiftConDetail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        giftUsable = intent?.getBooleanExtra(GIFTCON_USABLE, false) ?: false
         binding.giftconId = giftconId
         binding.giftUsable = giftUsable
         binding.gitconDetailViewModel = giftConDetailViewModel
+
         observeGiftConDetail()
         observeGiftConUserEvent()
         observeCheckPricesCoupon()
         observceUpdateCoupon()
-
-        giftConDetailViewModel.getGiftconDetailInfo(giftconId)
         bindViews()
+        giftConDetailViewModel.getGiftconDetailInfo(giftconId)
     }
 
     private fun observeGiftConDetail() {
@@ -70,45 +72,49 @@ class GiftConDetailActivity :
                         // TODO : 삭제 이후 처리
                         finish()
                     }
-                    GiftConUserEvent.Update ->{
+                    GiftConUserEvent.Update -> {
                         // TODO : 업데이트 이후 처리
                         binding.btnUseComplete.isVisible = true
                         binding.btnMake.isVisible = true
                         binding.btnUpdate.isVisible = false
                         binding.btnRollback.isVisible = false
                     }
-
+                    GiftConUserEvent.CompleteUse -> {
+                        // TODO: 사용완료 처리
+                        giftUsable = giftUsable.not()
+                        bindCouponInfo(giftConDetail)
+                    }
                     else -> Unit
                 }
             }.launchIn(lifecycleScope)
     }
 
-    private fun observeCheckPricesCoupon(){
+    private fun observeCheckPricesCoupon() {
         giftConDetailViewModel.checkPriceCouponState
             .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
             .onEach { invalidateMoneyCoupon(it) }
             .launchIn(lifecycleScope)
     }
 
-    private fun observceUpdateCoupon(){
+    private fun observceUpdateCoupon() {
         giftConDetailViewModel.updateCoupon
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                if(::giftConDetail.isInitialized.not()) return@onEach
+                if (::giftConDetail.isInitialized.not()) return@onEach
 
-                if(checkUpdateCoupon(giftConDetail, it)){
-                    if(giftUsable){
+                if (checkUpdateCoupon(giftConDetail, it)) {
+                    if (giftUsable) {
                         binding.btnUseComplete.isVisible = true
                         binding.btnMake.isVisible = true
                         binding.btnUpdate.isVisible = false
                         binding.btnRollback.isVisible = false
-                    }else{
+                    } else {
                         binding.btnUseComplete.isVisible = false
                         binding.btnMake.isVisible = false
                         binding.btnUpdate.isVisible = false
                         binding.btnRollback.isVisible = true
                     }
-                }else{
+                } else {
                     binding.btnUseComplete.isVisible = false
                     binding.btnMake.isVisible = false
                     binding.btnUpdate.isVisible = true
@@ -161,7 +167,7 @@ class GiftConDetailActivity :
 
         val date = Calendar.getInstance().apply {
             set(Calendar.YEAR, year)
-            set(Calendar.MONTH, month-1)
+            set(Calendar.MONTH, month - 1)
             set(Calendar.DAY_OF_MONTH, day)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
@@ -237,7 +243,7 @@ class GiftConDetailActivity :
                 topToBottom = binding.clSparePrice.id
                 topMargin = 16.toPx(this@GiftConDetailActivity).toInt()
             }
-        }else{
+        } else {
             layoutParam.apply {
                 topToBottom = binding.vBorder4.id
                 topMargin = 10.toPx(this@GiftConDetailActivity).toInt()
