@@ -120,7 +120,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/tv_coupon_title"
+                    android:id="@+id/et_coupon_name"
                     style="@style/bold22"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
                     android:enabled="@{giftUsable}"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="@={gitconDetailViewModel.couponTitleState}"
+                    android:text="@={gitconDetailViewModel.nameState}"
                     android:textColor="@color/gray90"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -145,7 +145,7 @@
                     android:text="@string/all_valid_date"
                     android:textColor="@color/gray60"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_coupon_title" />
+                    app:layout_constraintTop_toBottomOf="@id/et_coupon_name" />
 
                 <TextView
                     android:id="@+id/tv_expiration_date_info"
@@ -156,7 +156,7 @@
                     android:enabled="@{giftUsable}"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="@{gitconDetailViewModel.couponExpireDateState}"
+                    android:text="@{gitconDetailViewModel.expireDateState}"
                     android:textColor="@color/gray90"
                     app:layout_constraintStart_toEndOf="@id/tv_expiration_date"
                     app:layout_constraintTop_toTopOf="@id/tv_expiration_date"
@@ -173,7 +173,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_expiration_date" />
 
                 <TextView
-                    android:id="@+id/tv_use_place"
+                    android:id="@+id/tv_store_name"
                     style="@style/regular16"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
@@ -185,7 +185,7 @@
                     app:layout_constraintTop_toBottomOf="@id/v_border1" />
 
                 <EditText
-                    android:id="@+id/tv_use_place_info"
+                    android:id="@+id/et_store_name_info"
                     style="@style/regular16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -194,10 +194,10 @@
                     android:enabled="@{giftUsable}"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="@{gitconDetailViewModel.usePlaceState}"
+                    android:text="@{gitconDetailViewModel.storeNametate}"
                     android:textColor="@color/gray90"
-                    app:layout_constraintStart_toEndOf="@id/tv_use_place"
-                    app:layout_constraintTop_toTopOf="@id/tv_use_place"
+                    app:layout_constraintStart_toEndOf="@id/tv_store_name"
+                    app:layout_constraintTop_toTopOf="@id/tv_store_name"
                     tools:text="CU 편의점" />
 
                 <View
@@ -208,7 +208,7 @@
                     android:background="@color/gray30"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_use_place" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_store_name" />
 
                 <TextView
                     android:id="@+id/tv_memo"
@@ -223,7 +223,7 @@
                     app:layout_constraintTop_toBottomOf="@id/v_border2" />
 
                 <EditText
-                    android:id="@+id/tv_memo_info"
+                    android:id="@+id/et_memo_info"
                     style="@style/regular16"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
                     android:enabled="@{giftUsable}"
                     android:gravity="center_vertical"
                     android:hint="@string/add_coupon_hint_memo"
-                    android:text="@{gitconDetailViewModel.couponMemoState}"
+                    android:text="@{gitconDetailViewModel.memoState}"
                     android:textColor="@color/gray90"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_memo"
@@ -245,7 +245,7 @@
                     android:background="@color/gray30"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_memo_info" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_memo" />
 
                 <TextView
                     android:id="@+id/tv_price_coupon"
@@ -259,12 +259,12 @@
                     app:layout_constraintTop_toBottomOf="@id/v_border3" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_price_coupone"
+                    android:id="@+id/switch_is_money_coupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="@{gitconDetailViewModel.checkPriceCouponState}"
+                    android:checked="@{gitconDetailViewModel.isMoneyCouponnState()}"
                     android:enabled="@{giftUsable}"
-                    android:onClick="@{() -> gitconDetailViewModel.changePricesCoupon()}"
+                    android:onClick="@{() -> gitconDetailViewModel.changeIsMoneyCoupon()}"
                     android:thumb="@drawable/bg_switch_thumb_price_coupon"
                     app:layout_constraintBottom_toBottomOf="@id/tv_price_coupon"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -277,7 +277,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="14dp"
                     android:background="@color/gray30"
-                    android:visibility="@{gitconDetailViewModel.checkPriceCouponState ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{gitconDetailViewModel.isMoneyCouponnState ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_price_coupon" />
@@ -288,7 +288,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/bg_price_layout"
-                    android:visibility="@{gitconDetailViewModel.checkPriceCouponState ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{gitconDetailViewModel.isMoneyCouponnState ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_price_coupon"
@@ -296,7 +296,7 @@
 
 
                     <TextView
-                        android:id="@+id/tv_spare_price"
+                        android:id="@+id/tv_left_money"
                         style="@style/regular16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -309,7 +309,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/et_spare_price"
+                        android:id="@+id/et_left_money"
                         style="@style/regular16"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -318,12 +318,12 @@
                         android:gravity="center_vertical|end"
                         android:hint="@string/coupon_spare_price_himt"
                         android:inputType="numberDecimal"
-                        android:text="@={gitconDetailViewModel.leftMoneyCouponState}"
+                        android:text="@={gitconDetailViewModel.leftMoneyState}"
                         android:textColor="@color/gray40"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_spare_price"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_left_money"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/tv_spare_price"
-                        app:layout_constraintTop_toTopOf="@id/tv_spare_price" />
+                        app:layout_constraintStart_toEndOf="@id/tv_left_money"
+                        app:layout_constraintTop_toTopOf="@id/tv_left_money" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

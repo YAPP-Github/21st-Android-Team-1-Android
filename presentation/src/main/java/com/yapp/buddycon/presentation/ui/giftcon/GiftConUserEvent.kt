@@ -10,7 +10,14 @@ sealed class GiftConUserEvent {
     object RollbackUsed : GiftConUserEvent()
     object RollbackUsedFail : GiftConUserEvent()
 
-    object Update : GiftConUserEvent()
+    data class Update(
+        val name: String,
+        val expireDate: String,
+        val storeName: String,
+        val memo: String,
+        val isMoneyCoupon: Boolean,
+        val leftMoney: Int
+    ) : GiftConUserEvent()
     object UpdateFail : GiftConUserEvent()
 
     object Delete : GiftConUserEvent()

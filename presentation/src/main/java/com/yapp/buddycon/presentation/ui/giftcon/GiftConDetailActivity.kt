@@ -51,7 +51,7 @@ class GiftConDetailActivity :
 
         observeGiftConDetail()
         observeGiftConUserEvent()
-        observeCheckPricesCoupon()
+        observeIsMoneyCoupon()
         observeUpdateCoupon()
         bindViews()
         giftConDetailViewModel.getGiftconDetailInfo(giftconId)
@@ -70,7 +70,19 @@ class GiftConDetailActivity :
             .onEach { event ->
                 when (event) {
                     GiftConUserEvent.Delete -> handleSuccessCouponDelete()
-                    GiftConUserEvent.Update -> showOriginButtons()
+                    is GiftConUserEvent.Update -> {
+                        showOriginButtons()
+                        showCouponInfo(
+                            giftConDetail.copy(
+                                name = event.name,
+                                expireDate = event.expireDate,
+                                storeName = event.storeName,
+                                memo = event.memo,
+                                isMoneyCoupon = event.isMoneyCoupon,
+                                leftMoney = event.leftMoney
+                            )
+                        )
+                    }
                     GiftConUserEvent.CompleteUse,
                     GiftConUserEvent.RollbackUsed -> {
                         giftUsable = giftUsable.not()
@@ -83,8 +95,8 @@ class GiftConDetailActivity :
             }.launchIn(lifecycleScope)
     }
 
-    private fun observeCheckPricesCoupon() {
-        giftConDetailViewModel.checkPriceCouponState
+    private fun observeIsMoneyCoupon() {
+        giftConDetailViewModel.isMoneyCouponnState
             .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
             .onEach { invalidateMoneyCoupon(it) }
             .launchIn(lifecycleScope)
@@ -114,16 +126,16 @@ class GiftConDetailActivity :
             changeCouponExpireDate()
         }
 
-        binding.tvCouponTitle.addTextChangedListener {
-            giftConDetailViewModel.setCouponTitle(it.toString())
+        binding.etCouponName.addTextChangedListener {
+            giftConDetailViewModel.changeName(it.toString())
         }
 
-        binding.tvUsePlaceInfo.addTextChangedListener {
-            giftConDetailViewModel.setUsePlace(it.toString())
+        binding.etStoreNameInfo.addTextChangedListener {
+            giftConDetailViewModel.changeStoreName(it.toString())
         }
 
-        binding.tvMemoInfo.addTextChangedListener {
-            giftConDetailViewModel.setCouponMemo(it.toString())
+        binding.etMemoInfo.addTextChangedListener {
+            giftConDetailViewModel.changeMemo(it.toString())
         }
     }
 
@@ -139,9 +151,9 @@ class GiftConDetailActivity :
     }
 
     private fun initCouponBasic(name: String, storeName: String, memo: String) {
-        giftConDetailViewModel.setCouponTitle(name)
-        giftConDetailViewModel.setUsePlace(storeName)
-        giftConDetailViewModel.setCouponMemo(memo)
+        giftConDetailViewModel.changeName(name)
+        giftConDetailViewModel.changeStoreName(storeName)
+        giftConDetailViewModel.changeMemo(memo)
     }
 
     private fun initCouponExpireDate(expireDate: String) {
@@ -162,7 +174,7 @@ class GiftConDetailActivity :
     }
 
     private fun initMoneyCoupon(isMoneyCoupon: Boolean, leftMoney: Int) {
-        giftConDetailViewModel.setPricesCoupon(isMoneyCoupon)
+        giftConDetailViewModel.setIsMoneyCoupon(isMoneyCoupon)
         giftConDetailViewModel.setLeftMonyCoupon(leftMoney)
     }
 

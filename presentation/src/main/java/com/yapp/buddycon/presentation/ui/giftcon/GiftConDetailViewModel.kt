@@ -26,22 +26,22 @@ class GiftConDetailViewModel @Inject constructor(
     private val _giftconUserEvent = MutableSharedFlow<GiftConUserEvent>()
     val giftConUserEvent = _giftconUserEvent.asSharedFlow()
 
-    private val couponExpireDateOtherForm = MutableStateFlow("")
-    private val _couponExpireDateState = MutableStateFlow("")
-    val couponExpireDateState = _couponExpireDateState.asStateFlow()
+    private val expireDateOtherFormState = MutableStateFlow("")
+    private val _expireDateState = MutableStateFlow("")
+    val expireDateState = _expireDateState.asStateFlow()
 
-    val couponTitleState = MutableStateFlow("")
-    val usePlaceState = MutableStateFlow("")
-    val couponMemoState = MutableStateFlow("")
-    val checkPriceCouponState = MutableStateFlow(false)
-    val leftMoneyCouponState = MutableStateFlow("")
+    val nameState = MutableStateFlow("")
+    val storeNametate = MutableStateFlow("")
+    val memoState = MutableStateFlow("")
+    val isMoneyCouponnState = MutableStateFlow(false)
+    val leftMoneyState = MutableStateFlow("")
 
     val updateCoupon = combine(
-        couponExpireDateOtherForm,
-        couponTitleState,
-        usePlaceState,
-        couponMemoState,
-        checkPriceCouponState.combine(leftMoneyCouponState) { isMoneyCoupon, leftMoney ->
+        expireDateOtherFormState,
+        nameState,
+        storeNametate,
+        memoState,
+        isMoneyCouponnState.combine(leftMoneyState) { isMoneyCoupon, leftMoney ->
             isMoneyCoupon to leftMoney
         }
     ) { expireDate, title, usePlace, memo, priceCoupon ->
@@ -83,18 +83,25 @@ class GiftConDetailViewModel @Inject constructor(
     fun updateCoupon(giftId: Int) {
         updateCouponUseCase(
             id = giftId,
-            expireDate = couponExpireDateOtherForm.value,
-            isMoneyCoupon = checkPriceCouponState.value,
-            leftMoney = if (leftMoneyCouponState.value.isNotEmpty()) leftMoneyCouponState.value.toInt() else 0,
-            memo = couponMemoState.value,
-            name = couponTitleState.value,
-            storeName = usePlaceState.value
+            expireDate = expireDateOtherFormState.value,
+            isMoneyCoupon = isMoneyCouponnState.value,
+            leftMoney = if (leftMoneyState.value.isNotEmpty()) leftMoneyState.value.toInt() else 0,
+            memo = memoState.value,
+            name = nameState.value,
+            storeName = storeNametate.value
         ).catch { e ->
             Timber.e("updateCoupon error ${e.localizedMessage}")
             _giftconUserEvent.emit(GiftConUserEvent.Error)
         }.onEach { result ->
             _giftconUserEvent.emit(
-                if (result.success) GiftConUserEvent.Update
+                if (result.success) GiftConUserEvent.Update(
+                    name = nameState.value,
+                    expireDate = expireDateOtherFormState.value,
+                    storeName = storeNametate.value,
+                    memo = memoState.value,
+                    isMoneyCoupon = isMoneyCouponnState.value,
+                    leftMoney = if (leftMoneyState.value.isNotEmpty()) leftMoneyState.value.toInt() else 0
+                )
                 else GiftConUserEvent.UpdateFail
             )
         }.launchIn(viewModelScope)
@@ -109,12 +116,11 @@ class GiftConDetailViewModel @Inject constructor(
             _giftconUserEvent.emit(GiftConUserEvent.Error)
         }.onEach { result ->
             _giftconUserEvent.emit(
-                if (result.success){
-                    if(giftUsable) GiftConUserEvent.CompleteUse
+                if (result.success) {
+                    if (giftUsable) GiftConUserEvent.CompleteUse
                     else GiftConUserEvent.RollbackUsed
-                }
-                else{
-                    if(giftUsable) GiftConUserEvent.CompleteUseFail
+                } else {
+                    if (giftUsable) GiftConUserEvent.CompleteUseFail
                     else GiftConUserEvent.RollbackUsedFail
                 }
             )
@@ -122,37 +128,37 @@ class GiftConDetailViewModel @Inject constructor(
     }
 
     fun changeExpireDateOtherForm(date: String) {
-        couponExpireDateOtherForm.value = date
+        expireDateOtherFormState.value = date
     }
 
     fun changeExpireDate(date: String) {
-        _couponExpireDateState.value = date
+        _expireDateState.value = date
     }
 
-    fun setPricesCoupon(isMoneyCoupon: Boolean) {
-        checkPriceCouponState.value = isMoneyCoupon
+    fun setIsMoneyCoupon(isMoneyCoupon: Boolean) {
+        isMoneyCouponnState.value = isMoneyCoupon
     }
 
-    fun changePricesCoupon() {
-        checkPriceCouponState.value = checkPriceCouponState.value.not()
-        if (checkPriceCouponState.value.not()) {
-            leftMoneyCouponState.value = ""
+    fun changeIsMoneyCoupon() {
+        isMoneyCouponnState.value = isMoneyCouponnState.value.not()
+        if (isMoneyCouponnState.value.not()) {
+            leftMoneyState.value = ""
         }
     }
 
     fun setLeftMonyCoupon(leftMoney: Int) {
-        leftMoneyCouponState.value = if (leftMoney > 0) leftMoney.toString() else ""
+        leftMoneyState.value = if (leftMoney > 0) leftMoney.toString() else ""
     }
 
-    fun setCouponTitle(name: String) {
-        couponTitleState.value = name
+    fun changeName(name: String) {
+        nameState.value = name
     }
 
-    fun setUsePlace(storeName: String) {
-        usePlaceState.value = storeName
+    fun changeStoreName(storeName: String) {
+        storeNametate.value = storeName
     }
 
-    fun setCouponMemo(memo: String) {
-        couponMemoState.value = memo
+    fun changeMemo(memo: String) {
+        memoState.value = memo
     }
 }
