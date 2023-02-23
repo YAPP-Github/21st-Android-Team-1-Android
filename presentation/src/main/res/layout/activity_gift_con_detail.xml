@@ -375,6 +375,7 @@
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:background="@color/gray80"
+            android:onClick="@{() -> gitconDetailViewModel.changeCoupon(giftconId, giftUsable)}"
             android:text="@string/coupon_rollback"
             android:textColor="@color/white"
             android:visibility="@{giftUsable ? View.GONE : View.VISIBLE}"

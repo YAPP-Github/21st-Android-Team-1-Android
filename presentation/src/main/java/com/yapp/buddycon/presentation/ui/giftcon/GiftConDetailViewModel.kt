@@ -109,8 +109,14 @@ class GiftConDetailViewModel @Inject constructor(
             _giftconUserEvent.emit(GiftConUserEvent.Error)
         }.onEach { result ->
             _giftconUserEvent.emit(
-                if (result.success) GiftConUserEvent.CompleteUse
-                else GiftConUserEvent.CompleteUseFail
+                if (result.success){
+                    if(giftUsable) GiftConUserEvent.CompleteUse
+                    else GiftConUserEvent.RollbackUsed
+                }
+                else{
+                    if(giftUsable) GiftConUserEvent.CompleteUseFail
+                    else GiftConUserEvent.RollbackUsedFail
+                }
             )
         }.launchIn(viewModelScope)
     }

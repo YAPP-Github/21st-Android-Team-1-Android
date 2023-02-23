@@ -44,7 +44,6 @@ class GiftConDetailActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.e("onCreate")
         giftUsable = intent?.getBooleanExtra(GIFTCON_USABLE, false) ?: false
         binding.giftconId = giftconId
         binding.giftUsable = giftUsable
@@ -72,10 +71,12 @@ class GiftConDetailActivity :
                 when (event) {
                     GiftConUserEvent.Delete -> handleSuccessCouponDelete()
                     GiftConUserEvent.Update -> showOriginButtons()
-                    GiftConUserEvent.CompleteUse -> {
-                        // TODO: 사용완료 처리
+                    GiftConUserEvent.CompleteUse,
+                    GiftConUserEvent.RollbackUsed -> {
                         giftUsable = giftUsable.not()
-                        bindCouponInfo(giftConDetail)
+                        initCouponImage(giftConDetail.imageUrl)
+                        initCouponBadge(giftConDetail.expireDate, giftConDetail.imageUrl)
+                        showOriginButtons()
                     }
                     else -> Unit
                 }
@@ -129,16 +130,22 @@ class GiftConDetailActivity :
     private fun showCouponInfo(giftConDetail: GiftConDetail) {
         giftConDetail.also {
             this.giftConDetail = it
-            initCouponInfo(it)
-            bindCouponInfo(it)
-            giftConDetailViewModel.setPricesCoupon(it.isMoneyCoupon)
-            giftConDetailViewModel.setLeftMonyCoupon(it.leftMoney)
+            initCouponBasic(it.name, it.storeName, it.memo)
+            initCouponExpireDate(it.expireDate)
+            initMoneyCoupon(it.isMoneyCoupon, it.leftMoney)
+            initCouponImage(it.imageUrl)
+            initCouponBadge(it.expireDate, it.imageUrl)
         }
     }
 
-    private fun initCouponInfo(giftConDetail: GiftConDetail) {
-        val (year, month, day) = giftConDetail.expireDate.split("-").map { it.toInt() }
-        giftConDetailViewModel.setCouponTitle(giftConDetail.name)
+    private fun initCouponBasic(name: String, storeName: String, memo: String) {
+        giftConDetailViewModel.setCouponTitle(name)
+        giftConDetailViewModel.setUsePlace(storeName)
+        giftConDetailViewModel.setCouponMemo(memo)
+    }
+
+    private fun initCouponExpireDate(expireDate: String) {
+        val (year, month, day) = expireDate.split("-").map { it.toInt() }
         giftConDetailViewModel.changeExpireDate("${year}년 ${month}월 ${day}일")
 
         val date = Calendar.getInstance().apply {
@@ -152,63 +159,63 @@ class GiftConDetailActivity :
         }.timeInMillis
         val dateFormat = SimpleDateFormat("yyyy-MM-dd").format(date)
         giftConDetailViewModel.changeExpireDateOtherForm(dateFormat)
-        giftConDetailViewModel.setUsePlace(giftConDetail.storeName)
-        giftConDetailViewModel.setCouponMemo(giftConDetail.memo)
     }
 
-    private fun bindCouponInfo(giftConDetail: GiftConDetail) {
+    private fun initMoneyCoupon(isMoneyCoupon: Boolean, leftMoney: Int) {
+        giftConDetailViewModel.setPricesCoupon(isMoneyCoupon)
+        giftConDetailViewModel.setLeftMonyCoupon(leftMoney)
+    }
+
+    private fun initCouponImage(imageUrl: String) {
         Glide.with(binding.ivCoupon.context)
-            .load(giftConDetail.imageUrl)
+            .load(imageUrl)
             .into(binding.ivCoupon)
 
+        binding.ivCoupon.colorFilter =
+            if (giftUsable) null
+            else ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0F) })
+
+        binding.vDim.isVisible = giftUsable.not()
+    }
+
+    private fun initCouponBadge(expireDate: String, imageUrl: String) {
+        val (year, month, day) = expireDate.split("-").map { it.toInt() }
+        val diff = Calendar.getInstance().getDday(year, month, day)
+
+        binding.btnMake.setBackgroundColor(
+            if (diff >= 0) getColor(R.color.skb_blue)
+            else getColor(R.color.gray40)
+        )
+
         binding.btnVolumeUp.setOnClickListener {
-            GiftConImageDialogFragment(giftConDetail.imageUrl).show(supportFragmentManager, null)
+            GiftConImageDialogFragment(imageUrl).show(supportFragmentManager, null)
         }
 
         if (giftUsable) {
-            val (year, month, day) = giftConDetail.expireDate.split("-").map { it.toInt() }
-            val diff = Calendar.getInstance().getDday(year, month, day)
-
-            binding.btnMake.setBackgroundColor(
-                if (diff >= 0) getColor(R.color.skb_blue)
-                else getColor(R.color.gray40)
-            )
-
             if (diff in 0..14) {
-                binding.btnExpireDate.isVisible = true
-                binding.btnExpireDate.text = "D-${diff}"
-                binding.btnExpireDate.setBackgroundResource(
-                    if (diff <= 7) R.drawable.bg_coupon_expire_date
-                    else R.drawable.bg_coupon_gray_expire_date
-                )
+                binding.btnExpireDate.apply {
+                    isVisible = true
+                    text = "D-$diff"
+                    setBackgroundResource(
+                        if (diff <= 7) R.drawable.bg_coupon_expire_date
+                        else R.drawable.bg_coupon_gray_expire_date
+                    )
+                }
             } else {
                 if (diff < 0) {
+                    binding.btnExpireDate.isVisible = false
                     CouponExpireDialogFragment(
                         title = getString(R.string.giftcon_expire_date_message_title),
                         description = getString(R.string.giftcon_expire_date_message_description)
                     ).show(supportFragmentManager, null)
-
-                    // TODO 기프티콘 만료 시에 수정 가능 여부 파악
-                    binding.tvCouponTitle.isEnabled = false
-                    binding.tvExpirationDateInfo.isEnabled = false
-                    binding.tvUsePlaceInfo.isEnabled = false
-                    binding.tvMemoInfo.isEnabled = false
-                    binding.switchPriceCoupone.isEnabled = false
                 }
-                binding.btnExpireDate.isVisible = false
             }
-
             binding.btnUsedBadge.isVisible = false
-            binding.vDim.isVisible = false
-            binding.ivCoupon.colorFilter = null
             binding.btnVolumeUp.isVisible = true
         } else {
             binding.btnExpireDate.isVisible = false
             binding.btnUsedBadge.isVisible = true
             binding.btnVolumeUp.isVisible = false
-            binding.vDim.isVisible = true
-            binding.ivCoupon.colorFilter =
-                ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0F) })
         }
     }
 
