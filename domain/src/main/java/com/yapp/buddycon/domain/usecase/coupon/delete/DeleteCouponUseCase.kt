@@ -1,4 +1,4 @@
-package com.yapp.buddycon.domain.usecase.delete
+package com.yapp.buddycon.domain.usecase.coupon.delete
 
 import com.yapp.buddycon.domain.model.DeleteCouponResult
 import com.yapp.buddycon.domain.repository.DeleteCouponRepository

@@ -8,7 +8,7 @@ import com.yapp.buddycon.domain.model.CouponItem
 import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.domain.model.SortMode
 import com.yapp.buddycon.domain.model.TabMode
-import com.yapp.buddycon.domain.usecase.coupon.GetCouponInfoUseCase
+import com.yapp.buddycon.domain.usecase.coupon.get.GetCouponInfoUseCase
 import com.yapp.buddycon.domain.usecase.login.GetBootInfoUseCase
 import com.yapp.buddycon.domain.usecase.login.SaveBootInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

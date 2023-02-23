@@ -52,6 +52,12 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindDeleteCouponRepository(
-        deleteCouponeRepositoryImpl: DeleteCouponRepositoryImpl
+        deleteCouponRepositoryImpl: DeleteCouponRepositoryImpl
     ): DeleteCouponRepository
+
+    @Binds
+    @Singleton
+    fun bindUpdateCouponRepository(
+        updateCouponRepositoryImpl: UpdateCouponRepositoryImpl
+    ): UpdateCouponRepository
 }

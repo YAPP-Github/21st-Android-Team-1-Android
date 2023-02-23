@@ -3,7 +3,7 @@ package com.yapp.buddycon.presentation.ui.makeCoupon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yapp.buddycon.domain.model.GiftConDetail
-import com.yapp.buddycon.domain.usecase.giftcon.GetCouponDetailUseCase
+import com.yapp.buddycon.domain.usecase.coupon.get.GetCouponDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

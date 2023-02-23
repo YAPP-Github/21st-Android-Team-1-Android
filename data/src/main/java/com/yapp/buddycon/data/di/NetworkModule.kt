@@ -101,4 +101,11 @@ object NetworkModule {
     ): DeleteCouponService =
         retrofit.create()
 
+    @Provides
+    @Singleton
+    fun provideUpdateCouponService(
+        @BuddyConRetrofit retrofit: Retrofit
+    ): UpdateCouponService =
+        retrofit.create()
+
 }

@@ -2,8 +2,10 @@ package com.yapp.buddycon.data.di
 
 import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSource
 import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSourceImpl
-import com.yapp.buddycon.data.datasource.remote.delete.DeleteCouponRemoteDataSource
-import com.yapp.buddycon.data.datasource.remote.delete.DeleteCouponRemoteDataSourceImpl
+import com.yapp.buddycon.data.datasource.remote.coupon.delete.DeleteCouponRemoteDataSource
+import com.yapp.buddycon.data.datasource.remote.coupon.delete.DeleteCouponRemoteDataSourceImpl
+import com.yapp.buddycon.data.datasource.remote.coupon.update.UpdateCouponRemoteDataSource
+import com.yapp.buddycon.data.datasource.remote.coupon.update.UpdateCouponRemoteDataSourceImpl
 import com.yapp.buddycon.data.datasource.remote.login.LoginRemoteDataSource
 import com.yapp.buddycon.data.datasource.remote.login.LoginRemoteDataSourceImpl
 import com.yapp.buddycon.data.datasource.remote.makecon.GetGiftConDetailRemoteDataSource
@@ -36,4 +38,9 @@ interface DataSourceModule {
     fun bindsDeleteCouponRemoteDataSource(
         deleteCouponRemoteDataSourceImpl: DeleteCouponRemoteDataSourceImpl
     ): DeleteCouponRemoteDataSource
+
+    @Binds
+    fun bindsUpdateCouponRemoteDataSource(
+        updateCouponRemoteDataSourceImpl: UpdateCouponRemoteDataSourceImpl
+    ): UpdateCouponRemoteDataSource
 }

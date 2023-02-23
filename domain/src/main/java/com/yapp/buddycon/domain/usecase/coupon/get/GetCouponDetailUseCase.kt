@@ -1,4 +1,4 @@
-package com.yapp.buddycon.domain.usecase.giftcon
+package com.yapp.buddycon.domain.usecase.coupon.get
 
 import com.yapp.buddycon.domain.model.GiftConDetail
 import com.yapp.buddycon.domain.repository.CouponDetailRepository

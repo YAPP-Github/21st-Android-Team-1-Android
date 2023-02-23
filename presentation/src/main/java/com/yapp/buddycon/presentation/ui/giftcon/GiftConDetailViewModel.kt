@@ -3,8 +3,8 @@ package com.yapp.buddycon.presentation.ui.giftcon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yapp.buddycon.domain.model.GiftConDetail
-import com.yapp.buddycon.domain.usecase.delete.DeleteCouponUseCase
-import com.yapp.buddycon.domain.usecase.giftcon.GetCouponDetailUseCase
+import com.yapp.buddycon.domain.usecase.coupon.delete.DeleteCouponUseCase
+import com.yapp.buddycon.domain.usecase.coupon.get.GetCouponDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -61,7 +61,9 @@ class GiftConDetailViewModel @Inject constructor(
     fun deleteCoupon(giftId: Int) {
         deleteCouponUseCase(giftId)
             .catch { e -> Timber.e("deleteCoupon error ${e.localizedMessage}") }
-            .onEach { _giftconUserEvent.emit(GiftConUserEvent.Delete) }
+            .onEach {
+                _giftconUserEvent.emit(GiftConUserEvent.Delete)
+            }
             .launchIn(viewModelScope)
     }
 
