@@ -42,6 +42,7 @@ class GiftConDetailActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding.giftconId = giftconId
         binding.giftUsable = giftUsable
         binding.gitconDetailViewModel = giftConDetailViewModel
         observeGiftConDetail()
@@ -66,9 +67,17 @@ class GiftConDetailActivity :
             .onEach { event ->
                 when (event) {
                     GiftConUserEvent.Delete -> {
-                        // TODO : 삭제 이후 토스트 여부 문의
+                        // TODO : 삭제 이후 처리
                         finish()
                     }
+                    GiftConUserEvent.Update ->{
+                        // TODO : 업데이트 이후 처리
+                        binding.btnUseComplete.isVisible = true
+                        binding.btnMake.isVisible = true
+                        binding.btnUpdate.isVisible = false
+                        binding.btnRollback.isVisible = false
+                    }
+
                     else -> Unit
                 }
             }.launchIn(lifecycleScope)

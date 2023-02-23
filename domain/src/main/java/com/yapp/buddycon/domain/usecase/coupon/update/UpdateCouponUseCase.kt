@@ -12,7 +12,7 @@ class UpdateCouponUseCase @Inject constructor(
         id: Int,
         expireDate: String,
         isMoneyCoupon: Boolean,
-        leftMoney: Int,
+        leftMoney: Int?,
         memo: String,
         name: String,
         storeName: String

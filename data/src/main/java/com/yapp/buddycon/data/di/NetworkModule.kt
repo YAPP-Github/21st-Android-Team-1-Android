@@ -96,7 +96,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideDeleteCouponeService(
+    fun provideDeleteCouponService(
         @BuddyConRetrofit retrofit: Retrofit
     ): DeleteCouponService =
         retrofit.create()

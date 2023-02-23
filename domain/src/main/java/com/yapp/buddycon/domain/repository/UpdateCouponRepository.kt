@@ -8,7 +8,7 @@ interface UpdateCouponRepository {
         id: Int,
         expireDate: String,
         isMoneyCoupon: Boolean,
-        leftMoney: Int,
+        leftMoney: Int?,
         memo: String,
         name: String,
         storeName: String

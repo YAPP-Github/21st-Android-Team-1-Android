@@ -9,7 +9,7 @@ data class UpdateCouponRequest(
     @SerializedName("isMoneyCoupon")
     val isMoneyCoupon: Boolean = false,
     @SerializedName("leftMoney")
-    val leftMoney: Int = 0,
+    val leftMoney: Int,
     @SerializedName("memo")
     val memo: String = "",
     @SerializedName("name")

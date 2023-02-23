@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="giftconId"
+            type="Integer" />
+
+        <variable
             name="giftUsable"
             type="Boolean" />
 
@@ -385,6 +389,7 @@
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:background="@color/skb_blue"
+            android:onClick="@{() -> gitconDetailViewModel.updateCoupon(giftconId)}"
             android:text="@string/coupon_update"
             android:textColor="@color/white"
             android:visibility="gone"

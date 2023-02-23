@@ -1,10 +1,15 @@
 package com.yapp.buddycon.data.datasource.remote.coupon.update
 
+import com.google.gson.Gson
 import com.yapp.buddycon.data.network.api.UpdateCouponService
 import com.yapp.buddycon.data.network.request.UpdateCouponRequest
 import com.yapp.buddycon.data.network.response.UpdateCouponResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 class UpdateCouponRemoteDataSourceImpl @Inject constructor(
@@ -14,7 +19,7 @@ class UpdateCouponRemoteDataSourceImpl @Inject constructor(
         id: Int,
         expireDate: String,
         isMoneyCoupon: Boolean,
-        leftMoney: Int,
+        leftMoney: Int?,
         memo: String,
         name: String,
         storeName: String
@@ -23,12 +28,7 @@ class UpdateCouponRemoteDataSourceImpl @Inject constructor(
             updateCouponService.updateCoupon(
                 id,
                 UpdateCouponRequest(
-                    expireDate = expireDate,
-                    isMoneyCoupon = isMoneyCoupon,
-                    leftMoney = leftMoney,
-                    memo = memo,
-                    name = name,
-                    storeName = storeName
+                    expireDate, isMoneyCoupon, (leftMoney ?: 0), memo, name, storeName
                 )
             )
         )
