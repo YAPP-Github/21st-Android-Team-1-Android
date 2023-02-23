@@ -53,7 +53,7 @@ class GiftConDetailActivity :
         observeGiftConDetail()
         observeGiftConUserEvent()
         observeCheckPricesCoupon()
-        observceUpdateCoupon()
+        observeUpdateCoupon()
         bindViews()
         giftConDetailViewModel.getGiftconDetailInfo(giftconId)
     }
@@ -70,16 +70,8 @@ class GiftConDetailActivity :
             .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
             .onEach { event ->
                 when (event) {
-                    GiftConUserEvent.Delete -> {
-                        handleSuccessCouponDelete()
-                    }
-                    GiftConUserEvent.Update -> {
-                        // TODO : 업데이트 이후 처리
-                        binding.btnUseComplete.isVisible = true
-                        binding.btnMake.isVisible = true
-                        binding.btnUpdate.isVisible = false
-                        binding.btnRollback.isVisible = false
-                    }
+                    GiftConUserEvent.Delete -> handleSuccessCouponDelete()
+                    GiftConUserEvent.Update -> showOriginButtons()
                     GiftConUserEvent.CompleteUse -> {
                         // TODO: 사용완료 처리
                         giftUsable = giftUsable.not()
@@ -97,30 +89,13 @@ class GiftConDetailActivity :
             .launchIn(lifecycleScope)
     }
 
-    private fun observceUpdateCoupon() {
+    private fun observeUpdateCoupon() {
         giftConDetailViewModel.updateCoupon
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 if (::giftConDetail.isInitialized.not()) return@onEach
-
-                if (checkUpdateCoupon(giftConDetail, it)) {
-                    if (giftUsable) {
-                        binding.btnUseComplete.isVisible = true
-                        binding.btnMake.isVisible = true
-                        binding.btnUpdate.isVisible = false
-                        binding.btnRollback.isVisible = false
-                    } else {
-                        binding.btnUseComplete.isVisible = false
-                        binding.btnMake.isVisible = false
-                        binding.btnUpdate.isVisible = false
-                        binding.btnRollback.isVisible = true
-                    }
-                } else {
-                    binding.btnUseComplete.isVisible = false
-                    binding.btnMake.isVisible = false
-                    binding.btnUpdate.isVisible = true
-                    binding.btnRollback.isVisible = false
-                }
+                if (checkUpdateCoupon(giftConDetail, it)) showOriginButtons()
+                else showUpdateButton()
             }.launchIn(lifecycleScope)
     }
 
@@ -277,6 +252,27 @@ class GiftConDetailActivity :
         CouponDialogFragment(getString(R.string.giftcon_delete_success_message)) {
             finish()
         }.show(supportFragmentManager, null)
+    }
+
+    private fun showOriginButtons() {
+        if (giftUsable) {
+            binding.btnUseComplete.isVisible = true
+            binding.btnMake.isVisible = true
+            binding.btnUpdate.isVisible = false
+            binding.btnRollback.isVisible = false
+        } else {
+            binding.btnUseComplete.isVisible = false
+            binding.btnMake.isVisible = false
+            binding.btnUpdate.isVisible = false
+            binding.btnRollback.isVisible = true
+        }
+    }
+
+    private fun showUpdateButton() {
+        binding.btnUseComplete.isVisible = false
+        binding.btnMake.isVisible = false
+        binding.btnUpdate.isVisible = true
+        binding.btnRollback.isVisible = false
     }
 
     companion object {
