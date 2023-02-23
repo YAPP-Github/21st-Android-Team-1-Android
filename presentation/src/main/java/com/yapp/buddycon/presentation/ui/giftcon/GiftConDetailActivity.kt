@@ -21,6 +21,7 @@ import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityGiftConDetailBinding
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponDeleteDialogFragment
+import com.yapp.buddycon.presentation.ui.common.dialog.CouponDialogFragment
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponExpireDialogFragment
 import com.yapp.buddycon.presentation.utils.Logging
 import com.yapp.buddycon.presentation.utils.getDday
@@ -43,6 +44,7 @@ class GiftConDetailActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.e("onCreate")
         giftUsable = intent?.getBooleanExtra(GIFTCON_USABLE, false) ?: false
         binding.giftconId = giftconId
         binding.giftUsable = giftUsable
@@ -69,8 +71,7 @@ class GiftConDetailActivity :
             .onEach { event ->
                 when (event) {
                     GiftConUserEvent.Delete -> {
-                        // TODO : 삭제 이후 처리
-                        finish()
+                        handleSuccessCouponDelete()
                     }
                     GiftConUserEvent.Update -> {
                         // TODO : 업데이트 이후 처리
@@ -270,6 +271,12 @@ class GiftConDetailActivity :
         }
 
         datePicker.show(supportFragmentManager, "date_picker")
+    }
+
+    private fun handleSuccessCouponDelete() {
+        CouponDialogFragment(getString(R.string.giftcon_delete_success_message)) {
+            finish()
+        }.show(supportFragmentManager, null)
     }
 
     companion object {
