@@ -122,7 +122,7 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
                     val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI) // 갤러리관련 앱
                     //val intent = Intent(Intent.ACTION_GET_CONTENT)  // 전체 이미지 관련 파일 선택 가능한 화면으로 이동
                     //intent.type = "image/*"
-                    getImageContent.launch(Intent.createChooser(intent, "Chooser Test"))
+                    getImageContent.launch(Intent.createChooser(intent, "Select Image"))
                 } else {
                     Snackbar.make(binding.root, "권한이 승인되지 않았습니다", Snackbar.LENGTH_SHORT).show()
                 }
