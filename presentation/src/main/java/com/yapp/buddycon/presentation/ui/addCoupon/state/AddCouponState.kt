@@ -1,6 +1,7 @@
 package com.yapp.buddycon.presentation.ui.addCoupon.state
 
 
+import com.yapp.buddycon.domain.model.AddCouponResult
 import com.yapp.buddycon.domain.model.CouponInfo
 import com.yapp.buddycon.domain.model.CouponInputInfo
 
@@ -26,4 +27,12 @@ sealed class ContentInputState {
     object EmptyExpireDate : ContentInputState()
     object OutOfRangeStoreName : ContentInputState()
     object OutOfRangeMemo : ContentInputState()
+}
+
+sealed class AddCouponResultState<out T> {
+    object Init : AddCouponResultState<Nothing>()
+    object ShowLoading: AddCouponResultState<Nothing>()
+    object HideLoading: AddCouponResultState<Nothing>()
+    data class Success<T>(val data: AddCouponResult): AddCouponResultState<T>()
+    data class Error(val error: Throwable?): AddCouponResultState<Nothing>()
 }

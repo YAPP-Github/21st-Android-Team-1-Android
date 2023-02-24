@@ -25,6 +25,13 @@ jobs:
       shell: bash
       env:
         API_KEY: ${{ secrets.KAKAO_APP_KEY }}
+        
+    - name: Create Google Services
+      env:
+        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      run: |
+        echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
+      
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle

@@ -1,11 +1,12 @@
 package com.yapp.buddycon.presentation.ui.addCoupon
 
+import android.content.Context
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
+import android.provider.MediaStore
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
-import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.WindowManager
@@ -13,17 +14,20 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import com.yapp.buddycon.domain.model.CouponInfo
+import com.yapp.buddycon.domain.model.AddCouponResult
 import com.yapp.buddycon.domain.model.CouponInputInfo
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityAddCouponBinding
+import com.yapp.buddycon.presentation.ui.addCoupon.state.AddCouponResultState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.ContentInputState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.CouponInfoLoadState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.WhetherInputPossibleState
@@ -47,6 +51,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         init()
         observeCouponInfoState()
         observeCouponInputState()
+        observeAddCouponResultState()
     }
 
     private fun init() {
@@ -65,6 +70,8 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             val barcodeScanner = BarcodeScanning.getClient()
             val inputImage = InputImage.fromFilePath(this, uri)
 
+            addCouponViewModel.setImageUri(absolutelyPath(uri, this)) // image uri 쿠폰 등록 시 필요
+
             barcodeScanner.process(inputImage)
                 .addOnSuccessListener { barcodes ->
                     Logging.error("barcode list size : ${barcodes.size}")
@@ -74,8 +81,9 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
                             val barcodeNumber = barcode.rawValue
                             Logging.error("barcode number : $barcodeNumber")
 
-                            // 바코드 정보로 서버에 데이터 요청하기\
+                            // 바코드 정보로 서버에 데이터 요청하기
                             barcodeNumber?.let {
+                                addCouponViewModel.setBarcode(it)
                                 addCouponViewModel.checkBarcodeInfo(it)
                             }
                         }
@@ -128,7 +136,10 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             is CouponInfoLoadState.ShowLoading -> {
                 Logging.error("AddCouponActivity : show loading")
                 binding.pbLoading.isVisible = true
-                this.getWindow()?.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                this.getWindow()?.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                )
             }
             is CouponInfoLoadState.HideLoading -> {
                 Logging.error("AddCouponActivity : hide loading")
@@ -194,8 +205,49 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         }
     }
 
+    private fun observeAddCouponResultState() {
+        addCouponViewModel.addCouponState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                handleAddCouponResultState(it)
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun handleAddCouponResultState(resultState: AddCouponResultState<AddCouponResult>) {
+        when (resultState) {
+            is AddCouponResultState.Init -> {}
+            is AddCouponResultState.ShowLoading -> {
+                Logging.error("AddCouponActivity : show loading")
+                binding.pbLoading.isVisible = true
+                this.getWindow()?.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                )
+            }
+            is AddCouponResultState.HideLoading -> {
+                Logging.error("AddCouponActivity : hide loading")
+                binding.pbLoading.isVisible = false
+                this.getWindow()?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            }
+            is AddCouponResultState.Success -> {
+                Logging.error("AddCouponActivity : add coupon Success")
+                MessageDialogFragment(getString(R.string.add_coupon_success_message)) { finish() }
+                    .show(supportFragmentManager, null)
+            }
+            is AddCouponResultState.Error -> {
+                Logging.error("AddCouponActivity : add coupon Error")
+                Snackbar.make(
+                    binding.rootCl,
+                    getString(R.string.add_coupon_fail_message),
+                    Snackbar.LENGTH_SHORT
+                ).apply {
+                    anchorView = binding.tvCancel
+                }.show()
+            }
+        }
+    }
+
     // 세부 수정 및 바인딩어댑터로 전환 예정
-    // 새로 등록하는 기프티콘의 경우 사용자가 직접 입력을 할 수 있어야 함
+    // 새로 등록하는 기프티콘의 경우 사용자가 직접 입력을 할 수 있어야 함H
     private fun setContentInputType(whetherInputPossibleState: WhetherInputPossibleState) {
         when (whetherInputPossibleState) {
             is WhetherInputPossibleState.Possible -> {
@@ -250,7 +302,7 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
             Logging.error("selected date string : $selectedDateStringForUser")
             Logging.error("selected date string for server : $selectedDateStringForServer")
 
-            addCouponViewModel.setExipireDate(selectedDateStringForServer)
+            addCouponViewModel.setExpireDate(selectedDateStringForServer)
             with(binding.tvExpireDate) {
                 text = selectedDateStringForUser
                 setTextColor(ContextCompat.getColor(this@AddCouponActivity, R.color.gray90))
@@ -261,6 +313,16 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
         // Activity 의 theme이 MaterialComponent 이어야 정상 작동 >> Manifest 에서 설정해주기!!
     }
 
+    fun onClickAddCouponCanel(view: View) {
+        TwoOptionTypeDialogFragment(
+            getString(R.string.add_coupon_cancel_message),
+            "계속작성",
+            "나가기",
+            {},
+            { finish() }
+        ).show(supportFragmentManager, null)
+    }
+
     private fun initTextWatcher() {
         initTitleTextWatcher()
         initStoreNameTextWatcher()
@@ -269,50 +331,44 @@ class AddCouponActivity : BaseActivity<ActivityAddCouponBinding>(R.layout.activi
     }
 
     private fun initTitleTextWatcher() {
-        binding.etTitle.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.setTitle(s.toString())
-            }
-        })
+        binding.etTitle.addTextChangedListener {
+            addCouponViewModel.setTitle(it.toString())
+        }
     }
 
     private fun initStoreNameTextWatcher() {
-        binding.etStoreName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.setStoreName(s.toString())
-            }
-        })
+        binding.etStoreName.addTextChangedListener {
+            addCouponViewModel.setStoreName(it.toString())
+        }
     }
 
     private fun initSentMemberTextWatcher() {
-        binding.etSentMember.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.setSentMemberName(s.toString())
-            }
-        })
+        binding.etSentMember.addTextChangedListener {
+            addCouponViewModel.setSentMemberName(it.toString())
+        }
     }
 
     private fun initMemoTextWatcher() {
-        binding.etMemo.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        binding.etMemo.addTextChangedListener {
+            addCouponViewModel.setMemo(it.toString())
+        }
+        // 람다 활용 <- afterTextChanged 가 가장 마지막이므로 가능
+    }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    // 절대경로 변환
+    fun absolutelyPath(path: Uri?, context: Context): String? {
+        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+        val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c?.moveToFirst()
 
-            override fun afterTextChanged(s: Editable?) {
-                addCouponViewModel.setMemo(s.toString())
-            }
-        })
+        val resultPath = c?.getString(index!!)
+        c?.close()
+
+        return resultPath
+    }
+
+    override fun onBackPressed() {
+        onClickAddCouponCanel(binding.root)
     }
 }

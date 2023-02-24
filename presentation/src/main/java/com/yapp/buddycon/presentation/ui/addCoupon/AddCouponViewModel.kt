@@ -1,12 +1,14 @@
 package com.yapp.buddycon.presentation.ui.addCoupon
 
-import android.util.Log
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yapp.buddycon.domain.model.CouponInfo
+import com.yapp.buddycon.domain.model.AddCouponResult
 import com.yapp.buddycon.domain.model.CouponInputInfo
+import com.yapp.buddycon.domain.usecase.addcoupon.AddGifticonUseCase
 import com.yapp.buddycon.domain.usecase.addcoupon.GetGifticonInfoByBarcodeUseCase
 import com.yapp.buddycon.domain.usecase.addcoupon.GetMakeconInfoByBarcodeUseCase
+import com.yapp.buddycon.presentation.ui.addCoupon.state.AddCouponResultState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.ContentInputState
 import com.yapp.buddycon.presentation.ui.addCoupon.state.CouponInfoLoadState
 import com.yapp.buddycon.presentation.utils.Logging
@@ -19,16 +21,22 @@ import javax.inject.Inject
 @HiltViewModel
 class AddCouponViewModel @Inject constructor(
     private val getGifticonInfoByBarcodeUseCase: GetGifticonInfoByBarcodeUseCase,
-    private val getMakeconInfoByBarcodeUseCase: GetMakeconInfoByBarcodeUseCase
+    private val getMakeconInfoByBarcodeUseCase: GetMakeconInfoByBarcodeUseCase,
+    private val addGifticonUseCase: AddGifticonUseCase
 ) : ViewModel() {
     private val _couponInfoLoadState =
         MutableStateFlow<CouponInfoLoadState<CouponInputInfo>>(CouponInfoLoadState.Init)
     val couponInfoLoadState = _couponInfoLoadState.asStateFlow()
 
     private val couponInputInfo = CouponInputInfo()
+    private var imageUriPath: String? = null // 절대 경로 형태
 
     private val _contentInputState = MutableSharedFlow<ContentInputState>()
     val contentInputState = _contentInputState.asSharedFlow()
+
+    private val _addCouponState =
+        MutableStateFlow<AddCouponResultState<AddCouponResult>>(AddCouponResultState.Init)
+    val addCouponState = _addCouponState.asStateFlow()
 
     init {
         // temp
@@ -42,8 +50,6 @@ class AddCouponViewModel @Inject constructor(
                 getGifticonInfoByBarcodeUseCase(barcodeNumber),
                 getMakeconInfoByBarcodeUseCase(barcodeNumber)
             ) { gifticonInfo, customCouponInfo ->
-                Logging.error("combine")
-
                 if (gifticonInfo.id >= 1) {
                     Logging.error("바코드 정보 : 서버에 존재하는 기프티콘")
                     CouponInfoLoadState.ExistGifticon(gifticonInfo)
@@ -74,7 +80,11 @@ class AddCouponViewModel @Inject constructor(
     }
 
     fun setTitle(title: String) {
-        couponInputInfo.title = title
+        couponInputInfo.name = title
+    }
+
+    fun setBarcode(barcode: String) {
+        couponInputInfo.barcode = barcode
     }
 
     fun setStoreName(storeName: String) {
@@ -89,18 +99,18 @@ class AddCouponViewModel @Inject constructor(
         couponInputInfo.memo = memo
     }
 
-    fun setExipireDate(date: String) {
+    fun setExpireDate(date: String) {
         couponInputInfo.expireDate = date
     }
 
-    fun addCoupon() {
+    fun checkInputInfo() {
         Logging.error("add coupon clicked")
 
         viewModelScope.launch {
             with(couponInputInfo) {
-                if (title.isEmpty()) {
+                if (name.isEmpty()) {
                     _contentInputState.emit(ContentInputState.EmptyTitle)
-                } else if (title.length > 16) {
+                } else if (name.length > 16) {
                     _contentInputState.emit(ContentInputState.OutOfRangeTitle)
                 } else if (expireDate.isEmpty()) {
                     _contentInputState.emit(ContentInputState.EmptyExpireDate)
@@ -110,10 +120,50 @@ class AddCouponViewModel @Inject constructor(
                     _contentInputState.emit(ContentInputState.OutOfRangeMemo)
                 } else {
                     // 입력 정보로 기프티콘 등록
-
+                    addCoupon()
                 }
             }
         }
+    }
+
+    fun setImageUri(path: String?) {
+        imageUriPath = path
+    }
+
+    fun addCoupon() {
+        imageUriPath?.let { path ->
+            when (_couponInfoLoadState.value) {
+                is CouponInfoLoadState.NewGifticon -> {
+                    addGifticon(path)
+                }
+                is CouponInfoLoadState.ExistGifticon -> {}
+                is CouponInfoLoadState.ExistMakeCon -> {}
+                else -> {}
+            }
+        }
+    }
+
+    fun addGifticon(imageUriPath: String) {
+        viewModelScope.launch {
+            addGifticonUseCase(imageUriPath, couponInputInfo)
+                .onStart {
+                    Logging.error("${this@AddCouponViewModel.javaClass.name} / add onStart block")
+                    _addCouponState.value = AddCouponResultState.ShowLoading
+                    delay(1)
+                }.catch { error ->
+                    Logging.error("${this@AddCouponViewModel.javaClass.name} / catch error")
+                    _addCouponState.value = AddCouponResultState.HideLoading
+                    _addCouponState.value = AddCouponResultState.Error(error)
+                }.collect { result ->
+                    Logging.error("${this@AddCouponViewModel.javaClass.name} / collect result : ${result}")
+                    _addCouponState.value = AddCouponResultState.HideLoading
+                    _addCouponState.value = AddCouponResultState.Success(result)
+                }
+        }
+    }
+
+    fun addCustomCoupon() {
+
     }
 
     // temp

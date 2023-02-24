@@ -12,6 +12,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.FirebaseApp
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ApiError
 import com.kakao.sdk.common.model.ClientError
@@ -37,6 +41,7 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loginGuestMode()
 
         kakaoViewModel.loginState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
@@ -73,7 +78,7 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
                 error?.let { e ->
                     Timber.e(getString(R.string.kakao_login_error, e))
 
-                    if(e is ApiError && e.statusCode == KAKAO_SERVER_ERROR){
+                    if (e is ApiError && e.statusCode == KAKAO_SERVER_ERROR) {
                         KaKaoDialogFragment().show(supportFragmentManager, null)
                     }
 
@@ -155,10 +160,21 @@ class KakaoLoginActivity : BaseActivity<ActivityKakaoLoginBinding>(R.layout.acti
         kakaoViewModel.requestUserInfo(kakaoAccessToken, name, email, gender, ageRange)
     }
 
+    private fun loginGuestMode() {
+        val remoteConfig = Firebase.remoteConfig
+        val isTestState = remoteConfig.getBoolean(IS_TEST_STATE)
+        binding.btnGuestLogin.isVisible = isTestState
+
+        binding.btnGuestLogin.setOnClickListener {
+            kakaoViewModel.loginGuest()
+        }
+    }
+
 
     companion object {
         const val FIRST_LOGIN = "FIRST_JOIN"
         const val KAKAO_SERVER_ERROR = 500
+        const val IS_TEST_STATE = "isTestState"
 
         fun newIntent(context: Context, isFirst: Boolean = false) =
             Intent(context, KakaoLoginActivity::class.java).apply {

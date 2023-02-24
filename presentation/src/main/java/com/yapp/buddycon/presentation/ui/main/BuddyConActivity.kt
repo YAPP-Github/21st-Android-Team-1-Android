@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.MediaStore.Video.Media
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -117,10 +119,10 @@ class BuddyConActivity : BaseActivity<ActivityBuddyConBinding>(R.layout.activity
                 if (isGranted) {
                     Timber.tag("AppTest").e("권한 승인 ok")
 
-                    val intent = Intent(Intent.ACTION_PICK) // 갤러리관련 앱
+                    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI) // 갤러리관련 앱
                     //val intent = Intent(Intent.ACTION_GET_CONTENT)  // 전체 이미지 관련 파일 선택 가능한 화면으로 이동
-                    intent.type = "image/*"
-                    getImageContent.launch(Intent.createChooser(intent, "Chooser Test"))
+                    //intent.type = "image/*"
+                    getImageContent.launch(Intent.createChooser(intent, "Select Image"))
                 } else {
                     Snackbar.make(binding.root, "권한이 승인되지 않았습니다", Snackbar.LENGTH_SHORT).show()
                 }

@@ -23,6 +23,9 @@
     <string name="all_valid_date">유효기간</string>
     <string name="makecon_where_use_hint">예) 버디편의점</string>
     <string name="make_con_valid_date_hint">유효기간 선택</string>
+    <string name="add_coupon_fail_message">쿠폰 등록에 실패했습니다. 다시 시도해 주세요.</string>
+    <string name="add_coupon_success_message">쿠폰 등록에 성공했습니다.</string>
+    <string name="add_coupon_cancel_message">쿠폰 등록을 그만할까요?</string>
 
     <string name="confirm_dialog">확인</string>
     <string name="cancel_dialog">취소</string>

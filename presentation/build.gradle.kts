@@ -72,4 +72,7 @@ dependencies {
     implementation(ModuleDependency.SplashScreen.SPLASH_SCREEN)
     implementation(ModuleDependency.Paging.PAGING_RUNTIME_KTX)
     implementation(ModuleDependency.Zxing.ZXING)
+    implementation(platform(ModuleDependency.Firebase.FIREBASE_BOM))
+    implementation(ModuleDependency.Firebase.FIREBASE_KTX)
+    implementation(ModuleDependency.Firebase.FIREBASE_REMOTE_CONFIG)
 }

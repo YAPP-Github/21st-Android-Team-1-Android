@@ -2,6 +2,7 @@ package com.yapp.buddycon.presentation.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yapp.buddycon.domain.model.UserInfo
 import com.yapp.buddycon.domain.usecase.login.GetUserInfoUseCase
 import com.yapp.buddycon.domain.usecase.token.SaveTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,4 +37,21 @@ class KaKaoLoginViewModel @Inject constructor(
             )
             _loginState.emit(KaKaoLoginState.Login(it))
         }.launchIn(viewModelScope)
+
+    fun loginGuest(){
+        viewModelScope.launch {
+            saveTokenUseCase(
+                "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MTAsImlhdCI6MTY3NjgyNTIxMywiZXhwIjoxNjgyODczMjEzfQ._BOIpITxcnRKNY3VNUKwSOha92ybSHMLnkbnBGr5EV4",
+                1682873213340,
+                "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Nzc0MzAwMTN9.fRdkH8YnbtWRC7JWqpgYjHERM32dKo0dJEiqmPCcQ54"
+            )
+            _loginState.emit(KaKaoLoginState.Login(
+                UserInfo(
+                    "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MTAsImlhdCI6MTY3NjgyNTIxMywiZXhwIjoxNjgyODczMjEzfQ._BOIpITxcnRKNY3VNUKwSOha92ybSHMLnkbnBGr5EV4",
+                    "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Nzc0MzAwMTN9.fRdkH8YnbtWRC7JWqpgYjHERM32dKo0dJEiqmPCcQ54",
+                    1682873213340
+                )
+            ))
+        }
+    }
 }
