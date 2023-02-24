@@ -16,6 +16,10 @@
             type="Boolean" />
 
         <variable
+            name="isNotReceived"
+            type="Boolean" />
+
+        <variable
             name="gitconDetailViewModel"
             type="com.yapp.buddycon.presentation.ui.giftcon.GiftConDetailViewModel" />
     </data>
@@ -125,7 +129,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:enabled="@{giftUsable}"
+                    android:enabled="@{isNotReceived}"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@={gitconDetailViewModel.nameState}"
@@ -191,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:ellipsize="end"
-                    android:enabled="@{giftUsable}"
+                    android:enabled="@{isNotReceived}"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@{gitconDetailViewModel.storeNametate}"
@@ -211,6 +215,46 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_store_name" />
 
                 <TextView
+                    android:id="@+id/tv_sent_member"
+                    style="@style/regular16"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/gifticon_send_member"
+                    android:textColor="@color/gray60"
+                    android:visibility="@{isNotReceived ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_border2" />
+
+                <TextView
+                    android:id="@+id/tv_sent_member_info"
+                    style="@style/regular16"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:enabled="@{isNotReceived}"
+                    android:gravity="center_vertical"
+                    android:text="@{gitconDetailViewModel.sentMemberState}"
+                    android:textColor="@color/gray90"
+                    android:visibility="@{isNotReceived ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_sent_member"
+                    app:layout_constraintTop_toTopOf="@id/tv_sent_member"
+                    tools:text="보낸사람" />
+
+                <View
+                    android:id="@+id/v_sent_member"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/gray30"
+                    android:visibility="@{isNotReceived ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sent_member" />
+
+                <TextView
                     android:id="@+id/tv_memo"
                     style="@style/regular16"
                     android:layout_width="80dp"
@@ -220,7 +264,7 @@
                     android:text="@string/add_coupon_memo"
                     android:textColor="@color/gray60"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/v_border2" />
+                    tools:layout_constraintTop_toBottomOf="@id/v_border2" />
 
                 <EditText
                     android:id="@+id/et_memo_info"

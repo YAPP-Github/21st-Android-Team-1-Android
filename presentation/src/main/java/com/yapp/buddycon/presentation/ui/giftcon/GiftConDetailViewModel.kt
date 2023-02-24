@@ -32,6 +32,7 @@ class GiftConDetailViewModel @Inject constructor(
 
     val nameState = MutableStateFlow("")
     val storeNametate = MutableStateFlow("")
+    val sentMemberState = MutableStateFlow("")
     val memoState = MutableStateFlow("")
     val isMoneyCouponnState = MutableStateFlow(false)
     val leftMoneyState = MutableStateFlow("")

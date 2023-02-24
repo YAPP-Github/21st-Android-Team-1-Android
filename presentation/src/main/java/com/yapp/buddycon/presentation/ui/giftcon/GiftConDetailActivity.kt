@@ -142,11 +142,29 @@ class GiftConDetailActivity :
     private fun showCouponInfo(giftConDetail: GiftConDetail) {
         giftConDetail.also {
             this.giftConDetail = it
+            initSentMemberView(it.sentMemberName)
             initCouponBasic(it.name, it.storeName, it.memo)
             initCouponExpireDate(it.expireDate)
             initMoneyCoupon(it.isMoneyCoupon, it.leftMoney)
             initCouponImage(it.imageUrl)
             initCouponBadge(it.expireDate, it.imageUrl)
+        }
+    }
+
+    private fun initSentMemberView(sentMemberName: String?) {
+        binding.isNotReceived = sentMemberName == null
+        val layoutParam = (binding.tvMemo.layoutParams as ConstraintLayout.LayoutParams)
+        if (sentMemberName != null) {
+            binding.tvSentMemberInfo.text = sentMemberName
+            layoutParam.apply {
+                topToBottom = binding.vSentMember.id
+                topMargin = 16.toPx(this@GiftConDetailActivity).toInt()
+            }
+        } else {
+            layoutParam.apply {
+                topToBottom = binding.vBorder2.id
+                topMargin = 16.toPx(this@GiftConDetailActivity).toInt()
+            }
         }
     }
 
@@ -214,8 +232,8 @@ class GiftConDetailActivity :
                     )
                 }
             } else {
+                binding.btnExpireDate.isVisible = false
                 if (diff < 0) {
-                    binding.btnExpireDate.isVisible = false
                     CouponExpireDialogFragment(
                         title = getString(R.string.giftcon_expire_date_message_title),
                         description = getString(R.string.giftcon_expire_date_message_description)

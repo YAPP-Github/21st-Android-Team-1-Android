@@ -11,7 +11,8 @@ data class GiftConDetailResponse(
     val leftMoney: Int?,
     val memo: String,
     val name: String,
-    val storeName: String
+    val storeName: String,
+    val sentMemberName: String?
 ){
     fun toModel() = GiftConDetail(
         id = id,
@@ -22,6 +23,7 @@ data class GiftConDetailResponse(
         leftMoney = leftMoney?:0,
         name = name,
         memo =  memo,
-        storeName = storeName
+        storeName = storeName,
+        sentMemberName = sentMemberName
     )
 }
