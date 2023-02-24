@@ -88,6 +88,7 @@
     <string name="kakao_error_dialog_title">카카오톡으로 시작할 수 없어요</string>
 
     <string name="usable_detail_coupon">사용가능 기프티콘</string>
+    <string name="used_detail_coupon">사용완료 기프티콘</string>
     <string name="check_price_coupon">금액권인가요?</string>
     <string name="coupon_spare_price">잔여금액</string>
     <string name="coupon_spare_price_himt">남은 금액을 입력하세요</string>
