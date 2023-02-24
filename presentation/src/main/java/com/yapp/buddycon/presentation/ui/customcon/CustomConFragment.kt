@@ -44,7 +44,15 @@ class CustomConFragment : BaseFragment<FragmentCustomconBinding>(R.layout.fragme
 
     private fun initViews() {
         if (::customConAdapter.isInitialized.not()) {
-            customConAdapter = CustomConAdapter()
+            customConAdapter = CustomConAdapter { item ->
+                if (item.couponType == CouponType.Custom) {
+                    activity?.let { activity ->
+                        startActivity(
+                            CustomConDetailActivity.newIntent(activity, item.id, item.usable)
+                        )
+                    }
+                }
+            }
         }
         binding.customconRecyclerView.layoutManager = GridLayoutManager(activity, 2)
         binding.customconRecyclerView.adapter = customConAdapter
@@ -74,12 +82,12 @@ class CustomConFragment : BaseFragment<FragmentCustomconBinding>(R.layout.fragme
 
         lifecycleScope.launch {
             customConAdapter.loadStateFlow.collectLatest { loadState ->
-                if(loadState.append.endOfPaginationReached){
+                if (loadState.append.endOfPaginationReached) {
                     val isListEmpty = customConAdapter.itemCount == 0
                     binding.ivEmpty.isVisible = isListEmpty
                     binding.tvEmpty.isVisible = isListEmpty
                     binding.tvEmpty.text = getString(
-                        when(buddyConViewModel.tabModeState.value){
+                        when (buddyConViewModel.tabModeState.value) {
                             TabMode.Usable -> R.string.customcon_usable_empty_message
                             TabMode.Used -> R.string.customcon_used_empty_message
                             TabMode.Made -> R.string.made_coupon_empty_message
