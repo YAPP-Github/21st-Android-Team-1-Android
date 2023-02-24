@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
-            name="customConId"
+            name="customCouponId"
             type="Integer" />
 
         <variable
-            name="customConUsable"
+            name="customCouponUsable"
             type="Boolean" />
 
         <variable
@@ -31,7 +32,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@{@string/usable_detail_coupon}" />
+            app:title="@{@string/used_detail_coupon}" />
 
         <View
             android:id="@+id/v_appbar_border"
@@ -118,14 +119,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/et_coupon_name"
+                <TextView
+                    android:id="@+id/tv_coupon_name"
                     style="@style/bold22"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:maxLines="1"
+                    android:text="@{customConDetailViewModel.nameState}"
                     android:textColor="@color/gray90"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -142,7 +144,7 @@
                     android:text="@string/all_valid_date"
                     android:textColor="@color/gray60"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/et_coupon_name" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_coupon_name" />
 
                 <TextView
                     android:id="@+id/tv_expiration_date_info"
@@ -150,8 +152,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:enabled="@{customCouponUsable}"
                     android:gravity="center_vertical"
                     android:maxLines="1"
+                    android:text="@{customConDetailViewModel.expireDateState}"
                     android:textColor="@color/gray90"
                     app:layout_constraintStart_toEndOf="@id/tv_expiration_date"
                     app:layout_constraintTop_toTopOf="@id/tv_expiration_date"
@@ -179,8 +183,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/v_border1" />
 
-                <EditText
-                    android:id="@+id/et_store_name_info"
+                <TextView
+                    android:id="@+id/tv_store_name_info"
                     style="@style/regular16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -188,6 +192,7 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
+                    android:text="@{customConDetailViewModel.storeNameState}"
                     android:textColor="@color/gray90"
                     app:layout_constraintStart_toEndOf="@id/tv_store_name"
                     app:layout_constraintTop_toTopOf="@id/tv_store_name"
@@ -222,6 +227,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center_vertical"
+                    android:text="@{customConDetailViewModel.sentMemberNameState}"
                     android:textColor="@color/gray90"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_sent_member"
@@ -248,7 +254,7 @@
                     android:text="@string/add_coupon_memo"
                     android:textColor="@color/gray60"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_constraintTop_toBottomOf="@id/v_sent_member" />
+                    app:layout_constraintTop_toBottomOf="@id/v_sent_member" />
 
                 <EditText
                     android:id="@+id/et_memo_info"
@@ -256,8 +262,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:enabled="@{customCouponUsable}"
                     android:gravity="center_vertical"
                     android:hint="@string/add_coupon_hint_memo"
+                    android:text="@{customConDetailViewModel.memoState}"
                     android:textColor="@color/gray90"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_memo"
@@ -294,6 +302,7 @@
             android:background="@color/gray80"
             android:text="@string/coupon_rollback"
             android:textColor="@color/white"
+            android:visibility="@{customCouponUsable ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -308,7 +317,21 @@
             android:background="@color/skb_blue"
             android:text="@string/used_coupon"
             android:textColor="@color/white"
-            android:visibility="visible"
+            android:visibility="@{customCouponUsable ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sv_coupon_info" />
+
+        <Button
+            android:id="@+id/btn_update"
+            style="@style/bold16"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/skb_blue"
+            android:text="@string/coupon_update"
+            android:textColor="@color/white"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
