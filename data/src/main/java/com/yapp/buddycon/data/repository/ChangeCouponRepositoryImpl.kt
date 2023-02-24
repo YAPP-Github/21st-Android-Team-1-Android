@@ -29,6 +29,18 @@ class ChangeCouponRepositoryImpl @Inject constructor(
             storeName
         ).map { it.toModel() }
 
+    override fun updateCustomCoupon(
+        id: Int,
+        name: String,
+        expireDate: String,
+        storeName: String,
+        sentMemberName: String,
+        memo: String
+    ): Flow<ChangeCouponResult> =
+        changeCouponRemoteDataSource.updateCustomCoupon(
+            id, name, expireDate, storeName, sentMemberName, memo
+        ).map { it.toModel() }
+
     override fun changeCoupon(id: Int, state: String): Flow<ChangeCouponResult> =
         changeCouponRemoteDataSource.changeCoupon(id, state).map { it.toModel() }
 

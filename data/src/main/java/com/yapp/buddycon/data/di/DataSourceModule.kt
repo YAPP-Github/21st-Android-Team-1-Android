@@ -4,6 +4,8 @@ import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSou
 import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSourceImpl
 import com.yapp.buddycon.data.datasource.remote.coupon.ChangeCouponRemoteDataSource
 import com.yapp.buddycon.data.datasource.remote.coupon.ChangeCouponRemoteDataSourceImpl
+import com.yapp.buddycon.data.datasource.remote.coupon.GetCustomCouponDetailRemoteDataSource
+import com.yapp.buddycon.data.datasource.remote.coupon.GetCustomCouponDetailRemoteDataSourceImpl
 import com.yapp.buddycon.data.datasource.remote.login.LoginRemoteDataSource
 import com.yapp.buddycon.data.datasource.remote.login.LoginRemoteDataSourceImpl
 import com.yapp.buddycon.data.datasource.remote.makecon.GetGiftConDetailRemoteDataSource
@@ -36,4 +38,9 @@ interface DataSourceModule {
     fun bindsChangeCouponRemoteDataSource(
         changeCouponRemoteDataSourceImpl: ChangeCouponRemoteDataSourceImpl
     ): ChangeCouponRemoteDataSource
+
+    @Binds
+    fun bindsGetCustomCouponDetailRemoteDataSource(
+        getCustomCouponDetailRemoteDataSourceImpl: GetCustomCouponDetailRemoteDataSourceImpl
+    ): GetCustomCouponDetailRemoteDataSource
 }

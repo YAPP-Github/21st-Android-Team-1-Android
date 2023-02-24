@@ -14,6 +14,15 @@ interface ChangeCouponRemoteDataSource {
         storeName: String
     ): Flow<ChangeCouponResponse>
 
+    fun updateCustomCoupon(
+        id: Int,
+        name: String,
+        expireDate: String,
+        storeName: String,
+        sentMemberName: String,
+        memo: String
+    ): Flow<ChangeCouponResponse>
+
     fun changeCoupon(
         id: Int,
         state: String
