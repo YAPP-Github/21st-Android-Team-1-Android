@@ -7,6 +7,7 @@ import com.yapp.buddycon.domain.usecase.coupon.ChangeCouponUseCase
 import com.yapp.buddycon.domain.usecase.coupon.DeleteCouponUseCase
 import com.yapp.buddycon.domain.usecase.coupon.GetCustomCouponDetailUseCase
 import com.yapp.buddycon.domain.usecase.coupon.UpdateCustomCouponUseCase
+import com.yapp.buddycon.presentation.ui.giftcon.GiftConUserEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -24,6 +25,9 @@ class CustomConDetailViewModel @Inject constructor(
     private val _customCouponDetail = MutableSharedFlow<CouponInputInfo>(replay = 1)
     val customCouponDetail = _customCouponDetail.asSharedFlow()
 
+    private val _customCouponUserEvent = MutableSharedFlow<CustomCouponUserEvent>()
+    val customCouponUserEvent = _customCouponUserEvent.asSharedFlow()
+
     private val expireDateOtherFormState = MutableStateFlow("")
     private val _expireDateState = MutableStateFlow("")
     val expireDateState = _expireDateState.asStateFlow()
@@ -33,6 +37,16 @@ class CustomConDetailViewModel @Inject constructor(
     val sentMemberNameState = MutableStateFlow("")
     val memoState = MutableStateFlow("")
 
+    val updateCoupon = combine(
+        expireDateOtherFormState,
+        memoState
+    ) { expireDate, memo ->
+        CouponInputInfo(
+            memo = memo,
+            expireDate = expireDate.replace("월", "-")
+        )
+    }
+
     fun getCustomCouponDetail(customCouponId: Int) {
         getCustomCouponDetailUseCase(customCouponId)
             .catch { e ->
@@ -41,6 +55,28 @@ class CustomConDetailViewModel @Inject constructor(
                 _customCouponDetail.emit(it)
             }
             .launchIn(viewModelScope)
+    }
+
+    fun updateCustomCoupon(customCouponId: Int) {
+        updateCustomCouponUseCase(
+            id = customCouponId,
+            name = nameState.value,
+            expireDate = expireDateOtherFormState.value,
+            storeName = storeNameState.value,
+            sentMemberName = sentMemberNameState.value,
+            memo = memoState.value
+        ).catch { e ->
+            Timber.e("updateCoupon error ${e.localizedMessage}")
+            _customCouponUserEvent.emit(CustomCouponUserEvent.Error)
+        }.onEach { result ->
+            _customCouponUserEvent.emit(
+                if (result.success) CustomCouponUserEvent.Update(
+                    expireDate = expireDateOtherFormState.value,
+                    memo = memoState.value
+                )
+                else CustomCouponUserEvent.UpdateFail
+            )
+        }.launchIn(viewModelScope)
     }
 
     fun changeExpireDateOtherForm(date: String) {

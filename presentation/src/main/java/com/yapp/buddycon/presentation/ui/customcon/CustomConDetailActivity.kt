@@ -7,16 +7,20 @@ import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.yapp.buddycon.domain.model.CouponInputInfo
+import com.yapp.buddycon.domain.model.checkUpdateCoupon
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityCustomConDetailBinding
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponExpireDialogFragment
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponImageDialogFragment
+import com.yapp.buddycon.presentation.ui.giftcon.GiftConUserEvent
 import com.yapp.buddycon.presentation.utils.getDday
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -43,11 +47,20 @@ class CustomConDetailActivity :
 
         bindViews()
         observeCustomDetail()
+        observeUpdateCoupon()
+        observeCustomCouponUserEvent()
         customConDetailViewModel.getCustomCouponDetail(customCouponId)
     }
 
-    private fun bindViews(){
+    private fun bindViews() {
         binding.appBar.ibnAppbarBack.setOnClickListener { finish() }
+        binding.tvExpirationDateInfo.setOnClickListener {
+            changeCouponExpireDate()
+        }
+
+        binding.etMemoInfo.addTextChangedListener {
+            customConDetailViewModel.changeMemo(it.toString())
+        }
     }
 
     private fun observeCustomDetail() {
@@ -55,6 +68,36 @@ class CustomConDetailActivity :
             .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
             .onEach { showCustomCoupon(it) }
             .launchIn(lifecycleScope)
+    }
+
+    private fun observeUpdateCoupon() {
+        customConDetailViewModel.updateCoupon
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                if (::customCouponDetail.isInitialized.not()) return@onEach
+                binding.btnUseComplete.isVisible = checkUpdateCoupon(customCouponDetail, it)
+                binding.btnUpdate.isVisible = checkUpdateCoupon(customCouponDetail, it).not()
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun observeCustomCouponUserEvent() {
+        customConDetailViewModel.customCouponUserEvent
+            .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
+            .onEach { event ->
+                when (event) {
+                    is CustomCouponUserEvent.Update -> {
+                        binding.btnUseComplete.isVisible = true
+                        binding.btnUpdate.isVisible = false
+                        showCustomCoupon(
+                            customCouponDetail.copy(
+                                expireDate = event.expireDate,
+                                memo = event.memo
+                            )
+                        )
+                    }
+                    else -> Unit
+                }
+            }.launchIn(lifecycleScope)
     }
 
     private fun showCustomCoupon(couponInputInfo: CouponInputInfo) {
@@ -143,6 +186,27 @@ class CustomConDetailActivity :
             binding.btnVolumeUp.isVisible = false
         }
     }
+
+    private fun changeCouponExpireDate() {
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTheme(R.style.custom_date_picker_style)
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { longValue ->
+            val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREAN)
+            calendar.timeInMillis = longValue
+
+            val selectedDate = calendar.time
+            val dateFormatForUser = SimpleDateFormat("yyyy년 MM월 dd일")
+            val dateFormatForSave = SimpleDateFormat("yyyy-MM-dd")
+            val selectedDateStringForUser = dateFormatForUser.format(selectedDate)
+            val selectedDateStringForSave = dateFormatForSave.format(selectedDate)
+            customConDetailViewModel.changeExpireDate(selectedDateStringForUser)
+            customConDetailViewModel.changeExpireDateOtherForm(selectedDateStringForSave)
+        }
+        datePicker.show(supportFragmentManager, "date_picker")
+    }
+
 
     companion object {
         const val CUSTOM_COUPON_ID = "CUSTOM_COUPON_ID"
