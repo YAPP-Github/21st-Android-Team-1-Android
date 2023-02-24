@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="giftconId"
+            type="Integer" />
+
+        <variable
+            name="giftUsable"
+            type="Boolean" />
+
+        <variable
+            name="isNotReceived"
+            type="Boolean" />
+
+        <variable
+            name="gitconDetailViewModel"
+            type="com.yapp.buddycon.presentation.ui.giftcon.GiftConDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.giftcon.GiftConDetailActivity">
+
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/layout_appbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@{@string/usable_detail_coupon}" />
+
+        <View
+            android:id="@+id/v_appbar_border"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/gray30"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_coupon"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_appbar_border">
+
+            <ImageView
+                android:id="@+id/iv_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/img_theme1" />
+
+            <Button
+                android:id="@+id/btn_expire_date"
+                style="@style/bold16"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_coupon_expire_date"
+                android:textColor="@color/white"
+                tools:text="D-1"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/btn_volume_up"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="16dp"
+                android:background="@drawable/ic_volume_up" />
+
+            <View
+                android:id="@+id/v_dim"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black_a40_dim" />
+
+            <Button
+                android:id="@+id/btn_used_badge"
+                style="@style/bold22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/img_used_badge"
+                android:text="@string/coupon_used_badge"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </androidx.cardview.widget.CardView>
+
+        <ScrollView
+            android:id="@+id/sv_coupon_info"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="54dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_coupon">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/et_coupon_name"
+                    style="@style/bold22"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:enabled="@{isNotReceived}"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@={gitconDetailViewModel.nameState}"
+                    android:textColor="@color/gray90"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="쿠폰 꼭 쓰기!" />
+
+                <TextView
+                    android:id="@+id/tv_expiration_date"
+                    style="@style/regular16"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/all_valid_date"
+                    android:textColor="@color/gray60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_coupon_name" />
+
+                <TextView
+                    android:id="@+id/tv_expiration_date_info"
+                    style="@style/regular16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:enabled="@{giftUsable}"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@{gitconDetailViewModel.expireDateState}"
+                    android:textColor="@color/gray90"
+                    app:layout_constraintStart_toEndOf="@id/tv_expiration_date"
+                    app:layout_constraintTop_toTopOf="@id/tv_expiration_date"
+                    tools:text="2022년 11월 14일" />
+
+                <View
+                    android:id="@+id/v_border1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/gray30"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_expiration_date" />
+
+                <TextView
+                    android:id="@+id/tv_store_name"
+                    style="@style/regular16"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/all_where_use"
+                    android:textColor="@color/gray60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_border1" />
+
+                <EditText
+                    android:id="@+id/et_store_name_info"
+                    style="@style/regular16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:enabled="@{isNotReceived}"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@{gitconDetailViewModel.storeNametate}"
+                    android:textColor="@color/gray90"
+                    app:layout_constraintStart_toEndOf="@id/tv_store_name"
+                    app:layout_constraintTop_toTopOf="@id/tv_store_name"
+                    tools:text="CU 편의점" />
+
+                <View
+                    android:id="@+id/v_border2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/gray30"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_store_name" />
+
+                <TextView
+                    android:id="@+id/tv_sent_member"
+                    style="@style/regular16"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/gifticon_send_member"
+                    android:textColor="@color/gray60"
+                    android:visibility="@{isNotReceived ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_border2" />
+
+                <TextView
+                    android:id="@+id/tv_sent_member_info"
+                    style="@style/regular16"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:enabled="@{isNotReceived}"
+                    android:gravity="center_vertical"
+                    android:text="@{gitconDetailViewModel.sentMemberState}"
+                    android:textColor="@color/gray90"
+                    android:visibility="@{isNotReceived ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_sent_member"
+                    app:layout_constraintTop_toTopOf="@id/tv_sent_member"
+                    tools:text="보낸사람" />
+
+                <View
+                    android:id="@+id/v_sent_member"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/gray30"
+                    android:visibility="@{isNotReceived ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sent_member" />
+
+                <TextView
+                    android:id="@+id/tv_memo"
+                    style="@style/regular16"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/add_coupon_memo"
+                    android:textColor="@color/gray60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_constraintTop_toBottomOf="@id/v_border2" />
+
+                <EditText
+                    android:id="@+id/et_memo_info"
+                    style="@style/regular16"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:enabled="@{giftUsable}"
+                    android:gravity="center_vertical"
+                    android:hint="@string/add_coupon_hint_memo"
+                    android:text="@{gitconDetailViewModel.memoState}"
+                    android:textColor="@color/gray90"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_memo"
+                    app:layout_constraintTop_toTopOf="@id/tv_memo" />
+
+                <View
+                    android:id="@+id/v_border3"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/gray30"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_memo" />
+
+                <TextView
+                    android:id="@+id/tv_price_coupon"
+                    style="@style/regular16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/check_price_coupon"
+                    android:textColor="@color/gray60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_border3" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_is_money_coupon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{gitconDetailViewModel.isMoneyCouponnState()}"
+                    android:enabled="@{giftUsable}"
+                    android:onClick="@{() -> gitconDetailViewModel.changeIsMoneyCoupon()}"
+                    android:thumb="@drawable/bg_switch_thumb_price_coupon"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_price_coupon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_price_coupon"
+                    app:track="@drawable/bg_switch_price_coupon" />
+
+                <View
+                    android:id="@+id/v_border4"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@color/gray30"
+                    android:visibility="@{gitconDetailViewModel.isMoneyCouponnState ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_price_coupon" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_spare_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_price_layout"
+                    android:visibility="@{gitconDetailViewModel.isMoneyCouponnState ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_price_coupon"
+                    tools:visibility="gone">
+
+
+                    <TextView
+                        android:id="@+id/tv_left_money"
+                        style="@style/regular16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="16dp"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/coupon_spare_price"
+                        android:textColor="@color/gray60"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/et_left_money"
+                        style="@style/regular16"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|end"
+                        android:hint="@string/coupon_spare_price_himt"
+                        android:inputType="numberDecimal"
+                        android:text="@={gitconDetailViewModel.leftMoneyState}"
+                        android:textColor="@color/gray40"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_left_money"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_left_money"
+                        app:layout_constraintTop_toTopOf="@id/tv_left_money" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/btn_coupon_delete"
+                    android:layout_width="78dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/ic_coupon_delete"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cl_spare_price" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btn_use_complete"
+            style="@style/bold16"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/gray80"
+            android:onClick="@{() -> gitconDetailViewModel.changeCoupon(giftconId, giftUsable)}"
+            android:text="@string/used_coupon"
+            android:textColor="@color/white"
+            android:visibility="@{giftUsable ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_make"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sv_coupon_info" />
+
+        <Button
+            android:id="@+id/btn_make"
+            style="@style/bold16"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/skb_blue"
+            android:text="@string/all_make_coupon"
+            android:textColor="@color/white"
+            android:visibility="@{giftUsable ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_use_complete"
+            app:layout_constraintTop_toBottomOf="@id/sv_coupon_info" />
+
+        <Button
+            android:id="@+id/btn_rollback"
+            style="@style/bold16"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/gray80"
+            android:onClick="@{() -> gitconDetailViewModel.changeCoupon(giftconId, giftUsable)}"
+            android:text="@string/coupon_rollback"
+            android:textColor="@color/white"
+            android:visibility="@{giftUsable ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sv_coupon_info"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_update"
+            style="@style/bold16"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/skb_blue"
+            android:onClick="@{() -> gitconDetailViewModel.updateCoupon(giftconId)}"
+            android:text="@string/coupon_update"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sv_coupon_info" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class CouponDetailRepositoryImpl @Inject constructor(private val getGiftConDetailRemote : GetGiftConDetailRemoteDataSource): CouponDetailRepository {
+class CouponDetailRepositoryImpl @Inject constructor(
+    private val getGiftConDetailRemote: GetGiftConDetailRemoteDataSource
+) : CouponDetailRepository {
     override fun getGiftConDetailCoupon(id: Int): Flow<GiftConDetail> =
         getGiftConDetailRemote.requestGiftConDetail(id).map { it.toModel() }
 }

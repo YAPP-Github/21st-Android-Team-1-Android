@@ -29,6 +29,8 @@
 
     <string name="confirm_dialog">확인</string>
     <string name="cancel_dialog">취소</string>
+    <string name="delete_dialog">삭제</string>
+    <string name="go_home_dialog">홈으로</string>
     <string name="makecon_open_theme">테마</string>
     <string name="makecon_close_choose_mode">접기</string>
     <string name="kakao_signup_title">회원가입 완료!\n버디콘에 오신 것을 환영해요 :)</string>
@@ -47,7 +49,7 @@
     <string name="signup_use_terms">[필수] 이용약관 동의</string>
     <string name="signup_privacy_info_terms">[필수] 개인정보 처리방침 동의</string>
     <string name="signup_complete">회원가입 완료</string>
-    
+
     <string name="add_coupon_accept">저장하기</string>
     <string name="add_coupon_cancel">취소하기</string>
     <string name="add_coupon_hint_title">기프티콘 이름 (최대 16자) *</string>
@@ -84,5 +86,18 @@
     <string name="coupon_not_share_message">아직 선물하지 않은\n쿠폰입니다</string>
     <string name="kakao_error_dialog_message">다시 한 번 시도해주세요\n이 내용은 카카오톡 서버에서 발송되었어요</string>
     <string name="kakao_error_dialog_title">카카오톡으로 시작할 수 없어요</string>
+
+    <string name="usable_detail_coupon">사용가능 기프티콘</string>
+    <string name="check_price_coupon">금액권인가요?</string>
+    <string name="coupon_spare_price">잔여금액</string>
+    <string name="coupon_spare_price_himt">남은 금액을 입력하세요</string>
+    <string name="coupon_used_badge">사용\n완료</string>
+    <string name="coupon_update">수정하기</string>
+    <string name="coupon_rollback">사용완료 되돌리기</string>
+
+    <string name="giftcon_expire_date_message_title">기프티콘의 기한이 만료되었어요</string>
+    <string name="giftcon_expire_date_message_description">아래의 사용완료 버튼을 눌러주세요</string>
+    <string name="giftcon_delete_success_message">쿠폰이 삭제되었어요.</string>
+    <string name="gifticon_send_member">보낸사람</string>
 
 </resources>

@@ -1,6 +1,5 @@
 package com.yapp.buddycon.data.di
 
-import com.yapp.buddycon.data.datasource.remote.makecon.GetGiftConDetailRemoteDataSourceImpl
 import com.yapp.buddycon.data.repository.*
 import com.yapp.buddycon.domain.repository.*
 import dagger.Binds
@@ -48,4 +47,10 @@ interface RepositoryModule {
     fun bindGiftConDetailRepository(
         couponDetailRepositoryImpl: CouponDetailRepositoryImpl
     ): CouponDetailRepository
+
+    @Binds
+    @Singleton
+    fun bindUpdateCouponRepository(
+        updateCouponRepositoryImpl: ChangeCouponRepositoryImpl
+    ): ChangeCouponRepository
 }

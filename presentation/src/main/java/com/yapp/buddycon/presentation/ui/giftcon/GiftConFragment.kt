@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.domain.model.SortMode
@@ -24,12 +24,10 @@ import kotlinx.coroutines.launch
 class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_giftcon) {
 
     private val buddyConViewModel: BuddyConViewModel by activityViewModels()
-    private val giftConViewMoel: GiftConViewModel by viewModels()
-    private lateinit var giftconAdapter: GiftconAdapter
+    private lateinit var giftconAdapter: GiftConAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.giftConViewModel = giftConViewMoel
         binding.buddyConViewModel = buddyConViewModel
 
         buddyConViewModel.changeTabMode(TabMode.Usable)
@@ -40,10 +38,21 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
         observeGiftcon()
     }
 
+    override fun onStart() {
+        super.onStart()
+        giftconAdapter.refresh()
+    }
+
 
     private fun initViews() {
         if (::giftconAdapter.isInitialized.not()) {
-            giftconAdapter = GiftconAdapter()
+            giftconAdapter = GiftConAdapter { item ->
+                activity?.let {
+                    startActivity(
+                        GiftConDetailActivity.newIntent(it, item.id, item.usable)
+                    )
+                }
+            }
         }
         binding.giftconRecyclerView.layoutManager = GridLayoutManager(activity, 2)
         binding.giftconRecyclerView.adapter = giftconAdapter
@@ -65,24 +74,27 @@ class GiftConFragment : BaseFragment<FragmentGiftconBinding>(R.layout.fragment_g
 
     private fun observeGiftcon() {
         viewLifecycleOwner.lifecycleScope.launch {
-            buddyConViewModel.couponPagingData.collectLatest {
-                giftconAdapter.submitData(it)
-                binding.giftconRecyclerView.scrollToPosition(0)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                buddyConViewModel.couponPagingData.collectLatest {
+                    giftconAdapter.submitData(it)
+                    binding.giftconRecyclerView.scrollToPosition(0)
+                }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            giftconAdapter.loadStateFlow.collectLatest { loadState ->
-                if(loadState.append.endOfPaginationReached){
-                    val isListEmpty = giftconAdapter.itemCount == 0
-                    binding.ivEmpty.isVisible = isListEmpty
-                    binding.tvEmpty.isVisible = isListEmpty
-                    binding.tvEmpty.text = getString(
-                        if (buddyConViewModel.tabModeState.value == TabMode.Usable) R.string.giftcon_usable_empty_message
-                        else R.string.giftcon_used_empty_message
-                    )
-                    binding
-                    binding.giftconRecyclerView.isVisible = isListEmpty.not()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                giftconAdapter.loadStateFlow.collectLatest { loadState ->
+                    if (loadState.append.endOfPaginationReached) {
+                        val isListEmpty = giftconAdapter.itemCount == 0
+                        binding.ivEmpty.isVisible = isListEmpty
+                        binding.tvEmpty.isVisible = isListEmpty
+                        binding.tvEmpty.text = getString(
+                            if (buddyConViewModel.tabModeState.value == TabMode.Usable) R.string.giftcon_usable_empty_message
+                            else R.string.giftcon_used_empty_message
+                        )
+                        binding.giftconRecyclerView.isVisible = isListEmpty.not()
+                    }
                 }
             }
         }

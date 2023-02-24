@@ -11,10 +11,6 @@
         <variable
             name="buddyConViewModel"
             type="com.yapp.buddycon.presentation.ui.main.BuddyConViewModel" />
-
-        <variable
-            name="giftConViewModel"
-            type="com.yapp.buddycon.presentation.ui.giftcon.GiftConViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
