@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import com.google.gson.Gson
 import com.yapp.buddycon.data.network.api.AddCouponService
+import com.yapp.buddycon.data.network.request.CustomCouponAddRequest
 import com.yapp.buddycon.data.network.request.GifticonAddRequest
 import com.yapp.buddycon.data.network.response.AddCouponResponse
 import com.yapp.buddycon.data.network.response.CustomCouponInfoResponse
@@ -55,4 +56,22 @@ class AddCouponRemoteDataSourceImpl @Inject constructor(
         }
     }
 
+    override fun addCustomCoupon(
+        imageUriPath: String,
+        customCouponAddRequest: CustomCouponAddRequest
+    ): Flow<Response<AddCouponResponse>> {
+        return flow {
+            val imageFile = File(imageUriPath)
+            //val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+            val imageReuestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+            val imageMultipartBody = MultipartBody.Part.createFormData("image", imageFile.name, imageReuestBody)
+
+            val json = Gson().toJson(customCouponAddRequest)
+
+            val infoRequestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
+            val infoMultipartBody = MultipartBody.Part.createFormData("customCouponCreationRequestDto", null, infoRequestBody)
+
+            emit(addCouponService.addCustomCoupon(imageMultipartBody, infoMultipartBody))
+        }
+    }
 }

@@ -1,10 +1,10 @@
 package com.yapp.buddycon.presentation.ui.addCoupon
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yapp.buddycon.domain.model.AddCouponResult
 import com.yapp.buddycon.domain.model.CouponInputInfo
+import com.yapp.buddycon.domain.usecase.addcoupon.AddCustomCouponUseCase
 import com.yapp.buddycon.domain.usecase.addcoupon.AddGifticonUseCase
 import com.yapp.buddycon.domain.usecase.addcoupon.GetGifticonInfoByBarcodeUseCase
 import com.yapp.buddycon.domain.usecase.addcoupon.GetMakeconInfoByBarcodeUseCase
@@ -22,7 +22,8 @@ import javax.inject.Inject
 class AddCouponViewModel @Inject constructor(
     private val getGifticonInfoByBarcodeUseCase: GetGifticonInfoByBarcodeUseCase,
     private val getMakeconInfoByBarcodeUseCase: GetMakeconInfoByBarcodeUseCase,
-    private val addGifticonUseCase: AddGifticonUseCase
+    private val addGifticonUseCase: AddGifticonUseCase,
+    private val addCustomCouponUseCase: AddCustomCouponUseCase
 ) : ViewModel() {
     private val _couponInfoLoadState =
         MutableStateFlow<CouponInfoLoadState<CouponInputInfo>>(CouponInfoLoadState.Init)
@@ -133,11 +134,9 @@ class AddCouponViewModel @Inject constructor(
     fun addCoupon() {
         imageUriPath?.let { path ->
             when (_couponInfoLoadState.value) {
-                is CouponInfoLoadState.NewGifticon -> {
-                    addGifticon(path)
-                }
-                is CouponInfoLoadState.ExistGifticon -> {}
-                is CouponInfoLoadState.ExistMakeCon -> {}
+                is CouponInfoLoadState.NewGifticon -> { addGifticon(path) }
+                is CouponInfoLoadState.ExistGifticon -> { addGifticon(path)}
+                is CouponInfoLoadState.ExistMakeCon -> { addCustomCoupon(path)}
                 else -> {}
             }
         }
@@ -162,12 +161,22 @@ class AddCouponViewModel @Inject constructor(
         }
     }
 
-    fun addCustomCoupon() {
-
-    }
-
-    // temp
-    fun setCouponInfoLoadState() {
-        _couponInfoLoadState.value = CouponInfoLoadState.ExistMakeCon(CouponInputInfo())
+    fun addCustomCoupon(imageUriPath: String) {
+        viewModelScope.launch {
+            addCustomCouponUseCase(imageUriPath, couponInputInfo)
+                .onStart {
+                    Logging.error("${this@AddCouponViewModel.javaClass.name} / add onStart block")
+                    _addCouponState.value = AddCouponResultState.ShowLoading
+                    delay(1)
+                }.catch { error ->
+                    Logging.error("${this@AddCouponViewModel.javaClass.name} / catch error")
+                    _addCouponState.value = AddCouponResultState.HideLoading
+                    _addCouponState.value = AddCouponResultState.Error(error)
+                }.collect { result ->
+                    Logging.error("${this@AddCouponViewModel.javaClass.name} / collect result : ${result}")
+                    _addCouponState.value = AddCouponResultState.HideLoading
+                    _addCouponState.value = AddCouponResultState.Success(result)
+                }
+        }
     }
 }
