@@ -23,6 +23,8 @@ import com.yapp.buddycon.presentation.databinding.ActivityGiftConDetailBinding
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponDeleteDialogFragment
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponDialogFragment
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponExpireDialogFragment
+import com.yapp.buddycon.presentation.ui.common.model.toInfo
+import com.yapp.buddycon.presentation.ui.makeCoupon.MakeCouponActivity
 import com.yapp.buddycon.presentation.utils.Logging
 import com.yapp.buddycon.presentation.utils.getDday
 import com.yapp.buddycon.presentation.utils.toPx
@@ -126,6 +128,14 @@ class GiftConDetailActivity :
             changeCouponExpireDate()
         }
 
+        binding.btnMake.setOnClickListener {
+            if (::giftConDetail.isInitialized) {
+                startActivity(
+                    MakeCouponActivity.newIntent(this, giftConDetail.toInfo())
+                )
+            }
+        }
+
         binding.etCouponName.addTextChangedListener {
             giftConDetailViewModel.changeName(it.toString())
         }
@@ -212,10 +222,13 @@ class GiftConDetailActivity :
         val (year, month, day) = expireDate.split("-").map { it.toInt() }
         val diff = Calendar.getInstance().getDday(year, month, day)
 
-        binding.btnMake.setBackgroundColor(
-            if (diff >= 0) getColor(R.color.skb_blue)
-            else getColor(R.color.gray40)
-        )
+        binding.btnMake.apply {
+            isEnabled = diff >= 0
+            setBackgroundColor(
+                if (diff >= 0) getColor(R.color.skb_blue)
+                else getColor(R.color.gray40)
+            )
+        }
 
         binding.btnVolumeUp.setOnClickListener {
             GiftConImageDialogFragment(imageUrl).show(supportFragmentManager, null)

@@ -1,5 +1,6 @@
 package com.yapp.buddycon.domain.model
 
+
 data class GiftConDetail(
     var id: Int = -1,
     var imageUrl: String = "",
