@@ -1,7 +1,7 @@
 package com.yapp.buddycon.data.repository
 
-import android.net.Uri
 import com.yapp.buddycon.data.datasource.remote.addcoupon.AddCouponRemoteDataSource
+import com.yapp.buddycon.data.mapper.mapCouponInputInfoToCustomCouponAddRequest
 import com.yapp.buddycon.data.mapper.mapCouponInputInfoToGifticonAddRequest
 import com.yapp.buddycon.data.network.response.CustomCouponInfoResponse
 import com.yapp.buddycon.data.network.response.GifticonInfoResponse
@@ -42,10 +42,6 @@ class AddCouponRepositoryImpl @Inject constructor(
                     throw NullPointerException("null response")
                 }).mapToCouponInputInfo()
             }
-//            .map { response ->
-//                (response.body() ?: throw NullPointerException("null response"))
-//                    .mapToCouponInputInfo()
-//            }
     }
 
     override fun addGifticon(
@@ -58,6 +54,24 @@ class AddCouponRepositoryImpl @Inject constructor(
         )
             .catch { error ->
                 Timber.tag("AppTest").e("addGifticon / catch in repositoryImpl / error : ${error}")
+                throw Throwable("catch error!", error)
+            }.map { response ->
+                (response.body() ?: throw NullPointerException("null response"))
+                    .mapToAddCouponResult()
+            }
+    }
+
+    override fun addCustomCoupon(
+        imageUriPath: String,
+        couponInputInfo: CouponInputInfo
+    ): Flow<AddCouponResult> {
+        return addCouponRemoteDataSource.addCustomCoupon(
+            imageUriPath,
+            mapCouponInputInfoToCustomCouponAddRequest(couponInputInfo)
+        )
+            .catch { error ->
+                Timber.tag("AppTest")
+                    .e("add Custom coupon / catch in repositoryImpl / error : ${error}")
                 throw Throwable("catch error!", error)
             }.map { response ->
                 (response.body() ?: throw NullPointerException("null response"))

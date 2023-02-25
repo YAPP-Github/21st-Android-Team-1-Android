@@ -36,6 +36,6 @@ interface AddCouponService {
     @POST("api/v1/coupon/custom-coupon")
     suspend fun addCustomCoupon(
         @Part image: MultipartBody.Part,
-        @Part("customCouponCreationRequestDto") customCouponCreationRequestDto: CustomCouponAddRequest
+        @Part customCouponCreationRequestDto: MultipartBody.Part
     ): Response<AddCouponResponse>
 }
