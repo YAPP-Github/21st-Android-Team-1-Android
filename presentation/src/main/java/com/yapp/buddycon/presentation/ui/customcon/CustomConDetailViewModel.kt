@@ -94,6 +94,26 @@ class CustomConDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun changeCoupon(customCouponId: Int, customCouponUsable: Boolean) {
+        changeCouponUseCase(
+            id = customCouponId,
+            state = if (customCouponUsable) "USED" else "USABLE"
+        ).catch { e ->
+            Timber.e("changeCoupon error ${e.localizedMessage}")
+            _customCouponUserEvent.emit(CustomCouponUserEvent.Error)
+        }.onEach { result ->
+            _customCouponUserEvent.emit(
+                if (result.success) {
+                    if (customCouponUsable) CustomCouponUserEvent.CompleteUse
+                    else CustomCouponUserEvent.RollbackUsed
+                } else {
+                    if (customCouponUsable) CustomCouponUserEvent.CompleteUseFail
+                    else CustomCouponUserEvent.RollbackUsedFail
+                }
+            )
+        }.launchIn(viewModelScope)
+    }
+
     fun changeExpireDateOtherForm(date: String) {
         expireDateOtherFormState.value = date
     }

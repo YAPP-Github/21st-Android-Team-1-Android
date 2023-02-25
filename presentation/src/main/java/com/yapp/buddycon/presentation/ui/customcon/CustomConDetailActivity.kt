@@ -27,22 +27,23 @@ import com.yapp.buddycon.presentation.utils.getDday
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class CustomConDetailActivity :
     BaseActivity<ActivityCustomConDetailBinding>(R.layout.activity_custom_con_detail) {
 
     private val customCouponId by lazy { intent?.getIntExtra(CUSTOM_COUPON_ID, 0) ?: 0 }
-    private val customCouponUsable by lazy {
-        intent?.getBooleanExtra(CUSTOM_COUPON_USABLE, false) ?: false
-    }
+    private var customCouponUsable by Delegates.notNull<Boolean>()
     private val customConDetailViewModel: CustomConDetailViewModel by viewModels()
     private lateinit var customCouponDetail: CouponInputInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        customCouponUsable = intent?.getBooleanExtra(CUSTOM_COUPON_USABLE, false) ?: false
         binding.customCouponId = customCouponId
         binding.customCouponUsable = customCouponUsable
         binding.customConDetailViewModel = customConDetailViewModel
@@ -85,7 +86,8 @@ class CustomConDetailActivity :
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 if (::customCouponDetail.isInitialized.not()) return@onEach
-                binding.btnUseComplete.isVisible = checkUpdateCoupon(customCouponDetail, it)
+                binding.btnUseComplete.isVisible = checkUpdateCoupon(customCouponDetail, it) && customCouponUsable
+                binding.btnRollback.isVisible = checkUpdateCoupon(customCouponDetail, it) && customCouponUsable.not()
                 binding.btnUpdate.isVisible = checkUpdateCoupon(customCouponDetail, it).not()
             }.launchIn(lifecycleScope)
     }
@@ -106,6 +108,13 @@ class CustomConDetailActivity :
                         )
                     }
                     CustomCouponUserEvent.Delete -> handleSuccessCouponDelete()
+                    CustomCouponUserEvent.CompleteUse,
+                    CustomCouponUserEvent.RollbackUsed -> {
+                        customCouponUsable = customCouponUsable.not()
+                        initCouponImage(customCouponDetail.imageUrl)
+                        initCouponBadge(customCouponDetail.expireDate, customCouponDetail.imageUrl)
+                        showOriginButtons()
+                    }
                     else -> Unit
                 }
             }.launchIn(lifecycleScope)
@@ -222,6 +231,12 @@ class CustomConDetailActivity :
         CouponDialogFragment(getString(R.string.giftcon_delete_success_message)) {
             finish()
         }.show(supportFragmentManager, null)
+    }
+
+    private fun showOriginButtons() {
+        binding.btnUseComplete.isVisible = customCouponUsable
+        binding.btnUpdate.isVisible = false
+        binding.btnRollback.isVisible = customCouponUsable.not()
     }
 
     companion object {
