@@ -53,10 +53,12 @@ class AddCouponViewModel @Inject constructor(
             ) { gifticonInfo, customCouponInfo ->
                 if (gifticonInfo.id >= 1) {
                     Logging.error("바코드 정보 : 서버에 존재하는 기프티콘")
+                    couponInputInfo.id = gifticonInfo.id
                     CouponInfoLoadState.ExistGifticon(gifticonInfo)
                 } else if (customCouponInfo.id >= 1) {
                     Logging.error("바코드 정보 : 서버에 존재하는 제작티콘")
-                    CouponInfoLoadState.ExistMakeCon(gifticonInfo)
+                    couponInputInfo.id = customCouponInfo.id
+                    CouponInfoLoadState.ExistMakeCon(customCouponInfo)
                 } else { // 최초로 등록하는 기프티콘
                     Logging.error("바코드 정보 : 최초 등록하는 기프티콘")
                     CouponInfoLoadState.NewGifticon(barcodeNumber)

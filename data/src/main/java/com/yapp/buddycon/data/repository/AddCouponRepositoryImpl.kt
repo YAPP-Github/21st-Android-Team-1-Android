@@ -42,10 +42,6 @@ class AddCouponRepositoryImpl @Inject constructor(
                     throw NullPointerException("null response")
                 }).mapToCouponInputInfo()
             }
-//            .map { response ->
-//                (response.body() ?: throw NullPointerException("null response"))
-//                    .mapToCouponInputInfo()
-//            }
     }
 
     override fun addGifticon(
@@ -74,7 +70,8 @@ class AddCouponRepositoryImpl @Inject constructor(
             mapCouponInputInfoToCustomCouponAddRequest(couponInputInfo)
         )
             .catch { error ->
-                Timber.tag("AppTest").e("add Custom coupon / catch in repositoryImpl / error : ${error}")
+                Timber.tag("AppTest")
+                    .e("add Custom coupon / catch in repositoryImpl / error : ${error}")
                 throw Throwable("catch error!", error)
             }.map { response ->
                 (response.body() ?: throw NullPointerException("null response"))
