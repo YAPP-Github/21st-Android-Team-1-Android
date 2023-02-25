@@ -18,6 +18,8 @@ import com.yapp.buddycon.domain.model.checkUpdateCoupon
 import com.yapp.buddycon.presentation.R
 import com.yapp.buddycon.presentation.base.BaseActivity
 import com.yapp.buddycon.presentation.databinding.ActivityCustomConDetailBinding
+import com.yapp.buddycon.presentation.ui.common.dialog.CouponDeleteDialogFragment
+import com.yapp.buddycon.presentation.ui.common.dialog.CouponDialogFragment
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponExpireDialogFragment
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponImageDialogFragment
 import com.yapp.buddycon.presentation.ui.giftcon.GiftConUserEvent
@@ -61,6 +63,14 @@ class CustomConDetailActivity :
         binding.etMemoInfo.addTextChangedListener {
             customConDetailViewModel.changeMemo(it.toString())
         }
+
+        binding.btnCouponDelete.setOnClickListener {
+            CouponDeleteDialogFragment(
+                title = "쿠폰을 삭제할까요?",
+                description = "삭제하면 앱에서 완전히 사라져요"
+            ) { customConDetailViewModel.deleteCoupon(customCouponId) }
+                .show(supportFragmentManager, null)
+        }
     }
 
     private fun observeCustomDetail() {
@@ -95,6 +105,7 @@ class CustomConDetailActivity :
                             )
                         )
                     }
+                    CustomCouponUserEvent.Delete -> handleSuccessCouponDelete()
                     else -> Unit
                 }
             }.launchIn(lifecycleScope)
@@ -207,6 +218,11 @@ class CustomConDetailActivity :
         datePicker.show(supportFragmentManager, "date_picker")
     }
 
+    private fun handleSuccessCouponDelete() {
+        CouponDialogFragment(getString(R.string.giftcon_delete_success_message)) {
+            finish()
+        }.show(supportFragmentManager, null)
+    }
 
     companion object {
         const val CUSTOM_COUPON_ID = "CUSTOM_COUPON_ID"
