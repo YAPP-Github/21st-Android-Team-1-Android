@@ -17,7 +17,9 @@ data class GifticonInfoResponse(
     @SerializedName("storeName")
     val storeName: String = "",
     @SerializedName("memo")
-    val memo: String = ""
+    val memo: String = "",
+    @SerializedName("code")
+    val couponStateMessage: String = ""
 ) {
     fun mapToCouponInputInfo() = CouponInputInfo(
         id = this.id,
