@@ -100,4 +100,11 @@ object NetworkModule {
         @BuddyConRetrofit retrofit: Retrofit
     ): ChangeCouponService =
         retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideCustomCouponDetailService(
+        @BuddyConRetrofit retrofit: Retrofit
+    ): CustomCouponDetailService =
+        retrofit.create()
 }

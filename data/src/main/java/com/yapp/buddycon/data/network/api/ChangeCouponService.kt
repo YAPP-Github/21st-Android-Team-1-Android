@@ -2,6 +2,7 @@ package com.yapp.buddycon.data.network.api
 
 import com.yapp.buddycon.data.network.request.ChangeCouponRequest
 import com.yapp.buddycon.data.network.request.UpdateCouponRequest
+import com.yapp.buddycon.data.network.request.UpdateCustomCouponRequest
 import com.yapp.buddycon.data.network.response.ChangeCouponResponse
 import retrofit2.http.*
 
@@ -10,6 +11,12 @@ interface ChangeCouponService {
     suspend fun updateCoupon(
         @Path("id") id: Int,
         @Body updateCouponRequest: UpdateCouponRequest
+    ): ChangeCouponResponse
+
+    @PUT("api/v1/coupon/custom-coupon/{id}")
+    suspend fun updateCustomCoupon(
+        @Path("id") id: Int,
+        @Body updateCustomCouponRequest: UpdateCustomCouponRequest
     ): ChangeCouponResponse
 
     @PATCH("api/v1/coupon/{id}/state")

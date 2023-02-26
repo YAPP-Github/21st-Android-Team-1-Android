@@ -88,6 +88,7 @@
     <string name="kakao_error_dialog_title">카카오톡으로 시작할 수 없어요</string>
 
     <string name="usable_detail_coupon">사용가능 기프티콘</string>
+    <string name="used_detail_coupon">사용완료 기프티콘</string>
     <string name="check_price_coupon">금액권인가요?</string>
     <string name="coupon_spare_price">잔여금액</string>
     <string name="coupon_spare_price_himt">남은 금액을 입력하세요</string>
@@ -96,6 +97,7 @@
     <string name="coupon_rollback">사용완료 되돌리기</string>
 
     <string name="giftcon_expire_date_message_title">기프티콘의 기한이 만료되었어요</string>
+    <string name="custom_coupon_expire_date_message_title">기프티콘의 기한이 만료되었어요</string>
     <string name="giftcon_expire_date_message_description">아래의 사용완료 버튼을 눌러주세요</string>
     <string name="giftcon_delete_success_message">쿠폰이 삭제되었어요.</string>
     <string name="gifticon_send_member">보낸사람</string>

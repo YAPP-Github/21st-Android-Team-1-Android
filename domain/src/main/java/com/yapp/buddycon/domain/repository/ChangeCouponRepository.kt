@@ -14,6 +14,15 @@ interface ChangeCouponRepository {
         storeName: String
     ): Flow<ChangeCouponResult>
 
+    fun updateCustomCoupon(
+        id: Int,
+        name: String,
+        expireDate: String,
+        storeName: String,
+        sentMemberName: String,
+        memo: String
+    ): Flow<ChangeCouponResult>
+
     fun changeCoupon(
         id: Int,
         state: String

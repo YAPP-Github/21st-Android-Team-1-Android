@@ -7,7 +7,6 @@ import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
@@ -23,15 +22,14 @@ import com.yapp.buddycon.presentation.databinding.ActivityGiftConDetailBinding
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponDeleteDialogFragment
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponDialogFragment
 import com.yapp.buddycon.presentation.ui.common.dialog.CouponExpireDialogFragment
+import com.yapp.buddycon.presentation.ui.common.dialog.CouponImageDialogFragment
 import com.yapp.buddycon.presentation.ui.common.model.toInfo
 import com.yapp.buddycon.presentation.ui.makeCoupon.MakeCouponActivity
-import com.yapp.buddycon.presentation.utils.Logging
 import com.yapp.buddycon.presentation.utils.getDday
 import com.yapp.buddycon.presentation.utils.toPx
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -231,7 +229,7 @@ class GiftConDetailActivity :
         }
 
         binding.btnVolumeUp.setOnClickListener {
-            GiftConImageDialogFragment(imageUrl).show(supportFragmentManager, null)
+            CouponImageDialogFragment(imageUrl).show(supportFragmentManager, null)
         }
 
         if (giftUsable) {

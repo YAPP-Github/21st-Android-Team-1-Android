@@ -20,8 +20,9 @@ import java.time.LocalDate
 import java.time.Period
 import java.util.*
 
-class CustomConAdapter :
-    PagingDataAdapter<CouponItem, CustomConAdapter.CustommConViewHoler>(CUSTOMCON_DIFF_CALLBACK) {
+class CustomConAdapter(
+    private val onClickListener: ((CouponItem) -> Unit)? = null
+) : PagingDataAdapter<CouponItem, CustomConAdapter.CustommConViewHoler>(CUSTOMCON_DIFF_CALLBACK) {
 
     override fun onBindViewHolder(holder: CustommConViewHoler, position: Int) {
         getItem(position)?.let {
@@ -37,11 +38,12 @@ class CustomConAdapter :
         )
     }
 
-    class CustommConViewHoler(
+    inner class CustommConViewHoler(
         private val binding: ItemCouponBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(info: CouponItem) {
+            binding.root.setOnClickListener { onClickListener?.invoke(info) }
             binding.itemCouponTvTitle.text = info.name
             binding.itemTvExpirationPeriod.text = "~${info.expireDate.replace("-", ".")}"
             if (info.usable) {
@@ -55,10 +57,10 @@ class CustomConAdapter :
                         if (diff <= 7) R.drawable.bg_coupon_expire_date
                         else R.drawable.bg_coupon_gray_expire_date
                     )
-                } else if(diff < 0) {
+                } else if (diff < 0) {
                     binding.ivAlert.isVisible = true
                     binding.btnExpireDate.isVisible = false
-                }else{
+                } else {
                     binding.ivAlert.isVisible = false
                     binding.btnExpireDate.isVisible = false
                 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yapp.buddycon.domain.model.CouponType
 import com.yapp.buddycon.domain.model.SortMode
@@ -42,9 +43,22 @@ class CustomConFragment : BaseFragment<FragmentCustomconBinding>(R.layout.fragme
         observeCustomCoupon()
     }
 
+    override fun onStart() {
+        super.onStart()
+        customConAdapter.refresh()
+    }
+
     private fun initViews() {
         if (::customConAdapter.isInitialized.not()) {
-            customConAdapter = CustomConAdapter()
+            customConAdapter = CustomConAdapter { item ->
+                if (item.couponType == CouponType.Custom) {
+                    activity?.let { activity ->
+                        startActivity(
+                            CustomConDetailActivity.newIntent(activity, item.id, item.usable)
+                        )
+                    }
+                }
+            }
         }
         binding.customconRecyclerView.layoutManager = GridLayoutManager(activity, 2)
         binding.customconRecyclerView.adapter = customConAdapter
@@ -65,27 +79,31 @@ class CustomConFragment : BaseFragment<FragmentCustomconBinding>(R.layout.fragme
     }
 
     private fun observeCustomCoupon() {
-        lifecycleScope.launch {
-            buddyConViewModel.couponPagingData.collectLatest {
-                customConAdapter.submitData(it)
-                binding.customconRecyclerView.scrollToPosition(0)
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                buddyConViewModel.couponPagingData.collectLatest {
+                    customConAdapter.submitData(it)
+                    binding.customconRecyclerView.scrollToPosition(0)
+                }
             }
         }
 
-        lifecycleScope.launch {
-            customConAdapter.loadStateFlow.collectLatest { loadState ->
-                if(loadState.append.endOfPaginationReached){
-                    val isListEmpty = customConAdapter.itemCount == 0
-                    binding.ivEmpty.isVisible = isListEmpty
-                    binding.tvEmpty.isVisible = isListEmpty
-                    binding.tvEmpty.text = getString(
-                        when(buddyConViewModel.tabModeState.value){
-                            TabMode.Usable -> R.string.customcon_usable_empty_message
-                            TabMode.Used -> R.string.customcon_used_empty_message
-                            TabMode.Made -> R.string.made_coupon_empty_message
-                        }
-                    )
-                    binding.customconRecyclerView.isVisible = isListEmpty.not()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                customConAdapter.loadStateFlow.collectLatest { loadState ->
+                    if (loadState.append.endOfPaginationReached) {
+                        val isListEmpty = customConAdapter.itemCount == 0
+                        binding.ivEmpty.isVisible = isListEmpty
+                        binding.tvEmpty.isVisible = isListEmpty
+                        binding.tvEmpty.text = getString(
+                            when (buddyConViewModel.tabModeState.value) {
+                                TabMode.Usable -> R.string.customcon_usable_empty_message
+                                TabMode.Used -> R.string.customcon_used_empty_message
+                                TabMode.Made -> R.string.made_coupon_empty_message
+                            }
+                        )
+                        binding.customconRecyclerView.isVisible = isListEmpty.not()
+                    }
                 }
             }
         }

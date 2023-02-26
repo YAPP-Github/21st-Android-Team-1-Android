@@ -53,4 +53,10 @@ interface RepositoryModule {
     fun bindUpdateCouponRepository(
         updateCouponRepositoryImpl: ChangeCouponRepositoryImpl
     ): ChangeCouponRepository
+
+    @Binds
+    @Singleton
+    fun bindsCustomCouponDetailRepository(
+        customCouponDetailRepositoryImpl: CustomCouponDetailRepositoryImpl
+    ): CustomCouponDetailRepository
 }
