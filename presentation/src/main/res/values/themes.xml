@@ -24,7 +24,7 @@
         <item name="cornerSize">20dp</item>
     </style>
 
-    <style name="Theme.AddCouponActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.AddCouponActivity" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/white</item>
